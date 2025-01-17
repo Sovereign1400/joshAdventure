@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="22">
+ <tileset firstgid="1" source="customMap_1.tsx"/>
+ <layer id="1" name="background" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt2LENwCAMRFEjVslA2SprR3TIJYewjf6Xrn+NKehm1pm8bFX3fW6nw6dV3RddZt/TcvtG1X3Z72On73XDF+/bWXbfSvi0eP+08GlVv4/o8Gnh08KnhU8Ln9YNvvEPMu9k3sfW9gNk0SKa
+  </data>
+ </layer>
+ <layer id="6" name="groundPaint" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt0tENACAIQ0HdfywXcwSJAarpa9JvjsAYJCNrvtXffWo/Pm+fuvi8fVF/1W5Zvqpbufgi8yp8nb+k9nXthC/uU/vxefvUxYcPHz58+PDhO/nIXTYaiK3m
+  </data>
+ </layer>
+ <layer id="2" name="graphics" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAEADAV9A+mjhRm7E/wCADgmtwOMKq2AwAAAPBAAyiyAOk=
+  </data>
+ </layer>
+ <objectgroup id="3" name="bricks">
+  <object id="8" x="0" y="0" width="32" height="640"/>
+  <object id="9" x="32" y="0" width="608" height="32"/>
+  <object id="10" x="608" y="32" width="32" height="608"/>
+  <object id="11" x="32" y="608" width="576" height="32"/>
+  <object id="12" x="96" y="64" width="64" height="64"/>
+  <object id="13" x="96" y="192" width="64" height="64"/>
+  <object id="14" x="96" y="320" width="64" height="64"/>
+  <object id="20" x="400" y="208" width="64" height="64"/>
+  <object id="21" x="400" y="208" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup id="5" name="mushrooms">
+  <object id="18" x="256" y="192" width="16" height="16"/>
+  <object id="19" x="256" y="240" width="16" height="16"/>
+ </objectgroup>
+</map>

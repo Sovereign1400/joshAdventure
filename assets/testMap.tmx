@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="31">
+ <tileset firstgid="1" source="mario_tileset.tsx"/>
+ <layer id="1" name="background" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eJztm0FuxCAMRbvp/Q8wc5jMzdpFo1oo2JjvACb/SV5MSRnzBCE47fH99fWqxPs3jr+oXeOJqH5WCemnDNn+Ua67I1pzLPMcnaP0U3K2z6D0Z133npDrDv7kPLgaw53QH8ZO/mbkmsGfdV87Gq+7gwz+uH77iFy/cn4iUet3B3/a+pXzE4my/9381dYvOo5DOLzqt+av9vMRyLNe1PpFuHJh+ZuJZ/5pnqP25p39fRr8oePr8Zfl/tfiD4X+MDL6O5TcTujvmvO7W+uXmr9Z+2/5vZ66bMu4Nc7rynrqVW1V22M99e6W+wTiL7J2a+2H5bVaP7XnW0/elsNs63c01rM6/dnQH4Z2X6E/jB5/K57rZpHt/Lsa9IdBfxgR/nqe33vPH61Enom0GHH+qO1BPeePVkeRZyLv+LI8v6Bnwbsoz9+1dnIN/WHQH4asm9GfH+lv5f1jVbh+MbI8v0Rg3auQPr3+Rj3zR55bzjFG/p3bS/TnqV+NfOaX7yeQuWONFekzQ/1Ajh/5/cixZvSHzr+n++P86wPdP1byN2Nv3Wn93rm/Wrnu4O8O6C8mF6ud/vRcrHb603Ox2ulPz8Vqpz89F6ud/vRcrHb603Ox2tH6Ff319U9//+8aPOfB8vOT/bWEPA/WPj/Rn/fvVKzPkTln8Lci9Icha7qzc8/uj/PPz1PXb1StfLX5Nyoi6uXyf2ZXmH+j38dHjHclfxmhPwz6w6A/DPrDoD8M+sOgPwz6w6A/DPrDoD8M+sOQ/kbWj7LH+R5a+mP4al/yXfwPBLkdVQ==
+  </data>
+ </layer>
+ <objectgroup id="3" name="bricks"/>
+ <objectgroup id="4" name="coins"/>
+ <objectgroup id="5" name="pipes"/>
+ <objectgroup id="6" name="ground">
+  <object id="10" x="16" y="16" width="16" height="544"/>
+  <object id="11" x="16" y="560" width="16" height="160"/>
+  <object id="12" x="16" y="720" width="16" height="400"/>
+  <object id="13" x="16" y="1120" width="16" height="160"/>
+  <object id="14" x="32" y="1264" width="288" height="16"/>
+  <object id="15" x="32" y="1248" width="288" height="16"/>
+  <object id="16" x="320" y="1248" width="192" height="32"/>
+  <object id="17" x="512" y="1248" width="400" height="32"/>
+  <object id="18" x="912" y="1248" width="368" height="32"/>
+  <object id="19" x="1248" y="992" width="32" height="288"/>
+  <object id="20" x="1248" y="624" width="32" height="368"/>
+  <object id="21" x="1248" y="112" width="32" height="512"/>
+  <object id="22" x="1248" y="0" width="32" height="112"/>
+  <object id="23" x="736" y="0" width="512" height="32"/>
+  <object id="24" x="352" y="0" width="384" height="32"/>
+  <object id="25" x="0" y="0" width="352" height="32"/>
+  <object id="26" x="0" y="32" width="16" height="288"/>
+  <object id="27" x="0" y="320" width="16" height="320"/>
+  <object id="28" x="0" y="640" width="16" height="384"/>
+  <object id="29" x="0" y="1024" width="16" height="256"/>
+ </objectgroup>
+ <layer id="2" name="graphics" width="80" height="80">
+  <data encoding="base64" compression="zlib">
+   eJzt2M0JwkAURtEsxr21iGnGZqxFsBbFWgRrcOFiFEwkfv7FnANvEZhFuBBmJk0DAAC82qJcpuuZfvrBePleM/oBAEzXvtzONefEx4b0u7dm6vr6da2lGtIPAN5lWeq0E9+Pnjk/61fpx6e462b0AwAAAID/s/HPL7LTL3LULzKfffsNxq3VL7LSL7LWL7LVL3LQL3LSDwAAAAAA+GFnRTcdig==
+  </data>
+ </layer>
+</map>
