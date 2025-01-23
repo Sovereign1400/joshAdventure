@@ -124,6 +124,17 @@ public class PlayScreen implements Screen {
 //        fboRegion.flip(false, true);
 
         shapeRenderer = new ShapeRenderer();
+
+        // ---------------------------------------
+        // This sets Monsters
+        //----------------------------------------
+
+        // Initialize the monsters array
+        monsters = new Array<Monster>();
+
+        // Create monsters at specific positions
+        createMonsters();
+
     }
 
     @Override
@@ -147,7 +158,7 @@ public class PlayScreen implements Screen {
                 if (shiftPressed) {
                     // RUN stance
                     player.setStance(Josh.Stance.RUN);
-                    moveSpeed = 5f; // faster speed for running
+                    moveSpeed = 3.5f; // faster speed for running
                 } else {
                     // WALK stance
                     player.setStance(Josh.Stance.WALK);
@@ -201,6 +212,15 @@ public class PlayScreen implements Screen {
 
         // This tells the game cam what to render.
         renderer.setView(gamecam);
+
+        // This renders the monster
+        // Update all monsters
+        for (Monster monster : monsters) {
+            monster.update(dt);
+        }
+
+        // Optional: Check for collisions between player and monsters
+//        checkMonsterCollisions();
     }
 
     @Override
@@ -227,12 +247,37 @@ public class PlayScreen implements Screen {
 
         // This renders Josh, the main player
         player.draw(game.batch); // Draw player
+        for (Monster monster : monsters) {
+            monster.draw(game.batch);
+        }
         game.batch.end(); // End batch
 
 //        debugDrawShapes();
 
         // This renders fog of war using the same batch but the second time.
          renderFogOfWar();
+    }
+
+    private void createMonsters() {
+//        // You can create monsters at specific positions
+//        addMonster(200, 200);  // First monster
+//        addMonster(400, 300);  // Second monster
+//        addMonster(600, 400);  // Third monster
+
+        // Alternative: If you want to create monsters from map objects
+        // Assuming you have a "Monsters" layer in your Tiled map
+
+        for (MapObject object : map.getLayers().get("monsterSpawns").getObjects()) {
+            if (object instanceof RectangleMapObject) {
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                addMonster(rect.x, rect.y);
+            }
+        }
+    }
+
+    private void addMonster(float x, float y) {
+        Monster monster = new Monster(world, x, y);
+        monsters.add(monster);
     }
 
 
@@ -339,8 +384,6 @@ public class PlayScreen implements Screen {
         game.batch.end();
     }
 
-
-
 //    private void renderFogOfWar() {
 //        // 1) Get the viewport pixel size
 //        int viewW = gamePort.getScreenWidth();
@@ -399,8 +442,6 @@ public class PlayScreen implements Screen {
 //    }
 
 
-
-
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
@@ -445,5 +486,10 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
         hud.dispose();
         fbo.dispose();
+
+        // This dispose all monsters
+        for (Monster monster : monsters) {
+            monster.dispose();
+        }
     }
 }

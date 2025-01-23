@@ -20,7 +20,7 @@ public class B2WorldCreator {
         Body body;
 
         // This applys these attributes to the layers of objects drawn on the map
-        for(MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
+        for(MapObject object : map.getLayers().get("background").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             // This creates ground object bodies and fixtures.
@@ -35,7 +35,7 @@ public class B2WorldCreator {
         };
 
         // This creates bricks
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
+        for(MapObject object : map.getLayers().get("bricks").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Brick(world, map, rect);
@@ -52,7 +52,7 @@ public class B2WorldCreator {
         };
 
         // This creates mushrooms/hearts
-        for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
+        for(MapObject object : map.getLayers().get("pickups").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
         new Heart(world, map, rect);
