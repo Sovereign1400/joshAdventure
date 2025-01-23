@@ -15,6 +15,7 @@ public class Josh extends Sprite {
     public Body b2body;
     private Texture playerTexture;
     private String parent_path = "axeWarrior/Blond/";
+    private float spawnX, spawnY; // spawn coordinates for Josh
 
     // ---------------------------
     // 1) Different animations
@@ -40,10 +41,14 @@ public class Josh extends Sprite {
     private float stateTime;
     public boolean facingLeft = true;
 
-    public Josh(World world){
+    public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
         playerTexture = new Texture(parent_path + "Idle" + "/" + "idle1.png");
         float scale = 0.5f;
+
+        this.world = world;
+        this.spawnX = spawnX;
+        this.spawnY = spawnY;
 
         setBounds(
             0 / testGame.PPM,
@@ -65,15 +70,32 @@ public class Josh extends Sprite {
         currentStance = Stance.STAND;
         stateTime = 0f;
 
-        // Track which way character is facing (true = right, false = left)
-
-
         // Set initial sprite size to the first frame of your stand animation
         TextureRegion firstFrame = standAnimation.getKeyFrame(0);
         float width  = (firstFrame.getRegionWidth() * scale)  / testGame.PPM;
         float height = (firstFrame.getRegionHeight() * scale) / testGame.PPM;
         setBounds(0, 0, width, height);
         setRegion(firstFrame);
+    }
+
+    /**
+     * Box2D definition for Josh
+     */
+    public void defineJosh() {
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(spawnX / testGame.PPM, spawnY / testGame.PPM);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius((float) 12 / testGame.PPM);
+
+        fdef.shape = shape;
+        assert b2body != null;
+        b2body.createFixture(fdef);
+
+        shape.dispose();
     }
 
     /**
@@ -130,25 +152,7 @@ public class Josh extends Sprite {
         runAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
-    /**
-     * Box2D definition for Josh
-     */
-    public void defineJosh() {
-        BodyDef bdef = new BodyDef();
-        bdef.position.set((float) 32 / testGame.PPM, (float) 32 / testGame.PPM);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
 
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius((float) 12 / testGame.PPM);
-
-        fdef.shape = shape;
-        assert b2body != null;
-        b2body.createFixture(fdef);
-
-        shape.dispose();
-    }
 
     /**
      * Called every frame by your game loop.
@@ -238,6 +242,8 @@ public class Josh extends Sprite {
     }
 
 }
+
+
 
 //    public void defineJosh(){
 //        BodyDef bdef = new BodyDef();

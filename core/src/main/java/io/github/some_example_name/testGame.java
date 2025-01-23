@@ -9,7 +9,7 @@ public class testGame extends Game {
     public static final int win_width = 800;
     public static final int win_height = 800;
     public SpriteBatch batch;
-    public static final float PPM = 32;
+    public static final float PPM = 32f;
 
 //    GameMap gameMap;
     @Override
