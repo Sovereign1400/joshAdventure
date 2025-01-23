@@ -98,9 +98,7 @@ public class Josh extends Sprite {
         shape.dispose();
     }
 
-    /**
-     * Load the frames for the STAND stance and build the Animation.
-     */
+    // Load standing animation
     private void loadStandAnimation() {
         // Example: stand stance has 3 frames
         standTextures = new Texture[3];

@@ -309,6 +309,7 @@ public class PlayScreen implements Screen {
         float baseRadius = 3f;
         int segments = 50;
 
+        // Add blurred circles to the fog of war
         for (int i = 0; i < 10; i++) {
             float alpha = 1.0f - (i * 0.1f);
             shapeRenderer.setColor(0, 0, 0, alpha);
