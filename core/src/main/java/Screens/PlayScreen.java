@@ -132,7 +132,7 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt) {
-            float moveSpeed = 5f; // normal walking speed
+            float moveSpeed = 2.5f; // normal walking speed
             boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.UP);
             boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.DOWN);
             boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
@@ -147,7 +147,7 @@ public class PlayScreen implements Screen {
                 if (shiftPressed) {
                     // RUN stance
                     player.setStance(Josh.Stance.RUN);
-                    moveSpeed = 8f; // faster speed for running
+                    moveSpeed = 5f; // faster speed for running
                 } else {
                     // WALK stance
                     player.setStance(Josh.Stance.WALK);
@@ -215,7 +215,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         // This renders Box2DDebugLines, comment it out if not debugging
-//        b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
         // Set our batch to now draw what HUD cam sees.
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

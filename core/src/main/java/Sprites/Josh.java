@@ -14,7 +14,7 @@ public class Josh extends Sprite {
     public World world;
     public Body b2body;
     private Texture playerTexture;
-    private String parent_path = "axeWarrior/Blond/";
+    private String parent_path = "roman/soldier/";
     private float spawnX, spawnY; // spawn coordinates for Josh
 
     // ---------------------------
@@ -43,7 +43,7 @@ public class Josh extends Sprite {
 
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
-        playerTexture = new Texture(parent_path + "Idle" + "/" + "idle1.png");
+        playerTexture = new Texture(parent_path + "idle" + "/" + "idle_knight_1.png");
         float scale = 0.5f;
 
         this.world = world;
@@ -89,7 +89,7 @@ public class Josh extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius((float) 12 / testGame.PPM);
+        shape.setRadius((float) 6 / testGame.PPM);
 
         fdef.shape = shape;
         assert b2body != null;
@@ -105,7 +105,7 @@ public class Josh extends Sprite {
         TextureRegion[] frames = new TextureRegion[3];
 
         for (int i = 0; i < 3; i++) {
-            String fileName = parent_path + "Idle" + "/" + "idle" + (i + 1) + ".png";
+            String fileName = parent_path + "idle" + "/" + "idle_knight_" + (i + 1) + ".png";
             standTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(standTextures[i]);
         }
@@ -123,7 +123,7 @@ public class Josh extends Sprite {
         TextureRegion[] frames = new TextureRegion[6];
 
         for (int i = 0; i < 6; i++) {
-            String fileName = parent_path + "Run" + "/" + "run" + (i + 1) + ".png";
+            String fileName = parent_path + "walk" + "/" + "walk_" + (i + 1) + ".png";
             walkTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(walkTextures[i]);
         }
@@ -141,7 +141,7 @@ public class Josh extends Sprite {
         TextureRegion[] frames = new TextureRegion[6];
 
         for (int i = 0; i < 6; i++) {
-            String fileName = parent_path + "Run"+ "/" + "run" + (i + 1) + ".png";
+            String fileName = parent_path + "run"+ "/" + "run_" + (i + 1) + ".png";
             runTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(runTextures[i]);
         }
@@ -189,7 +189,7 @@ public class Josh extends Sprite {
         // Update sprite position to match Box2D body
         setPosition(
             b2body.getPosition().x - getWidth() / 2,
-            b2body.getPosition().y - getHeight() / 2 + 6/testGame.PPM
+            b2body.getPosition().y - getHeight() / 2 + 3 / testGame.PPM
         );
     }
 
