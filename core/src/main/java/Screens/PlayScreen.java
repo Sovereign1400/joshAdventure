@@ -1,9 +1,7 @@
 package Screens;
 
 import Scenes.HUD;
-import Sprites.Heart;
-import Sprites.Josh;
-import Sprites.Monster;
+import Sprites.*;
 import Tools.B2WorldCreator;
 import Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
@@ -68,6 +66,15 @@ public class PlayScreen implements Screen {
 
     // Heart Attributes:
     private Array<Heart> hearts;
+
+    // Speedup Attributes:
+    private Array<Speedup> speedups;
+
+    // Shield Attributes:
+    private Array<Shield> shields;
+
+
+
 
     public PlayScreen(testGame game) {
         this.game = game;
@@ -143,10 +150,16 @@ public class PlayScreen implements Screen {
 
         // This sets hearts
         world.setContactListener(new WorldContactListener(player));
+        speedups = new Array<>();
         hearts = new Array<>();
+        shields = new Array<>();
+
 
         world.setContactListener(new WorldContactListener(player));
+        speedups = creator.createSpeedups(world, map);
         hearts = creator.createHearts(world, map);
+        shields = creator.createShields(world, map);
+
     }
 
     @Override
@@ -155,7 +168,7 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt) {
-            float moveSpeed = 2.5f; // normal walking speed
+            float moveSpeed = player.getMovespeed(); // normal walking speed
             boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.UP);
             boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.DOWN);
             boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
@@ -170,7 +183,7 @@ public class PlayScreen implements Screen {
                 if (shiftPressed) {
                     // RUN stance
                     player.setStance(Josh.Stance.RUN);
-                    moveSpeed = 3.5f; // faster speed for running
+                    moveSpeed = player.getMovespeed() * 1.2f; // faster speed for running
                 } else {
                     // WALK stance
                     player.setStance(Josh.Stance.WALK);
@@ -236,6 +249,14 @@ public class PlayScreen implements Screen {
             heart.update();
         }
 
+        for(Speedup speedup : speedups) {
+            speedup.update();
+        }
+
+        for (Shield shield : shields){
+            shield.update();
+        }
+
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
     }
@@ -272,11 +293,24 @@ public class PlayScreen implements Screen {
             }
         }
 
-        // This renders a list of monsters
+        // This renders an array of monsters
         for (Monster monster : monsters) {
             monster.draw(game.batch);
         }
 
+        // This renders an array of speedups
+        for(Speedup speedup : speedups) {
+            if(!speedup.isCollected()) {
+                speedup.draw(game.batch);
+            }
+        }
+
+        // This renders an array of shields
+        for (Shield shield : shields){
+            if (!shield.isCollected()){
+                shield.draw(game.batch);
+            }
+        }
 
         game.batch.end(); // End batch
 

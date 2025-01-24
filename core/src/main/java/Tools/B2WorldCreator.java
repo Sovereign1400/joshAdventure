@@ -1,9 +1,6 @@
 package Tools;
 
-import Sprites.Brick;
-import Sprites.Heart;
-import Sprites.Josh;
-import com.badlogic.gdx.maps.MapLayer;
+import Sprites.*;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -12,10 +9,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import io.github.some_example_name.testGame;
 
-import java.util.List;
-
 public class B2WorldCreator {
     private Array<Heart> hearts;
+    private Array<Speedup> speedups;
+    private Array<Shield> shields;
     private Josh player;
 
     public B2WorldCreator(World world, TiledMap map){
@@ -25,6 +22,8 @@ public class B2WorldCreator {
         FixtureDef fdef = new FixtureDef();
         Body body;
         hearts = new Array<>();
+        speedups = new Array<>();
+        shields = new Array<>();
 
         // This applys these attributes to the layers of objects drawn on the map
         for(MapObject object : map.getLayers().get("background").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
@@ -59,10 +58,13 @@ public class B2WorldCreator {
         };
 
         // This creates mushrooms/hearts
-        for(MapObject object : map.getLayers().get("pickups").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
+        // Accounts for the green bounds, can be safely removed
+        /*for(MapObject object : map.getLayers().get("hearts").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             hearts.add(new Heart(world, map, rect));
+
+
 //            // This creates ground object bodies and fixtures.
 //            bdef.type = BodyDef.BodyType.StaticBody;
 //            bdef.position.set((rect.getX() + rect.getWidth()/2) / testGame.PPM, (rect.getY() + rect.getHeight() / 2) / testGame.PPM);
@@ -72,19 +74,36 @@ public class B2WorldCreator {
 //            shape.setAsBox(rect.getWidth() / 2 / testGame.PPM, rect.getHeight() / 2 / testGame.PPM);
 //            fdef.shape = shape;
 //            body.createFixture(fdef);
-        };
+        }*/
+
+
+
     }
 
     public Array<Heart> createHearts(World world, TiledMap map) {
-        Array<Heart> hearts = new Array<>();
-        for(MapObject object : map.getLayers().get("pickups").getObjects().getByType(RectangleMapObject.class)) {
+        hearts = new Array<>();
+        for(MapObject object : map.getLayers().get("hearts").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             hearts.add(new Heart(world, map, rect));
         }
         return hearts;
     }
 
-    public Array<Heart> getHearts() {
-        return hearts;
+    public Array<Speedup> createSpeedups(World world, TiledMap map){
+        speedups = new Array<>();
+        for(MapObject object : map.getLayers().get("speedups").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            speedups.add(new Speedup(world, map, rect));
+        }
+        return speedups;
+    }
+
+    public Array<Shield> createShields(World world, TiledMap map){
+        shields = new Array<>();
+        for(MapObject object : map.getLayers().get("shields").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            shields.add(new Shield(world, map, rect));
+        }
+        return shields;
     }
 }

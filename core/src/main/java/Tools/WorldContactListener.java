@@ -2,6 +2,8 @@ package Tools;
 
 import Sprites.Heart;
 import Sprites.Josh;
+import Sprites.Shield;
+import Sprites.Speedup;
 import com.badlogic.gdx.physics.box2d.*;
 
     public class WorldContactListener implements ContactListener {
@@ -23,6 +25,26 @@ import com.badlogic.gdx.physics.box2d.*;
                 if(!heart.isCollected()) {
                     heart.onCollect();
                     player.increaseHealth();
+                }
+            }
+
+            if (fixA.getUserData() instanceof Speedup || fixB.getUserData() instanceof Speedup){
+                Fixture speedupFix = fixA.getUserData() instanceof Speedup ? fixA : fixB;
+                Speedup speedup = (Speedup) speedupFix.getUserData();
+
+                if(!speedup.isCollected()) {
+                    speedup.onCollect();
+                    player.increaseSpeed(); // increase speed
+                }
+            }
+
+            if (fixA.getUserData() instanceof Shield || fixB.getUserData() instanceof Shield){
+                Fixture shieldFix = fixA.getUserData() instanceof Shield ? fixA : fixB;
+                Shield shield = (Shield) shieldFix.getUserData();
+
+                if(!shield.isCollected()) {
+                    shield.onCollect();
+                    player.increaseHealth(); // increase speed
                 }
             }
         }

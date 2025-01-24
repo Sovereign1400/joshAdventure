@@ -45,6 +45,9 @@ public class Josh extends Sprite {
     // Heart health system
     private int health = 3;
 
+    // Speed attribute
+    private float movespeed;
+
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
         playerTexture = new Texture(parent_path + "idle" + "/" + "idle_knight_1.png");
@@ -53,6 +56,9 @@ public class Josh extends Sprite {
         this.world = world;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
+
+        // initialize move speed
+        this.movespeed = 1.5f;
 
         setBounds(
             0 / testGame.PPM,
@@ -248,10 +254,21 @@ public class Josh extends Sprite {
         health++;
     }
 
+    public void increaseSpeed(){
+        setMovespeed(movespeed * 1.5f);
+    }
+
     public int getHealth() {
         return health;
     }
 
+    public float getMovespeed() {
+        return movespeed;
+    }
+
+    public void setMovespeed(float movespeed) {
+        this.movespeed = movespeed;
+    }
 }
 
 
