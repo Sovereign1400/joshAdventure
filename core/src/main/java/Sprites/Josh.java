@@ -41,6 +41,10 @@ public class Josh extends Sprite {
     private float stateTime;
     public boolean facingLeft = true;
 
+
+    // Heart health system
+    private int health = 3;
+
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
         playerTexture = new Texture(parent_path + "idle" + "/" + "idle_knight_1.png");
@@ -237,6 +241,15 @@ public class Josh extends Sprite {
             getWidth(),   // Sprite width
             getHeight()   // Sprite height
         );
+    }
+
+
+    public void increaseHealth() {
+        health++;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
 }

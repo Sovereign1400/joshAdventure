@@ -1,9 +1,11 @@
 package Screens;
 
 import Scenes.HUD;
+import Sprites.Heart;
 import Sprites.Josh;
 import Sprites.Monster;
 import Tools.B2WorldCreator;
+import Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -63,6 +65,9 @@ public class PlayScreen implements Screen {
     private static final int DEFAULT_SRC_FUNC = GL20.GL_SRC_ALPHA;
     private static final int DEFAULT_DST_FUNC = GL20.GL_ONE_MINUS_SRC_ALPHA;
 
+    // Heart Attributes:
+    private Array<Heart> hearts;
+
     public PlayScreen(testGame game) {
         this.game = game;
 
@@ -98,8 +103,8 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, (float) 0 / testGame.PPM), true); // This set gravity to 0.
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(world, map);
 
+        B2WorldCreator creator = new B2WorldCreator(world, map);
         // This initialize Josh. - Wong
 
         // Set spawn coordinates
@@ -135,6 +140,12 @@ public class PlayScreen implements Screen {
         // Create monsters at specific positions
         createMonsters();
 
+        // This sets hearts
+        world.setContactListener(new WorldContactListener(player));
+        hearts = new Array<>();
+
+        world.setContactListener(new WorldContactListener(player));
+        hearts = creator.createHearts(world, map);
     }
 
     @Override
@@ -219,6 +230,12 @@ public class PlayScreen implements Screen {
             monster.update(dt);
         }
 
+
+        for(Heart heart : hearts) {
+            heart.update();
+        }
+        System.out.println("Number of hearts: " + hearts.size);
+
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
     }
@@ -247,9 +264,20 @@ public class PlayScreen implements Screen {
 
         // This renders Josh, the main player
         player.draw(game.batch); // Draw player
+
+        for(Heart heart : hearts) {
+            if(!heart.isCollected()) {
+                System.out.println("Heart position: " + heart.getX() + ", " + heart.getY());
+                heart.draw(game.batch);
+            }
+        }
+
+
         for (Monster monster : monsters) {
             monster.draw(game.batch);
         }
+
+
         game.batch.end(); // End batch
 
 //        debugDrawShapes();
@@ -477,6 +505,7 @@ public class PlayScreen implements Screen {
     public void hide() {
 
     }
+
 
     @Override
     public void dispose() {
