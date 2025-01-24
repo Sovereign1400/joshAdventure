@@ -3,11 +3,9 @@ package Sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
-import org.w3c.dom.Text;
 
 public class Heart extends Sprite {
     protected World world;
@@ -30,13 +28,11 @@ public class Heart extends Sprite {
         setPosition(bounds.x / testGame.PPM, bounds.y / testGame.PPM);
 
         heartTexture = new Texture("pickups/hp+1.png");
-        System.out.println("Bounds position: " + bounds.x + ", " + bounds.y);
-        System.out.println("Sprite position after setBounds: " + getX() + ", " + getY());
         setRegion(heartTexture);
-        System.out.println("Final sprite position: " + getX() + ", " + getY());
         defineHeart();
     }
 
+    // This defines the visual property of heart and ensures heart wont perform like monsters which can block the player
     private void defineHeart() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX() + getWidth()/2, getY() + getHeight()/2);

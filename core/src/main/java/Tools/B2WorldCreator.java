@@ -73,16 +73,6 @@ public class B2WorldCreator {
 //            fdef.shape = shape;
 //            body.createFixture(fdef);
         };
-
-
-
-        System.out.println("Looking for pickups layer...");
-        MapLayer pickupsLayer = map.getLayers().get("pickups");
-        if (pickupsLayer == null) {
-            System.out.println("Pickups layer not found!");
-        } else {
-            System.out.println("Found pickups objects: " + pickupsLayer.getObjects().getCount());
-        }
     }
 
     public Array<Heart> createHearts(World world, TiledMap map) {

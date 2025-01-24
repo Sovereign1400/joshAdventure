@@ -55,6 +55,7 @@ public class PlayScreen implements Screen {
     float initialX = 120f;
     float initialY = 200f;
 
+    // Monster Attributes
     private Array<Monster> monsters;
 
     // Fog of War Attributes
@@ -234,7 +235,6 @@ public class PlayScreen implements Screen {
         for(Heart heart : hearts) {
             heart.update();
         }
-        System.out.println("Number of hearts: " + hearts.size);
 
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
@@ -265,14 +265,14 @@ public class PlayScreen implements Screen {
         // This renders Josh, the main player
         player.draw(game.batch); // Draw player
 
+        // This renders an array of hearts
         for(Heart heart : hearts) {
             if(!heart.isCollected()) {
-                System.out.println("Heart position: " + heart.getX() + ", " + heart.getY());
                 heart.draw(game.batch);
             }
         }
 
-
+        // This renders a list of monsters
         for (Monster monster : monsters) {
             monster.draw(game.batch);
         }
@@ -307,7 +307,6 @@ public class PlayScreen implements Screen {
         Monster monster = new Monster(world, x, y);
         monsters.add(monster);
     }
-
 
     private void debugDrawShapes() {
         // 1) We’ll draw directly to the screen (no FBO)
