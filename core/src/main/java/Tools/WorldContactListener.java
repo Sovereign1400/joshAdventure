@@ -1,9 +1,6 @@
 package Tools;
 
-import Sprites.Heart;
-import Sprites.Josh;
-import Sprites.Shield;
-import Sprites.Speedup;
+import Sprites.*;
 import com.badlogic.gdx.physics.box2d.*;
 
     public class WorldContactListener implements ContactListener {
@@ -44,6 +41,16 @@ import com.badlogic.gdx.physics.box2d.*;
 
                 if(!shield.isCollected()) {
                     shield.onCollect();
+                    player.increaseHealth(); // increase speed
+                }
+            }
+
+            if (fixA.getUserData() instanceof Key || fixB.getUserData() instanceof Key){
+                Fixture keyFix = fixA.getUserData() instanceof Key ? fixA : fixB;
+                Key key = (Key) keyFix.getUserData();
+
+                if(!key.isCollected()) {
+                    key.onCollect();
                     player.increaseHealth(); // increase speed
                 }
             }

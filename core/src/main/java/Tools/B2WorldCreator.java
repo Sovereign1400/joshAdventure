@@ -13,6 +13,7 @@ public class B2WorldCreator {
     private Array<Heart> hearts;
     private Array<Speedup> speedups;
     private Array<Shield> shields;
+    private Array<Key> keys;
     private Josh player;
 
     public B2WorldCreator(World world, TiledMap map){
@@ -24,6 +25,7 @@ public class B2WorldCreator {
         hearts = new Array<>();
         speedups = new Array<>();
         shields = new Array<>();
+        keys = new Array<>();
 
         // This applys these attributes to the layers of objects drawn on the map
         for(MapObject object : map.getLayers().get("background").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
@@ -105,5 +107,14 @@ public class B2WorldCreator {
             shields.add(new Shield(world, map, rect));
         }
         return shields;
+    }
+
+    public Array<Key> createKeys(World world, TiledMap map){
+        keys = new Array<>();
+        for(MapObject object : map.getLayers().get("keys").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            keys.add(new Key(world, map, rect));
+        }
+        return keys;
     }
 }

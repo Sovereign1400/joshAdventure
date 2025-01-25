@@ -73,6 +73,9 @@ public class PlayScreen implements Screen {
     // Shield Attributes:
     private Array<Shield> shields;
 
+    // Key Attributes
+    private Array<Key> keys;
+
 
 
 
@@ -148,17 +151,19 @@ public class PlayScreen implements Screen {
         // Create monsters at specific positions
         createMonsters();
 
-        // This sets hearts
+        // This sets all interactive objects
         world.setContactListener(new WorldContactListener(player));
         speedups = new Array<>();
         hearts = new Array<>();
         shields = new Array<>();
+        keys = new Array<>();
 
 
         world.setContactListener(new WorldContactListener(player));
         speedups = creator.createSpeedups(world, map);
         hearts = creator.createHearts(world, map);
         shields = creator.createShields(world, map);
+        keys = creator.createKeys(world, map);
 
     }
 
@@ -257,6 +262,10 @@ public class PlayScreen implements Screen {
             shield.update();
         }
 
+        for (Key key : keys){
+            key.update();
+        }
+
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
     }
@@ -309,6 +318,13 @@ public class PlayScreen implements Screen {
         for (Shield shield : shields){
             if (!shield.isCollected()){
                 shield.draw(game.batch);
+            }
+        }
+
+        // This renders an array of keys
+        for (Key key : keys){
+            if (!key.isCollected()){
+                key.draw(game.batch);
             }
         }
 

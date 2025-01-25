@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="35">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="36">
  <tileset firstgid="1" source="mainlevbuild.tsx"/>
  <layer id="1" name="floor" width="40" height="40">
   <data encoding="base64" compression="zlib">
@@ -51,6 +51,9 @@
  <objectgroup id="9" name="shields">
   <object id="33" x="227.576" y="525.233" width="21.8533" height="23.3604"/>
   <object id="34" x="292.382" y="527.493" width="27.1282" height="22.6069"/>
+ </objectgroup>
+ <objectgroup id="10" name="keys">
+  <object id="35" x="223.808" y="232.851" width="35.4174" height="35.4174"/>
  </objectgroup>
  <objectgroup id="3" name="background"/>
 </map>
