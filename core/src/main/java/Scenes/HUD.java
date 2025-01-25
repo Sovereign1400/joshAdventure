@@ -1,6 +1,7 @@
 package Scenes;
 
 import Sprites.Josh;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -33,6 +34,7 @@ public class HUD implements Disposable {
     private Josh player;
     private Image[] heartImages;
 
+
     public HUD(SpriteBatch imgbatch, Josh player){
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");
@@ -46,7 +48,7 @@ public class HUD implements Disposable {
         stage = new Stage(viewport, imgbatch);
 
         Table table = new Table();
-        table.top();
+        table.top().left();
         table.setFillParent(true);
 
         // Initialize hearts
@@ -67,10 +69,11 @@ public class HUD implements Disposable {
         mainCharLabel = new Label("mainChar", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
 
-        table.add(heartTable).expandX().padTop(10);
-        table.add(mainCharLabel).expandX().padTop(10);
-        table.add(worldLabel).expandX().padTop(10);
-        table.add(timeLabel).expandX().padTop(10);
+
+        table.add(heartTable).expandX().padTop(5);
+        table.add(mainCharLabel).expandX().padTop(5);
+        table.add(worldLabel).expandX().padTop(5);
+        table.add(timeLabel).expandX().padTop(5);
         table.row();
         table.add(scoreLabel).expandX();
         table.add(levelLabel).expandX();

@@ -45,7 +45,8 @@ public class Josh extends Sprite {
     private int health = 3;
 
     // Speedup system attributes
-    private float basemovespeed;
+    private float baseMovespeed;
+    private float movespeed;
     private boolean speedBoostActive = false;
     private float speedBoostTimer = 0;
     private float speedBoostDuration = 10f; // 10 seconds for speedup pickups
@@ -60,7 +61,8 @@ public class Josh extends Sprite {
         this.spawnY = spawnY;
 
         // initialize move speed
-        this.basemovespeed = 1.5f;
+        this.movespeed = 1.5f;
+        this.baseMovespeed = this.movespeed;
 
         setBounds(
             0 / testGame.PPM,
@@ -170,6 +172,7 @@ public class Josh extends Sprite {
     public void update(float dt) {
         stateTime += dt;
 
+
         // Pick the right Animation based on the current stance
         Animation<TextureRegion> currentAnimation = null;
 
@@ -196,6 +199,15 @@ public class Josh extends Sprite {
             }
 
             setRegion(currentFrame);
+        }
+
+        // Handle speed boost timer
+        if (speedBoostActive) {
+            speedBoostTimer += dt;
+            if (speedBoostTimer >= speedBoostDuration) {
+                speedBoostActive = false;
+                setMovespeed(baseMovespeed);
+            }
         }
 
         // Update sprite position to match Box2D body
@@ -251,13 +263,22 @@ public class Josh extends Sprite {
         );
     }
 
+    public void activateSpeedBoost() {
+        if (!speedBoostActive) {
+            speedBoostActive = true;
+            speedBoostTimer = 0;
+            movespeed = baseMovespeed * 1.5f; // Directly modify movespeed
+            System.out.println("Speed boost activated! New speed: " + movespeed); // Debug line
+        }
+    }
+
 
     public void increaseHealth() {
         health++;
     }
 
     public void increaseSpeed(){
-        setBasemovespeed(basemovespeed * 1.5f);
+        setBasemovespeed(baseMovespeed * 1.5f);
     }
 
     public int getHealth() {
@@ -265,19 +286,27 @@ public class Josh extends Sprite {
     }
 
     public float getBasemovespeed() {
-        return basemovespeed;
+        return baseMovespeed;
     }
 
     public void setBasemovespeed(float basemovespeed) {
-        this.basemovespeed = basemovespeed;
+        this.baseMovespeed = basemovespeed;
     }
 
-    public float getSpawnY() {
-        return spawnY;
+    public float getMovespeed() {
+        return movespeed;
     }
 
-    public float getSpawnX() {
-        return spawnX;
+    public void setMovespeed(float movespeed) {
+        this.movespeed = movespeed;
+    }
+
+    public boolean isSpeedBoostActive() {
+        return speedBoostActive;
+    }
+
+    public float getSpeedBoostTimeRemaining() {
+        return speedBoostActive ? speedBoostDuration - speedBoostTimer : 0;
     }
 }
 

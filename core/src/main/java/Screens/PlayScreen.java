@@ -184,8 +184,25 @@ public class PlayScreen implements Screen {
             boolean shiftPressed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
                 || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
 
+            // Calculate current move speed
+            float currentSpeed = player.getMovespeed();
+
+             if (upPressed || downPressed || leftPressed || rightPressed) {
+                currentSpeed = player.getMovespeed();
+                if (shiftPressed) {
+                 player.setStance(Josh.Stance.RUN);
+                    currentSpeed *= 1.2f;
+                } else {
+                    player.setStance(Josh.Stance.WALK);
+              }
+            } else {
+                    player.setStance(Josh.Stance.STAND);
+                }
+
+
+            // This part can be safely removed, but keep it for now
             // Decide stance (walk or run) if any movement key is pressed
-            if (upPressed || downPressed || leftPressed || rightPressed) {
+            /*if (upPressed || downPressed || leftPressed || rightPressed) {
                 if (shiftPressed) {
                     // RUN stance
                     player.setStance(Josh.Stance.RUN);
@@ -197,7 +214,8 @@ public class PlayScreen implements Screen {
             } else {
                 // No movement keys pressed => STAND
                 player.setStance(Josh.Stance.STAND);
-            }
+            }*/
+
 
             // Determine facing direction
             if (leftPressed) {
@@ -211,15 +229,15 @@ public class PlayScreen implements Screen {
             float vy = 0f;
 
             if (upPressed) {
-                vy = moveSpeed;
+                vy = currentSpeed;
             } else if (downPressed) {
-                vy = -moveSpeed;
+                vy = -currentSpeed;
             }
 
             if (leftPressed) {
-                vx = -moveSpeed;
+                vx = -currentSpeed;
             } else if (rightPressed) {
-                vx = moveSpeed;
+                vx = currentSpeed;
             }
 
             player.b2body.setLinearVelocity(vx, vy);

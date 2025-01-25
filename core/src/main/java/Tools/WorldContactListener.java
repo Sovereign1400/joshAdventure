@@ -25,13 +25,19 @@ import com.badlogic.gdx.physics.box2d.*;
                 }
             }
 
-            if (fixA.getUserData() instanceof Speedup || fixB.getUserData() instanceof Speedup){
-                Fixture speedupFix = fixA.getUserData() instanceof Speedup ? fixA : fixB;
-                Speedup speedup = (Speedup) speedupFix.getUserData();
+            // Check if one fixture is the player and the other is a speedup
+            if (fixA.getUserData() instanceof Speedup || fixB.getUserData() instanceof Speedup) {
+                System.out.println("Speedup contact detected!"); // Debug line
+                Speedup speedup;
+                if (fixA.getUserData() instanceof Speedup) {
+                    speedup = (Speedup) fixA.getUserData();
+                } else {
+                    speedup = (Speedup) fixB.getUserData();
+                }
 
-                if(!speedup.isCollected()) {
+                if (!speedup.isCollected()) {
+                    player.activateSpeedBoost();
                     speedup.onCollect();
-                    player.increaseSpeed(); // increase speed
                 }
             }
 
