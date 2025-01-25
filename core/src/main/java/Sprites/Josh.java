@@ -51,6 +51,16 @@ public class Josh extends Sprite {
     private float speedBoostTimer = 0;
     private float speedBoostDuration = 10f; // 10 seconds for speedup pickups
 
+
+    // Key
+    private boolean hasKey = false;
+
+
+
+
+
+
+
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
         playerTexture = new Texture(parent_path + "idle" + "/" + "idle_knight_1.png");
@@ -268,7 +278,6 @@ public class Josh extends Sprite {
             speedBoostActive = true;
             speedBoostTimer = 0;
             movespeed = baseMovespeed * 1.5f; // Directly modify movespeed
-            System.out.println("Speed boost activated! New speed: " + movespeed); // Debug line
         }
     }
 
@@ -301,12 +310,12 @@ public class Josh extends Sprite {
         this.movespeed = movespeed;
     }
 
-    public boolean isSpeedBoostActive() {
-        return speedBoostActive;
+    public boolean hasKey() {
+        return hasKey;
     }
 
-    public float getSpeedBoostTimeRemaining() {
-        return speedBoostActive ? speedBoostDuration - speedBoostTimer : 0;
+    public void collectKey() {
+        hasKey = true;
     }
 }
 

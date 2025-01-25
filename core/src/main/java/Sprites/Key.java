@@ -29,10 +29,10 @@ public class Key extends Sprite {
 
         keyTexture = new Texture("pickups/key.png");
         setRegion(keyTexture);
-        defineShield();
+        defineKey();
     }
 
-    private void defineShield() {
+    private void defineKey() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX() + getWidth()/2, getY() + getHeight()/2);
         bdef.type = BodyDef.BodyType.StaticBody;

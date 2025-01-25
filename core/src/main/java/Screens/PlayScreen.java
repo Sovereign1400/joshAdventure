@@ -99,6 +99,8 @@ public class PlayScreen implements Screen {
 
         // This creates the HUD for scoreboard and other data shown on screen.
         hud = new HUD(game.batch, player);
+        world.setContactListener(new WorldContactListener(player, this));
+
 
         // This loads the map.
         mapLoader = new TmxMapLoader();
@@ -113,18 +115,9 @@ public class PlayScreen implements Screen {
 //        // This set camera angle start with a specific coordinates.
 //        gamecam.position.set((float) 360, (float) 360, 0);
 
-
-
-
         B2WorldCreator creator = new B2WorldCreator(world, map);
-        // This initialize Josh. - Wong
 
-        // Set spawn coordinates
-        float initialX = 32;
-        float initialY = 64;
 
-        // Then create Josh:
-        player = new Josh(world, initialX, initialY);
         // Please go to update methods - Wong
 
         // ---------------------------------------
@@ -153,14 +146,14 @@ public class PlayScreen implements Screen {
         createMonsters();
 
         // This sets all interactive objects
-        world.setContactListener(new WorldContactListener(player));
+
         speedups = new Array<>();
         hearts = new Array<>();
         shields = new Array<>();
         keys = new Array<>();
 
 
-        world.setContactListener(new WorldContactListener(player));
+
         speedups = creator.createSpeedups(world, map);
         hearts = creator.createHearts(world, map);
         shields = creator.createShields(world, map);
@@ -591,5 +584,9 @@ public class PlayScreen implements Screen {
         for (Monster monster : monsters) {
             monster.dispose();
         }
+    }
+
+    public Josh getPlayer() {
+        return player;
     }
 }

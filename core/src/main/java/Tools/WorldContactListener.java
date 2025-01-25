@@ -1,13 +1,16 @@
 package Tools;
 
+import Screens.PlayScreen;
 import Sprites.*;
 import com.badlogic.gdx.physics.box2d.*;
 
     public class WorldContactListener implements ContactListener {
         private Josh player;
+        private PlayScreen screen;
 
-        public WorldContactListener(Josh player) {
+        public WorldContactListener(Josh player, PlayScreen screen) {
             this.player = player;
+            this.screen = screen;
         }
 
         @Override
@@ -27,7 +30,6 @@ import com.badlogic.gdx.physics.box2d.*;
 
             // Check if one fixture is the player and the other is a speedup
             if (fixA.getUserData() instanceof Speedup || fixB.getUserData() instanceof Speedup) {
-                System.out.println("Speedup contact detected!"); // Debug line
                 Speedup speedup;
                 if (fixA.getUserData() instanceof Speedup) {
                     speedup = (Speedup) fixA.getUserData();
@@ -51,13 +53,13 @@ import com.badlogic.gdx.physics.box2d.*;
                 }
             }
 
-            if (fixA.getUserData() instanceof Key || fixB.getUserData() instanceof Key){
-                Fixture keyFix = fixA.getUserData() instanceof Key ? fixA : fixB;
-                Key key = (Key) keyFix.getUserData();
-
-                if(!key.isCollected()) {
-                    key.onCollect();
-                    player.increaseHealth(); // increase speed
+            if (fixA.getUserData() instanceof Key || fixB.getUserData() instanceof Key) {
+                if (fixA.getUserData() instanceof Key) {
+                    ((Key)fixA.getUserData()).onCollect();
+                    screen.getPlayer().collectKey();
+                } else {
+                    ((Key)fixB.getUserData()).onCollect();
+                    screen.getPlayer().collectKey();
                 }
             }
         }

@@ -29,6 +29,7 @@ public class HUD implements Disposable {
     Label levelLabel;
     Label worldLabel;
     Label mainCharLabel;
+    Label keyLabel;
 
     // These account for heart in HUD
     private Josh player;
@@ -36,9 +37,6 @@ public class HUD implements Disposable {
 
 
     public HUD(SpriteBatch imgbatch, Josh player){
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
         this.player = player;
         worldTimer = 300;
         timeCount = 0;
@@ -48,7 +46,7 @@ public class HUD implements Disposable {
         stage = new Stage(viewport, imgbatch);
 
         Table table = new Table();
-        table.top().left();
+        table.top(); // Align to top
         table.setFillParent(true);
 
         // Initialize hearts
@@ -67,10 +65,27 @@ public class HUD implements Disposable {
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         mainCharLabel = new Label("mainChar", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        keyLabel = new Label("Key: Not Collected", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-
-
+        // Top row with original spacing
         table.add(heartTable).expandX().padTop(5);
+        table.add(mainCharLabel).expandX().padTop(5);
+        table.add(worldLabel).expandX().padTop(5);
+        table.add(timeLabel).expandX().padTop(5);
+        table.row();
+
+        // Second row with original spacing
+        table.add().expandX(); // Empty cell under heart table
+        table.add(scoreLabel).expandX();
+        table.add(levelLabel).expandX();
+        table.add(countdownLabel).expandX();
+        table.add().expandX(); // Empty cell for alignment
+        table.row();
+
+        // Key label in new row, aligned left
+        table.add(keyLabel).left().padLeft(10).padTop(5).colspan(4);
+
+        /*table.add(heartTable).expandX().padTop(5);
         table.add(mainCharLabel).expandX().padTop(5);
         table.add(worldLabel).expandX().padTop(5);
         table.add(timeLabel).expandX().padTop(5);
@@ -78,6 +93,7 @@ public class HUD implements Disposable {
         table.add(scoreLabel).expandX();
         table.add(levelLabel).expandX();
         table.add(countdownLabel).expandX();
+        table.add(keyLabel).padTop(5).padLeft(10).row();*/
 
         stage.addActor(table);
     }
@@ -87,6 +103,9 @@ public class HUD implements Disposable {
         for (int i = 0; i < heartImages.length; i++) {
             heartImages[i].setVisible(i < health);
         }
+
+        // check whether key is collected or not, also display it
+        keyLabel.setText(player.hasKey() ? "Key: Collected" : "Key: Not Collected");
     }
 
     @Override
