@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.Gdx;
 
 public class Josh extends Sprite {
@@ -45,8 +44,11 @@ public class Josh extends Sprite {
     // Heart health system
     private int health = 3;
 
-    // Speed attribute
-    private float movespeed;
+    // Speedup system attributes
+    private float basemovespeed;
+    private boolean speedBoostActive = false;
+    private float speedBoostTimer = 0;
+    private float speedBoostDuration = 10f; // 10 seconds for speedup pickups
 
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
@@ -58,7 +60,7 @@ public class Josh extends Sprite {
         this.spawnY = spawnY;
 
         // initialize move speed
-        this.movespeed = 1.5f;
+        this.basemovespeed = 1.5f;
 
         setBounds(
             0 / testGame.PPM,
@@ -255,19 +257,27 @@ public class Josh extends Sprite {
     }
 
     public void increaseSpeed(){
-        setMovespeed(movespeed * 1.5f);
+        setBasemovespeed(basemovespeed * 1.5f);
     }
 
     public int getHealth() {
         return health;
     }
 
-    public float getMovespeed() {
-        return movespeed;
+    public float getBasemovespeed() {
+        return basemovespeed;
     }
 
-    public void setMovespeed(float movespeed) {
-        this.movespeed = movespeed;
+    public void setBasemovespeed(float basemovespeed) {
+        this.basemovespeed = basemovespeed;
+    }
+
+    public float getSpawnY() {
+        return spawnY;
+    }
+
+    public float getSpawnX() {
+        return spawnX;
     }
 }
 

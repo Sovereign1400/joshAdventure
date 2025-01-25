@@ -1,9 +1,12 @@
 package Scenes;
 
+import Sprites.Josh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -26,7 +29,15 @@ public class HUD implements Disposable {
     Label worldLabel;
     Label mainCharLabel;
 
-    public HUD(SpriteBatch imgbatch){
+    // These account for heart in HUD
+    private Josh player;
+    private Image[] heartImages;
+
+    public HUD(SpriteBatch imgbatch, Josh player){
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
+        this.player = player;
         worldTimer = 300;
         timeCount = 0;
         score = 0;
@@ -38,6 +49,16 @@ public class HUD implements Disposable {
         table.top();
         table.setFillParent(true);
 
+        // Initialize hearts
+        heartImages = new Image[3];
+        Texture heartTexture = new Texture("pickups/heart.png");
+
+        Table heartTable = new Table();
+        for(int i = 0; i < 3; i++) {
+            heartImages[i] = new Image(heartTexture);
+            heartTable.add(heartImages[i]).size(30, 50).padRight(10);
+        }
+
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -45,6 +66,8 @@ public class HUD implements Disposable {
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         mainCharLabel = new Label("mainChar", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
+
+        table.add(heartTable).expandX().padTop(10);
         table.add(mainCharLabel).expandX().padTop(10);
         table.add(worldLabel).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
@@ -54,6 +77,13 @@ public class HUD implements Disposable {
         table.add(countdownLabel).expandX();
 
         stage.addActor(table);
+    }
+
+    public void update() {
+        int health = player.getHealth();
+        for (int i = 0; i < heartImages.length; i++) {
+            heartImages[i].setVisible(i < health);
+        }
     }
 
     @Override

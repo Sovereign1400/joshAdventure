@@ -8,13 +8,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -30,8 +28,6 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Setters.screenWidth;
 
 public class PlayScreen implements Screen {
     private testGame game;
@@ -94,8 +90,15 @@ public class PlayScreen implements Screen {
         // Typically you have a SpriteBatch around for drawing everything else
         batch = new SpriteBatch();
 
+        // This is for box2D world
+        world = new World(new Vector2(0, (float) 0 / testGame.PPM), true); // This set gravity to 0.
+        b2dr = new Box2DDebugRenderer();
+
+        // First create player, then create HUD
+        player = new Josh(world, initialX, initialY);
+
         // This creates the HUD for scoreboard and other data shown on screen.
-        hud = new HUD(game.batch);
+        hud = new HUD(game.batch, player);
 
         // This loads the map.
         mapLoader = new TmxMapLoader();
@@ -110,9 +113,7 @@ public class PlayScreen implements Screen {
 //        // This set camera angle start with a specific coordinates.
 //        gamecam.position.set((float) 360, (float) 360, 0);
 
-        // This is for box2D world
-        world = new World(new Vector2(0, (float) 0 / testGame.PPM), true); // This set gravity to 0.
-        b2dr = new Box2DDebugRenderer();
+
 
 
         B2WorldCreator creator = new B2WorldCreator(world, map);
@@ -173,7 +174,7 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt) {
-            float moveSpeed = player.getMovespeed(); // normal walking speed
+            float moveSpeed = player.getBasemovespeed(); // normal walking speed
             boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.UP);
             boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.DOWN);
             boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
@@ -188,7 +189,7 @@ public class PlayScreen implements Screen {
                 if (shiftPressed) {
                     // RUN stance
                     player.setStance(Josh.Stance.RUN);
-                    moveSpeed = player.getMovespeed() * 1.2f; // faster speed for running
+                    moveSpeed = player.getBasemovespeed() * 1.2f; // faster speed for running
                 } else {
                     // WALK stance
                     player.setStance(Josh.Stance.WALK);
@@ -243,6 +244,9 @@ public class PlayScreen implements Screen {
         // This tells the game cam what to render.
         renderer.setView(gamecam);
 
+        // This updates HUD
+        hud.update();
+
         // This renders the monster
         // Update all monsters
         for (Monster monster : monsters) {
@@ -282,7 +286,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         // This renders Box2DDebugLines, comment it out if not debugging
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
 
         // Set our batch to now draw what HUD cam sees.
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
