@@ -369,7 +369,7 @@ public class PlayScreen implements Screen {
     }
 
     private void addMonster(float x, float y) {
-        Monster monster = new Monster(world, x, y);
+        Monster monster = new Monster(world, x, y, player);
         monsters.add(monster);
     }
 

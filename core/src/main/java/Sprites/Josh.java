@@ -33,7 +33,9 @@ public class Josh extends Sprite {
     public enum Stance {
         STAND,
         WALK,
-        RUN
+        RUN,
+        HURT,
+        ATTACK
     }
 
     private Stance currentStance;
@@ -51,15 +53,15 @@ public class Josh extends Sprite {
     private float speedBoostTimer = 0;
     private float speedBoostDuration = 10f; // 10 seconds for speedup pickups
 
+    // hurt animation
+    private Animation<TextureRegion> hurtAnimation;
+    private Texture[] hurtTextures;
+    private float hurtTimer = 0;
+    private float hurtDuration = 0.5f;
+    private boolean isHurt = false;
 
     // Key
     private boolean hasKey = false;
-
-
-
-
-
-
 
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
@@ -89,6 +91,7 @@ public class Josh extends Sprite {
         loadStandAnimation();
         loadWalkAnimation();
         loadRunAnimation();
+        loadHurtAnimation();
 
         // Default stance
         currentStance = Stance.STAND;
@@ -180,7 +183,19 @@ public class Josh extends Sprite {
         runAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
+    private void loadHurtAnimation() {
+        hurtTextures = new Texture[3];  // Adjust number based on your frames
+        TextureRegion[] frames = new TextureRegion[3];
 
+        for (int i = 0; i < 3; i++) {
+            String fileName = parent_path + "hurt/hurt_" + (i + 1) + ".png";
+            hurtTextures[i] = new Texture(Gdx.files.internal(fileName));
+            frames[i] = new TextureRegion(hurtTextures[i]);
+        }
+
+        hurtAnimation = new Animation<>(0.1f, frames);
+        hurtAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+    }
 
     /**
      * Called every frame by your game loop.
@@ -188,20 +203,23 @@ public class Josh extends Sprite {
     public void update(float dt) {
         stateTime += dt;
 
-
         // Pick the right Animation based on the current stance
         Animation<TextureRegion> currentAnimation = null;
 
-        switch(currentStance) {
-            case STAND:
-                currentAnimation = standAnimation;
-                break;
-            case WALK:
-                currentAnimation = walkAnimation;
-                break;
-            case RUN:
-                currentAnimation = runAnimation;
-                break;
+        if (isHurt) {
+            currentAnimation = hurtAnimation;
+        } else {
+            switch(currentStance) {
+                case WALK:
+                    currentAnimation = walkAnimation;
+                    break;
+                case RUN:
+                    currentAnimation = runAnimation;
+                    break;
+                default:
+                    currentAnimation = standAnimation;
+                    break;
+            }
         }
 
         if (currentAnimation != null) {
@@ -231,6 +249,25 @@ public class Josh extends Sprite {
             b2body.getPosition().x - getWidth() / 2,
             b2body.getPosition().y - getHeight() / 2 + 3 / testGame.PPM
         );
+
+        if (isHurt) {
+            hurtTimer += dt;
+            currentStance = Stance.HURT;
+            if (hurtTimer >= hurtDuration) {
+                isHurt = false;
+                currentStance = Stance.STAND;
+            }
+        }
+
+        // Update sprite
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+        if (!facingLeft && !currentFrame.isFlipX()) {
+            currentFrame.flip(true, false);
+        } else if (facingLeft && currentFrame.isFlipX()) {
+            currentFrame.flip(true, false);
+        }
+        setRegion(currentFrame);
+
     }
 
     /**
@@ -256,6 +293,14 @@ public class Josh extends Sprite {
         // b2body.setLinearVelocity(someSpeed, b2body.getLinearVelocity().y);
     }
 
+    public void damage() {
+        if (!isHurt) {
+            health = Math.max(0, health - 1);
+            isHurt = true;
+            hurtTimer = 0;
+        }
+    }
+
     /**
      * Dispose of resources (textures).
      */
@@ -264,6 +309,7 @@ public class Josh extends Sprite {
         for (Texture t : standTextures) { t.dispose(); }
         for (Texture t : walkTextures)  { t.dispose(); }
         for (Texture t : runTextures)   { t.dispose(); }
+        for (Texture t : hurtTextures) { t.dispose(); }
     }
 
     public Vector2 getPosition() {

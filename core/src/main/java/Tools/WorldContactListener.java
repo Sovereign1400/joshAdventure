@@ -62,6 +62,15 @@ import com.badlogic.gdx.physics.box2d.*;
                     screen.getPlayer().collectKey();
                 }
             }
+
+            if (fixA.getUserData() instanceof Monster || fixB.getUserData() instanceof Monster) {
+                Fixture monsterFix = fixA.getUserData() instanceof Monster ? fixA : fixB;
+                Fixture otherFix = monsterFix == fixA ? fixB : fixA;
+
+                if (otherFix.getBody() == player.b2body) {
+                    player.damage();
+                }
+            }
         }
 
         @Override
@@ -72,5 +81,7 @@ import com.badlogic.gdx.physics.box2d.*;
 
         @Override
         public void postSolve(Contact contact, ContactImpulse impulse) {}
+
+
     }
 
