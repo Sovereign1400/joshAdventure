@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.Gdx;
 
 public class Josh extends Sprite {
@@ -41,6 +40,27 @@ public class Josh extends Sprite {
     private float stateTime;
     public boolean facingLeft = true;
 
+
+    // Heart health system
+    private int health = 3;
+
+    // Speedup system attributes
+    private float baseMovespeed;
+    private float movespeed;
+    private boolean speedBoostActive = false;
+    private float speedBoostTimer = 0;
+    private float speedBoostDuration = 10f; // 10 seconds for speedup pickups
+
+
+    // Key
+    private boolean hasKey = false;
+
+
+
+
+
+
+
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
         playerTexture = new Texture(parent_path + "idle" + "/" + "idle_knight_1.png");
@@ -49,6 +69,10 @@ public class Josh extends Sprite {
         this.world = world;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
+
+        // initialize move speed
+        this.movespeed = 1.5f;
+        this.baseMovespeed = this.movespeed;
 
         setBounds(
             0 / testGame.PPM,
@@ -164,6 +188,7 @@ public class Josh extends Sprite {
     public void update(float dt) {
         stateTime += dt;
 
+
         // Pick the right Animation based on the current stance
         Animation<TextureRegion> currentAnimation = null;
 
@@ -190,6 +215,15 @@ public class Josh extends Sprite {
             }
 
             setRegion(currentFrame);
+        }
+
+        // Handle speed boost timer
+        if (speedBoostActive) {
+            speedBoostTimer += dt;
+            if (speedBoostTimer >= speedBoostDuration) {
+                speedBoostActive = false;
+                setMovespeed(baseMovespeed);
+            }
         }
 
         // Update sprite position to match Box2D body
@@ -245,6 +279,50 @@ public class Josh extends Sprite {
         );
     }
 
+    public void activateSpeedBoost() {
+        if (!speedBoostActive) {
+            speedBoostActive = true;
+            speedBoostTimer = 0;
+            movespeed = baseMovespeed * 1.5f; // Directly modify movespeed
+        }
+    }
+
+
+    public void increaseHealth() {
+        health++;
+    }
+
+    public void increaseSpeed(){
+        setBasemovespeed(baseMovespeed * 1.5f);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public float getBasemovespeed() {
+        return baseMovespeed;
+    }
+
+    public void setBasemovespeed(float basemovespeed) {
+        this.baseMovespeed = basemovespeed;
+    }
+
+    public float getMovespeed() {
+        return movespeed;
+    }
+
+    public void setMovespeed(float movespeed) {
+        this.movespeed = movespeed;
+    }
+
+    public boolean hasKey() {
+        return hasKey;
+    }
+
+    public void collectKey() {
+        hasKey = true;
+    }
 }
 
 

@@ -7,17 +7,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 
-public class Heart extends Sprite {
+public class Key extends Sprite {
     protected World world;
     protected TiledMap map;
     protected Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
-    protected Texture heartTexture;
+    protected Texture keyTexture;
     private boolean collected = false;
     private boolean toBeDestroyed = false;
 
-    public Heart(World world, TiledMap map, Rectangle bounds) {
+    public Key(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
         this.map = map;
         this.bounds = bounds;
@@ -27,13 +27,12 @@ public class Heart extends Sprite {
 
         setPosition(bounds.x / testGame.PPM, bounds.y / testGame.PPM);
 
-        heartTexture = new Texture("pickups/hp+1.png");
-        setRegion(heartTexture);
-        defineHeart();
+        keyTexture = new Texture("pickups/key.png");
+        setRegion(keyTexture);
+        defineKey();
     }
 
-    // This defines the visual property of heart and ensures heart wont perform like monsters which can block the player
-    private void defineHeart() {
+    private void defineKey() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX() + getWidth()/2, getY() + getHeight()/2);
         bdef.type = BodyDef.BodyType.StaticBody;
@@ -58,7 +57,6 @@ public class Heart extends Sprite {
             toBeDestroyed = false;
         }
     }
-
 
     public void onCollect() {
         if (!collected) {
