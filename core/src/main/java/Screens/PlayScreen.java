@@ -338,7 +338,7 @@ public class PlayScreen implements Screen {
 
         shapeRenderer.setProjectionMatrix(gamecam.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0, 0, 0, 0.35f);
+        shapeRenderer.setColor(0, 0, 0, 0.1f);
 
         float worldWidth = gamecam.viewportWidth * 2;
         float worldHeight = gamecam.viewportHeight * 2;

@@ -91,6 +91,12 @@ public class Josh extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius((float) 6 / testGame.PPM);
 
+        // Add physical properties for better collision response
+        fdef.shape = shape;
+        fdef.density = 1.0f;
+        fdef.restitution = 0.1f;  // Low bounce
+        fdef.friction = 0.4f;     // Some friction for better control
+
         fdef.shape = shape;
         assert b2body != null;
         b2body.createFixture(fdef);
