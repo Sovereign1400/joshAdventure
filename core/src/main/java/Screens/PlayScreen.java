@@ -152,8 +152,6 @@ public class PlayScreen implements Screen {
         shields = new Array<>();
         keys = new Array<>();
 
-
-
         speedups = creator.createSpeedups(world, map);
         hearts = creator.createHearts(world, map);
         shields = creator.createShields(world, map);
@@ -263,7 +261,6 @@ public class PlayScreen implements Screen {
         for (Monster monster : monsters) {
             monster.update(dt);
         }
-
 
         for(Heart heart : hearts) {
             heart.update();

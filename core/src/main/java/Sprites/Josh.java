@@ -57,7 +57,7 @@ public class Josh extends Sprite {
     private Animation<TextureRegion> hurtAnimation;
     private Texture[] hurtTextures;
     private float hurtTimer = 0;
-    private float hurtDuration = 0.5f;
+    private float hurtDuration = 1.5f;
     private boolean isHurt = false;
 
     // Key
@@ -152,10 +152,10 @@ public class Josh extends Sprite {
      */
     private void loadWalkAnimation() {
         // Example: walk stance has 6 frames
-        walkTextures = new Texture[6];
-        TextureRegion[] frames = new TextureRegion[6];
+        walkTextures = new Texture[8];
+        TextureRegion[] frames = new TextureRegion[8];
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 8; i++) {
             String fileName = parent_path + "walk" + "/" + "walk_" + (i + 1) + ".png";
             walkTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(walkTextures[i]);
@@ -170,10 +170,10 @@ public class Josh extends Sprite {
      */
     private void loadRunAnimation() {
         // Example: run stance has 6 frames
-        runTextures = new Texture[6];
-        TextureRegion[] frames = new TextureRegion[6];
+        runTextures = new Texture[8];
+        TextureRegion[] frames = new TextureRegion[8];
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 8; i++) {
             String fileName = parent_path + "run"+ "/" + "run_" + (i + 1) + ".png";
             runTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(runTextures[i]);
@@ -184,16 +184,17 @@ public class Josh extends Sprite {
     }
 
     private void loadHurtAnimation() {
-        hurtTextures = new Texture[3];  // Adjust number based on your frames
-        TextureRegion[] frames = new TextureRegion[3];
+        hurtTextures = new Texture[12];  // Adjust number based on your frames
+        TextureRegion[] frames = new TextureRegion[12];
 
-        for (int i = 0; i < 3; i++) {
-            String fileName = parent_path + "hurt/hurt_" + (i + 1) + ".png";
+        for (int i = 0; i < 12; i++) {
+            String fileName = parent_path + "death/death_" + (i + 1) + ".png";
             hurtTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(hurtTextures[i]);
         }
 
-        hurtAnimation = new Animation<>(0.1f, frames);
+        float frameTime = hurtDuration / 12f;
+        hurtAnimation = new Animation<>(frameTime, frames);
         hurtAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 

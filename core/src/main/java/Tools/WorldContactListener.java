@@ -63,13 +63,12 @@ import com.badlogic.gdx.physics.box2d.*;
                 }
             }
 
-            if (fixA.getUserData() instanceof Monster || fixB.getUserData() instanceof Monster) {
-                Fixture monsterFix = fixA.getUserData() instanceof Monster ? fixA : fixB;
-                Fixture otherFix = monsterFix == fixA ? fixB : fixA;
-
-                if (otherFix.getBody() == player.b2body) {
-                    player.damage();
-                }
+            // Check monster collision from 2 ways: Josh touchs monster and monster touched Josh.
+            if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Monster) {
+                player.damage();
+            }
+            else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Monster) {
+                player.damage();
             }
         }
 
