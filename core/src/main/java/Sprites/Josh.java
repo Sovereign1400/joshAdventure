@@ -50,8 +50,8 @@ public class Josh extends Sprite {
     private boolean isDead = false;
     private Animation<TextureRegion> deathAnimation;
     private Texture[] deathTextures;
-    private float deathTimer = 0;
-    private float deathDuration = 2f;
+    public float deathTimer = 0;
+    public float deathDuration = 2f;
 
     private Stance currentStance;
     private float stateTime;

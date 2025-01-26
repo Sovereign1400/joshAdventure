@@ -34,6 +34,7 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private HUD hud;
+    private boolean gameOver = false;
 
     // Tile Map attributes
     private TmxMapLoader mapLoader;
@@ -152,7 +153,6 @@ public class PlayScreen implements Screen {
         hearts = creator.createHearts(world, map);
         shields = creator.createShields(world, map);
         keys = creator.createKeys(world, map);
-
     }
 
     @Override
@@ -276,6 +276,18 @@ public class PlayScreen implements Screen {
 
         for (Key key : keys){
             key.update();
+        }
+
+        if (!gameOver) {
+            handleInput(dt);
+//            world.step(0.016f, 6, 2);  // Changed from 1/60f to 0.016f
+            player.update(dt);
+
+            if (player.isDead() && player.deathTimer >= player.deathDuration) {
+                gameOver = true;
+                game.setScreen(new GameOverScreen(game));
+//                dispose();
+            }
         }
 
         // Optional: Check for collisions between player and monsters
