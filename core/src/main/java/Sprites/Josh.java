@@ -43,7 +43,7 @@ public class Josh extends Sprite {
     private Animation<TextureRegion> hurtAnimation;
     private Texture[] hurtTextures;
     private float hurtTimer = 0;
-    private float hurtDuration = 0.5f;
+    private float hurtDuration = 2f;
     private boolean isHurt = false;
 
     // dead stance
@@ -81,7 +81,7 @@ public class Josh extends Sprite {
         this.spawnY = spawnY;
 
         // initialize move speed
-        this.movespeed = 1.5f;
+        this.movespeed = 1.0f;
         this.baseMovespeed = this.movespeed;
 
         setBounds(
@@ -143,10 +143,10 @@ public class Josh extends Sprite {
     // Load standing animation
     private void loadStandAnimation() {
         // Example: stand stance has 3 frames
-        standTextures = new Texture[3];
-        TextureRegion[] frames = new TextureRegion[3];
+        standTextures = new Texture[7];
+        TextureRegion[] frames = new TextureRegion[7];
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 7; i++) {
             String fileName = parent_path + "idle" + "/" + "idle_knight_" + (i + 1) + ".png";
             standTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(standTextures[i]);
