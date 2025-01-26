@@ -2,8 +2,7 @@ package Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,12 +21,9 @@ import Tools.WorldContactListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.graphics.GL20;
-
 
 public class GameOverScreen implements Screen {
     private testGame game;
@@ -37,14 +33,14 @@ public class GameOverScreen implements Screen {
     private Label titleLabel;
     private TextButton restartButton, exitButton;
     private Skin skin;
+    private Texture backgroundTexture;
+    private BitmapFont titleFont;
 
     public GameOverScreen(testGame game) {
         this.game = game;
         viewport = new FitViewport(testGame.win_width, testGame.win_height, new OrthographicCamera());
         stage = new Stage(viewport, game.batch);
-
-        // Create skin for UI elements
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        backgroundTexture = new Texture("background.jpg");
 
         createMenu();
         Gdx.input.setInputProcessor(stage);
@@ -54,16 +50,19 @@ public class GameOverScreen implements Screen {
         table = new Table();
         table.setFillParent(true);
 
-        // Create title
         Label.LabelStyle titleStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-        titleStyle.font.getData().setScale(2);
-        titleLabel = new Label("Game Over!", titleStyle);
+        titleStyle.font.getData().setScale(3);  // Make title bigger
+        Label titleLabel = new Label("Game Over!", titleStyle);
 
-        // Create buttons
-        restartButton = new TextButton("Restart", skin);
-        exitButton = new TextButton("Exit", skin);
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = new BitmapFont();
+        buttonStyle.font.getData().setScale(2);  // Make buttons bigger
+        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.overFontColor = Color.YELLOW;  // Color when hovering
 
-        // Add listeners
+        TextButton restartButton = new TextButton("Restart", buttonStyle);
+        TextButton exitButton = new TextButton("Exit", buttonStyle);
+
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -78,7 +77,6 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        // Add to table with spacing
         table.add(titleLabel).padBottom(50).row();
         table.add(restartButton).width(200).height(50).padBottom(20).row();
         table.add(exitButton).width(200).height(50);
@@ -87,21 +85,25 @@ public class GameOverScreen implements Screen {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        game.batch.begin();
+        game.batch.draw(backgroundTexture, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        game.batch.end();
+
         stage.act(delta);
         stage.draw();
     }
 
     @Override
-    public void resize(int i, int i1) {
+    public void show() {
 
+    }
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
 
     @Override
@@ -121,7 +123,6 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
-
 }

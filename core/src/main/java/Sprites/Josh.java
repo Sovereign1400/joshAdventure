@@ -59,7 +59,7 @@ public class Josh extends Sprite {
 
 
     // Heart health system
-    private int health = 8;
+    private int health = 3;
 
     // Speedup system attributes
     private float baseMovespeed;
