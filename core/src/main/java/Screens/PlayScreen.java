@@ -72,9 +72,6 @@ public class PlayScreen implements Screen {
     // Key Attributes
     private Array<Key> keys;
 
-
-
-
     public PlayScreen(testGame game) {
         this.game = game;
 
@@ -116,7 +113,6 @@ public class PlayScreen implements Screen {
 //        gamecam.position.set((float) 360, (float) 360, 0);
 
         B2WorldCreator creator = new B2WorldCreator(world, map);
-
 
         // Please go to update methods - Wong
 
@@ -190,6 +186,11 @@ public class PlayScreen implements Screen {
                     player.setStance(Josh.Stance.STAND);
                 }
 
+            // This part handles stances and movement registration. (Death and Hurt, mainly)
+            if (player.isDead()) {
+                player.b2body.setLinearVelocity(0, 0);
+                return;  // Skip all input handling if dead
+            }
 
             // This part can be safely removed, but keep it for now
             // Decide stance (walk or run) if any movement key is pressed
@@ -206,7 +207,6 @@ public class PlayScreen implements Screen {
                 // No movement keys pressed => STAND
                 player.setStance(Josh.Stance.STAND);
             }*/
-
 
             // Determine facing direction
             if (leftPressed) {

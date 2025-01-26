@@ -35,8 +35,23 @@ public class Josh extends Sprite {
         WALK,
         RUN,
         HURT,
-        ATTACK
+        ATTACK,
+        DEATH
     }
+
+    // hurt animation
+    private Animation<TextureRegion> hurtAnimation;
+    private Texture[] hurtTextures;
+    private float hurtTimer = 0;
+    private float hurtDuration = 0.5f;
+    private boolean isHurt = false;
+
+    // dead stance
+    private boolean isDead = false;
+    private Animation<TextureRegion> deathAnimation;
+    private Texture[] deathTextures;
+    private float deathTimer = 0;
+    private float deathDuration = 2f;
 
     private Stance currentStance;
     private float stateTime;
@@ -44,7 +59,7 @@ public class Josh extends Sprite {
 
 
     // Heart health system
-    private int health = 3;
+    private int health = 8;
 
     // Speedup system attributes
     private float baseMovespeed;
@@ -52,13 +67,6 @@ public class Josh extends Sprite {
     private boolean speedBoostActive = false;
     private float speedBoostTimer = 0;
     private float speedBoostDuration = 10f; // 10 seconds for speedup pickups
-
-    // hurt animation
-    private Animation<TextureRegion> hurtAnimation;
-    private Texture[] hurtTextures;
-    private float hurtTimer = 0;
-    private float hurtDuration = 1.5f;
-    private boolean isHurt = false;
 
     // Key
     private boolean hasKey = false;
@@ -92,6 +100,7 @@ public class Josh extends Sprite {
         loadWalkAnimation();
         loadRunAnimation();
         loadHurtAnimation();
+        loadDeathAnimation();
 
         // Default stance
         currentStance = Stance.STAND;
@@ -184,11 +193,11 @@ public class Josh extends Sprite {
     }
 
     private void loadHurtAnimation() {
-        hurtTextures = new Texture[12];  // Adjust number based on your frames
-        TextureRegion[] frames = new TextureRegion[12];
+        hurtTextures = new Texture[8];  // Adjust number based on your frames
+        TextureRegion[] frames = new TextureRegion[8];
 
-        for (int i = 0; i < 12; i++) {
-            String fileName = parent_path + "death/death_" + (i + 1) + ".png";
+        for (int i = 0; i < 8; i++) {
+            String fileName = parent_path + "hurt/hurt_" + (i + 1) + ".png";
             hurtTextures[i] = new Texture(Gdx.files.internal(fileName));
             frames[i] = new TextureRegion(hurtTextures[i]);
         }
@@ -196,6 +205,20 @@ public class Josh extends Sprite {
         float frameTime = hurtDuration / 12f;
         hurtAnimation = new Animation<>(frameTime, frames);
         hurtAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+    }
+
+    private void loadDeathAnimation() {
+        deathTextures = new Texture[12];  // Adjust number based on your frames
+        TextureRegion[] frames = new TextureRegion[12];
+
+        for (int i = 0; i < 12; i++) {
+            String fileName = parent_path + "death/death_" + (i + 1) + ".png";
+            deathTextures[i] = new Texture(Gdx.files.internal(fileName));
+            frames[i] = new TextureRegion(deathTextures[i]);
+        }
+
+        deathAnimation = new Animation<>(deathDuration / 12f, frames);
+        deathAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     /**
@@ -251,13 +274,33 @@ public class Josh extends Sprite {
             b2body.getPosition().y - getHeight() / 2 + 3 / testGame.PPM
         );
 
+        // When Josh is hurt
         if (isHurt) {
             hurtTimer += dt;
-            currentStance = Stance.HURT;
+            TextureRegion hurtFrame = hurtAnimation.getKeyFrame(hurtTimer, false);
+            if (!facingLeft && !hurtFrame.isFlipX()) {
+                hurtFrame.flip(true, false);
+            } else if (facingLeft && hurtFrame.isFlipX()) {
+                hurtFrame.flip(true, false);
+            }
+            setRegion(hurtFrame);
+
             if (hurtTimer >= hurtDuration) {
                 isHurt = false;
-                currentStance = Stance.STAND;
+                stateTime = 0;
             }
+            return;  // Skip normal animation updates while hurt
+        }
+
+        // When Josh is dead
+        if (isDead) {
+            deathTimer += dt;
+            TextureRegion deathFrame = deathAnimation.getKeyFrame(deathTimer, false);
+            if (!facingLeft && !deathFrame.isFlipX()) {
+                deathFrame.flip(true, false);
+            }
+            setRegion(deathFrame);
+            return;
         }
 
         // Update sprite
@@ -295,15 +338,25 @@ public class Josh extends Sprite {
     }
 
     public void damage() {
-        if (!isHurt) {
+        if (!isHurt && !isDead) {
             health = Math.max(0, health - 1);
-            isHurt = true;
-            hurtTimer = 0;
+            if (health <= 0) {
+                isDead = true;
+                deathTimer = 0;
+                b2body.setLinearVelocity(0, 0);  // Stop movement immediately
+            } else {
+                isHurt = true;
+                hurtTimer = 0;
+            }
         }
     }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
     /**
-     * Dispose of resources (textures).
+     * Helper and Disposes.
      */
     public void dispose() {
         // Dispose each array of textures
