@@ -280,7 +280,7 @@ public class PlayScreen implements Screen {
 
         if (!gameOver) {
             handleInput(dt);
-            world.step(0.016f, 1, 1);  // Changed from 1/60f to 0.016f
+            world.step(dt, 6, 2);  // Use dt (in game time) or actual time.
             player.update(dt);
 
             if (player.isDead() && player.deathTimer >= player.deathDuration) {
