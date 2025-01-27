@@ -48,6 +48,10 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
     private Josh player;
 
+    // Player Spawn Attributes
+    float initialX = 120f;
+    float initialY = 200f;
+
     // Monster Attributes
     private Array<Monster> monsters;
 
@@ -58,6 +62,7 @@ public class PlayScreen implements Screen {
     private SpriteBatch batch;
     private static final int DEFAULT_SRC_FUNC = GL20.GL_SRC_ALPHA;
     private static final int DEFAULT_DST_FUNC = GL20.GL_ONE_MINUS_SRC_ALPHA;
+
 
     // Heart Attributes:
     private Array<Heart> hearts;
@@ -101,25 +106,20 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, (float) 0 / testGame.PPM), true); // This set gravity to 0.
         b2dr = new Box2DDebugRenderer();
 
+        // First create player, then create HUD
+        player = new Josh(world, initialX, initialY);
 
-
+        // This creates the HUD for scoreboard and other data shown on screen.
+        hud = new HUD(game.batch, player);
+        world.setContactListener(new WorldContactListener(player, this));
 
         // This loads the map.
         this.currentMapPath = mapPath;
         mapLoader = new TmxMapLoader();
         map = mapLoader.load(mapPath);
 
-        // First create player, then create HUD
-        // Get spawn point from map
-        Vector2 spawnPoint = getPlayerSpawnPoint();
-        player = new Josh(world, spawnPoint.x, spawnPoint.y);
-
-        // This creates the HUD for scoreboard and other data shown on screen.
-        hud = new HUD(game.batch, player);
-        world.setContactListener(new WorldContactListener(player, this));
         // This renders the map.
         renderer = new OrthogonalTiledMapRenderer(map, (float) 1 / testGame.PPM);
-
 
         // This loads the fonts
         customFont = new BitmapFont(Gdx.files.internal("fonts/colorBasic.fnt"));
@@ -411,30 +411,6 @@ public class PlayScreen implements Screen {
          renderFogOfWar();
     }
 
-    private Vector2 getPlayerSpawnPoint() {
-        // Default spawn point in case nothing is found
-        Vector2 defaultSpawn = new Vector2(120f, 200f);
-
-        try {
-            // Check if JoshSpawn layer exists
-            if (map.getLayers().get("Josh") != null) {
-                // Get objects from the layer
-                for (MapObject object : map.getLayers().get("Josh").getObjects()) {
-                    if (object instanceof RectangleMapObject) {
-                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                        System.out.println("Found spawn point: " + rect.x + ", " + rect.y);
-                        return new Vector2(rect.x, rect.y);
-                    }
-                }
-            }
-            System.out.println("No spawn point found in map, using default spawn point");
-            return defaultSpawn;
-        } catch (Exception e) {
-            System.err.println("Error getting spawn point: " + e.getMessage());
-            return defaultSpawn;
-        }
-    }
-
     private void createMonsters() {
 //        // You can create monsters at specific positions
 //        addMonster(200, 200);  // First monster
@@ -624,6 +600,7 @@ public class PlayScreen implements Screen {
         }
     }
 
+
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
@@ -659,6 +636,7 @@ public class PlayScreen implements Screen {
     public void hide() {
 
     }
+
 
     @Override
     public void dispose() {

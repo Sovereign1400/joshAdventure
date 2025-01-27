@@ -60,10 +60,14 @@ public class Heart extends Sprite {
     }
 
 
-    public void onCollect() {
+    public void onCollect(Josh josh) {
         if (!collected) {
-            toBeDestroyed = true;
+            if (josh.getHealth() < 3) {
+                toBeDestroyed = true;
+                collected = true;
+            }
         }
+
     }
 
     public boolean isCollected() {

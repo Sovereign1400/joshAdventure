@@ -391,7 +391,8 @@ public class Josh extends Sprite {
 
 
     public void increaseHealth() {
-        health++;
+            health++;
+
     }
 
     public void increaseSpeed(){

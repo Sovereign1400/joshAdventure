@@ -10,53 +10,74 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.some_example_name.testGame;
 
-
-public class GameOverScreen implements Screen {
+/**
+ * VictoryScreen displays a congratulatory message, plus buttons to Continue, go to Main Menu,
+ * or Exit the application. Use this screen when the player successfully escapes the maze.
+ */
+public class VictoryScreen implements Screen {
 
     private final testGame game;
     private Stage stage;
     private Skin skin;
+    private int finalScore;
 
     /**
-     * You can pass data about the level or cause of game over if needed.
+     * If you want to know from which level the user won, you could pass in more data here.
      */
-    public GameOverScreen(testGame game) {
+    public VictoryScreen(testGame game, int elapsedTime) {
         this.game = game;
+        // Calculate final score
+        int rawScore = 1000 - elapsedTime;
+        if (rawScore < 0) {
+            rawScore = 0;  // never go negative
+        }
+        this.finalScore = rawScore;
     }
 
     @Override
     public void show() {
+        // Create the stage
         stage = new Stage(new ScreenViewport());
+        // Load skin from the game or from your assets directly
         skin = game.getSkin();
 
-        // Accept input on this stage
+        // Make sure stage gets input
         Gdx.input.setInputProcessor(stage);
 
+        // Build UI
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
-        table.setBackground(skin.newDrawable("white", Color.FIREBRICK));
+        // Background color (placeholder)
+        table.setBackground(skin.newDrawable("white", Color.FOREST));
 
-        Label gameOverLabel = new Label("GAME OVER!", skin, "title");
-        gameOverLabel.setColor(Color.RED);
-        table.add(gameOverLabel).padBottom(30);
+        // Title
+        Label winLabel = new Label("YOU WIN!", skin, "title");
+        winLabel.setColor(Color.GOLD);
+        table.add(winLabel).padBottom(30);
         table.row();
 
-        // "Try Again?" button
-        TextButton tryAgainButton = new TextButton("Try Again?", skin);
-        tryAgainButton.addListener(new ClickListener(){
+        // Show final score
+        Label scoreLabel = new Label("FINAL SCORE: " + finalScore, skin);
+        table.add(scoreLabel).padBottom(30);
+        table.row();
+
+        // "Continue?" button
+        // This might load the next map or next stage if you have multiple levels
+        TextButton continueButton = new TextButton("Continue?", skin);
+        continueButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // For example, reload the same map or reset the level
-                // If your last map was e.g. "customMap_2.tmx", do:
-                game.setScreen(new PlayScreen(game, "tileset/customMap_2.tmx"));
+                // Example: load another map
+                // (Or if you have a "next stage" logic, call that)
+                game.setScreen(new PlayScreen(game, "tileset/customMap_3.tmx"));
             }
         });
-        table.add(tryAgainButton).width(200).padBottom(10);
+        table.add(continueButton).width(200).padBottom(10);
         table.row();
 
-        // Main Menu
+        // Main Menu button
         TextButton mainMenuButton = new TextButton("Main Menu", skin);
         mainMenuButton.addListener(new ClickListener(){
             @Override
@@ -67,7 +88,7 @@ public class GameOverScreen implements Screen {
         table.add(mainMenuButton).width(200).padBottom(10);
         table.row();
 
-        // Exit
+        // Exit button
         TextButton exitButton = new TextButton("Exit", skin);
         exitButton.addListener(new ClickListener(){
             @Override
@@ -80,9 +101,11 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        // Clear the screen
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Update + draw stage
         stage.act(delta);
         stage.draw();
     }

@@ -19,31 +19,32 @@ import com.badlogic.gdx.graphics.Color;
 public class HUD implements Disposable {
     public Stage stage;
     private Viewport viewport;
-    private Integer worldTimer;
+    private Integer elapsedTime;
     private float timeCount;
     private Integer score;
 
-    Label countdownLabel;
+    Label stopwatchLabel;
     Label scoreLabel;
     Label timeLabel;
     Label levelLabel;
     Label worldLabel;
     Label mainCharLabel;
-    Label keyLabel;
+    // Label keyLabel;
 
     // These account for heart in HUD
     private Josh player;
     private Image[] heartImages;
+    private Image keyImage;
 
 
     public HUD(SpriteBatch imgbatch, Josh player){
         this.player = player;
-        worldTimer = 300;
+        elapsedTime = 0;
         timeCount = 0;
         score = 0;
 
         viewport = new FitViewport(testGame.win_width, testGame.win_height, new OrthographicCamera());
-        stage = new Stage(viewport, imgbatch);
+        stage = new Stage(viewport);
 
         Table table = new Table();
         table.top(); // Align to top
@@ -59,13 +60,19 @@ public class HUD implements Disposable {
             heartTable.add(heartImages[i]).size(30, 50).padRight(10);
         }
 
-        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        stopwatchLabel = new Label(String.format("%03d", elapsedTime), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         mainCharLabel = new Label("mainChar", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        keyLabel = new Label("Key: Not Collected", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        // keyLabel = new Label("Key: Not Collected", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        Texture keyTexture = new Texture("pickups/key.png");
+        keyImage = new Image(keyTexture);
+        // Start darkened to indicate "not collected"
+        keyImage.setColor(1, 1, 1, 0.2f);
+
 
         // Top row with original spacing
         table.add(heartTable).expandX().padTop(5);
@@ -78,12 +85,12 @@ public class HUD implements Disposable {
         table.add().expandX(); // Empty cell under heart table
         table.add(scoreLabel).expandX();
         table.add(levelLabel).expandX();
-        table.add(countdownLabel).expandX();
+        table.add(stopwatchLabel).expandX();
         table.add().expandX(); // Empty cell for alignment
         table.row();
 
         // Key label in new row, aligned left
-        table.add(keyLabel).left().padLeft(10).padTop(5).colspan(4);
+        // table.add(keyLabel).left().padLeft(10).padTop(5).colspan(4);
 
         /*table.add(heartTable).expandX().padTop(5);
         table.add(mainCharLabel).expandX().padTop(5);
@@ -95,17 +102,42 @@ public class HUD implements Disposable {
         table.add(countdownLabel).expandX();
         table.add(keyLabel).padTop(5).padLeft(10).row();*/
 
+        table.add(keyImage).size(40, 48).left().padLeft(10).padTop(5).colspan(4);
+
         stage.addActor(table);
     }
 
-    public void update() {
+    public Integer getElapsedTime() {
+        return elapsedTime;
+    }
+    // placeholder
+
+    public void setElapsedTime(Integer elapsedTime) {
+        this.elapsedTime = elapsedTime;
+    }
+
+    public void update(float dt, boolean paused) {
         int health = player.getHealth();
         for (int i = 0; i < heartImages.length; i++) {
             heartImages[i].setVisible(i < health);
         }
 
+        if (player.hasKey()) {
+            keyImage.setColor(1, 1, 1, 1);
+        } else {
+            keyImage.setColor(1, 1, 1, 0.2f);
+        }
         // check whether key is collected or not, also display it
-        keyLabel.setText(player.hasKey() ? "Key: Collected" : "Key: Not Collected");
+        // keyLabel.setText(player.hasKey() ? "Key: Collected" : "Key: Not Collected");
+
+        if (!paused) {
+            timeCount += dt;
+            if (timeCount >= 1) {
+                elapsedTime++;
+                stopwatchLabel.setText(String.format("%03d", elapsedTime));
+                timeCount = 0;
+            }
+        }
     }
 
     @Override
