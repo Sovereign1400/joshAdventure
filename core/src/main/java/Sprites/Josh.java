@@ -84,6 +84,7 @@ public class Josh extends Sprite {
         this.movespeed = 1.0f;
         this.baseMovespeed = this.movespeed;
 
+
         setBounds(
             0 / testGame.PPM,
             0 / testGame.PPM,
@@ -113,6 +114,7 @@ public class Josh extends Sprite {
         setBounds(0, 0, width, height);
         setRegion(firstFrame);
     }
+
 
     /**
      * Box2D definition for Josh
