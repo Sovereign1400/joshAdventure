@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="19">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="36">
  <tileset firstgid="1" source="mainlevbuild.tsx"/>
  <layer id="1" name="floor" width="40" height="40">
   <data encoding="base64" compression="zlib">
@@ -11,6 +11,7 @@
    eJztmGEKwyAMhUMcdDfrLrSdpD3KdpL1PvOPKMNITGwbiw8eIgh+6JM+utwAFqNevb9GHfisqhe+f84JAe4Yx1aakHZunzR/W8I3+7UPjGMrzUg7tw/FZ0W98lH5K+WHk6dWfFT+SvlJTfG1eh9aUftZeR97369WV+DjrBl8g2/wnc8X5jlb4Avfh5wt8EnXnMnH6b6lfqUxJ1sclfqVxpxsafj2kKTLHslX2/1KfNr85c6E8x64fNz+XnMmGr6t8n4l/bPl+Q0+e3wSXZVPclcS9fr/xYp641uN+OkAXi7OA58Vvz3bx8X5D+pG95c=
   </data>
  </layer>
+ <objectgroup id="14" name="background"/>
  <objectgroup id="3" name="bricks">
   <object id="1" x="0" y="0" width="640" height="32"/>
   <object id="2" x="608" y="32" width="32" height="608"/>
@@ -30,5 +31,38 @@
   <object id="16" x="464" y="208" width="32" height="96"/>
   <object id="17" x="416" y="144" width="128" height="32"/>
   <object id="18" x="416" y="64" width="128" height="32"/>
+ </objectgroup>
+ <objectgroup id="5" name="shields">
+  <object id="34" x="48" y="320" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="6" name="speedups">
+  <object id="33" x="96" y="256" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="7" name="hearts">
+  <object id="29" x="480" y="112" width="32" height="32"/>
+  <object id="30" x="176" y="192" width="32" height="32"/>
+  <object id="31" x="144" y="64" width="32" height="32"/>
+  <object id="32" x="48" y="192" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="4" name="keys">
+  <object id="28" x="192" y="64" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="8" name="exitDoor">
+  <object id="20" x="576" y="608" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="11" name="enterDoor">
+  <object id="19" x="-7.48538" y="32.7485" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="12" name="Josh">
+  <object id="35" x="26.7602" y="33.4971" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="13" name="monsterSpawns">
+  <object id="21" x="96" y="192" width="32" height="32"/>
+  <object id="22" x="256" y="304" width="32" height="32"/>
+  <object id="23" x="272" y="64" width="32" height="32"/>
+  <object id="24" x="400" y="224" width="32" height="32"/>
+  <object id="25" x="496" y="496" width="32" height="32"/>
+  <object id="26" x="80" y="512" width="32" height="32"/>
+  <object id="27" x="272" y="512" width="32" height="32"/>
  </objectgroup>
 </map>

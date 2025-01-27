@@ -323,6 +323,10 @@ public class PlayScreen implements Screen {
                 messageTimer = 0;
             }
         }
+        // Skip updates if loads next map.
+        if (shouldLoadNextMap) {
+            return;
+        }
 
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
@@ -547,7 +551,7 @@ public class PlayScreen implements Screen {
 
     public void loadNextMap() {
         try {
-            System.out.println("Loading next map...");
+            System.out.println("Loading next map from: " + currentMapPath);
             if (currentMapPath.contains("customMap_2")) {
                 // Set a flag to prevent physics updates
                 shouldLoadNextMap = true;
@@ -567,6 +571,26 @@ public class PlayScreen implements Screen {
                     dispose();  // Clean up current resources
                     game.setScreen(nextScreen);
                     System.out.println("Switched to Map 3");
+                });
+            } else if (currentMapPath.contains("customMap_3")) {
+                // Set a flag to prevent physics updates
+                shouldLoadNextMap = true;
+
+                // Clear all bodies from the world
+                Array<Body> bodies = new Array<Body>();
+                world.getBodies(bodies);
+                for(Body body : bodies) {
+                    world.destroyBody(body);
+                }
+
+                // Create and switch to new screen with Map 4
+                PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_4.tmx");
+
+                // Use Gdx.app.postRunnable to ensure screen switch happens on render thread
+                Gdx.app.postRunnable(() -> {
+                    dispose();  // Clean up current resources
+                    game.setScreen(nextScreen);
+                    System.out.println("Switched to Map 4");
                 });
             }
         } catch (Exception e) {

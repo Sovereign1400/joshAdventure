@@ -82,6 +82,7 @@ import com.badlogic.gdx.physics.box2d.*;
             if (loadingNextMap) return;  // Early return if loading next map
 
             // Door collision handling
+            // Door collision handling
             if (fixA.getUserData() instanceof Door || fixB.getUserData() instanceof Door) {
                 Fixture doorFix = fixA.getUserData() instanceof Door ? fixA : fixB;
                 Door door = (Door)doorFix.getUserData();
