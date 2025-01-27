@@ -32,4 +32,20 @@ public abstract class InteractiveTileObject {
         fdef.shape = shape;
         body.createFixture(fdef);
     }
+
+    public float getBoundsX() {
+        return bounds.x;
+    }
+
+    public float getBoundsY() {
+        return bounds.y;
+    }
+
+    public float getBoundsWidth() {
+        return bounds.width;
+    }
+
+    public float getBoundsHeight() {
+        return bounds.height;
+    }
 }

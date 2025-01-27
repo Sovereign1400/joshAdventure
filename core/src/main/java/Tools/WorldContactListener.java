@@ -64,12 +64,17 @@ import com.badlogic.gdx.physics.box2d.*;
 
             // This interacts the keys
             if (fixA.getUserData() instanceof Key || fixB.getUserData() instanceof Key) {
-                if (fixA.getUserData() instanceof Key) {
-                    ((Key)fixA.getUserData()).onCollect();
-                    screen.getPlayer().collectKey();
-                } else {
-                    ((Key)fixB.getUserData()).onCollect();
-                    screen.getPlayer().collectKey();
+                // First, identify which fixture is the key and which is the potential collector
+                Fixture keyFixture = fixA.getUserData() instanceof Key ? fixA : fixB;
+                Fixture otherFixture = keyFixture == fixA ? fixB : fixA;
+
+                // Only allow collection if the other fixture is the player's body
+                if (otherFixture.getBody() == player.b2body) {
+                    Key key = (Key) keyFixture.getUserData();
+                    if (!key.isCollected()) {
+                        key.onCollect();
+                        player.collectKey();
+                    }
                 }
             }
 

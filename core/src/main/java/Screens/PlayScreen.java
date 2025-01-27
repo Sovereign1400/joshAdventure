@@ -37,6 +37,7 @@ public class PlayScreen implements Screen {
     private HUD hud;
     private boolean gameOver = false;
     private boolean paused = false;  // If true, the game logic is paused
+    private DirectionalArrow directionalArrow;
 
     // Tile Map attributes
     private TmxMapLoader mapLoader;
@@ -113,6 +114,9 @@ public class PlayScreen implements Screen {
         // This creates the HUD for scoreboard and other data shown on screen.
         hud = new HUD(game.batch, player);
         world.setContactListener(new WorldContactListener(player, this));
+
+        // This initializes arrow
+        directionalArrow = new DirectionalArrow(player);
 
         // This loads the map.
         this.currentMapPath = mapPath;
@@ -336,6 +340,12 @@ public class PlayScreen implements Screen {
             return;
         }
 
+        // Update the directional arrow
+        Door nearestDoor = findNearestExitDoor();
+        if (nearestDoor != null) {
+            directionalArrow.update(nearestDoor);
+        }
+
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
     }
@@ -421,6 +431,8 @@ public class PlayScreen implements Screen {
                 player.b2body.getPosition().x - 1f,
                 player.b2body.getPosition().y + 1f);
         }
+
+        directionalArrow.draw(game.batch);
 
         game.batch.end(); // End batch
 
@@ -625,6 +637,33 @@ public class PlayScreen implements Screen {
     }
 
 
+    // This method supports the directional arrow
+    private Door findNearestExitDoor() {
+        Door nearest = null;
+        float minDistance = Float.MAX_VALUE;
+        Vector2 playerPos = player.getPosition();
+        Vector2 doorPos = new Vector2();
+
+        for (Door door : doors) {
+            if (door.getDoorType() == DoorType.EXIT) {
+                // Get door center position
+                doorPos.set(
+                    (door.getBoundsX() + door.getBoundsWidth() / 2) / testGame.PPM,
+                    (door.getBoundsY() + door.getBoundsHeight() / 2) / testGame.PPM
+                );
+
+                float distance = playerPos.dst(doorPos);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearest = door;
+                }
+            }
+        }
+        return nearest;
+    }
+
+
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
@@ -671,6 +710,7 @@ public class PlayScreen implements Screen {
         hud.dispose();
         fbo.dispose();
         customFont.dispose();
+        directionalArrow.dispose();
 
         // This dispose all monsters
         for (Monster monster : monsters) {
