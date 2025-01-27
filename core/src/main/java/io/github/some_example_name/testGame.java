@@ -1,8 +1,13 @@
 package io.github.some_example_name;
 
+import Screens.MainMenuScreen;
 import Screens.PlayScreen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class testGame extends Game {
@@ -15,7 +20,8 @@ public class testGame extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        setScreen(new PlayScreen(this));
+        Stage stage = new Stage(new ScreenViewport());
+        setScreen(new MainMenuScreen(this));
 
 //        gameMap = new TiledGameMap();
     }
@@ -34,5 +40,10 @@ public class testGame extends Game {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    public Skin getSkin() {
+
+        return new Skin(Gdx.files.internal("Skin123/pixthulhu-ui.json"));
     }
 }

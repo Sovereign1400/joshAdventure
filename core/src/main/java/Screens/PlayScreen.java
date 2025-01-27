@@ -36,6 +36,7 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private HUD hud;
     private boolean gameOver = false;
+    private boolean paused = false;  // If true, the game logic is paused
 
     // Tile Map attributes
     private TmxMapLoader mapLoader;
@@ -254,6 +255,7 @@ public class PlayScreen implements Screen {
             player.b2body.setLinearVelocity(vx, vy);
     }
 
+
     //This method updates data in the game, dt = delta, a small period of time.
     public void update(float dt){
 
@@ -274,7 +276,7 @@ public class PlayScreen implements Screen {
         renderer.setView(gamecam);
 
         // This updates HUD
-        hud.update();
+        hud.update(dt, paused);
 
         // This renders the monster
         // Update all monsters
@@ -298,6 +300,8 @@ public class PlayScreen implements Screen {
             key.update();
         }
 
+        // if (player.hasKey() && doors.get)
+
         // This opens the gameOver screen once the game over part set to true.
         if (!gameOver) {
             handleInput(dt);
@@ -309,6 +313,8 @@ public class PlayScreen implements Screen {
                 game.setScreen(new GameOverScreen(game));
 //                dispose();
             }
+
+
         }
 
         // This implements the doors.
@@ -323,6 +329,8 @@ public class PlayScreen implements Screen {
                 messageTimer = 0;
             }
         }
+
+
         // Skip updates if loads next map.
         if (shouldLoadNextMap) {
             return;
@@ -332,9 +340,22 @@ public class PlayScreen implements Screen {
 //        checkMonsterCollisions();
     }
 
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
     @Override
     public void render(float delta) {
-        update(delta);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            // Switch to PauseMenuScreen, passing a reference to THIS screen
+            game.setScreen(new PauseMenuScreen(game, this));
+            return;
+        }
+
+        // If paused, dont update
+        if (!paused) {
+            update(delta);
+        }
 
         // This fills the background of the screen with black.
         Gdx.gl.glClearColor(0, 0,0, 1);
@@ -346,9 +367,7 @@ public class PlayScreen implements Screen {
         // This renders Box2DDebugLines, comment it out if not debugging
         //b2dr.render(world, gamecam.combined);
 
-        // Set our batch to now draw what HUD cam sees.
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+
 
         // This renders the whole game batch
         game.batch.setProjectionMatrix(gamecam.combined); // Set the projection for game world
@@ -409,6 +428,11 @@ public class PlayScreen implements Screen {
 
         // This renders fog of war using the same batch but the second time.
          renderFogOfWar();
+
+         // Set our batch to now draw what HUD cam sees.
+        //Moved the HUD render here, so that the fog of war doesnt interfere with it.
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
     }
 
     private void createMonsters() {
