@@ -110,6 +110,7 @@ public class HUD implements Disposable {
     public Integer getElapsedTime() {
         return elapsedTime;
     }
+    // placeholder
 
     public void setElapsedTime(Integer elapsedTime) {
         this.elapsedTime = elapsedTime;
