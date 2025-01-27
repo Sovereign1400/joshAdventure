@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
@@ -61,6 +62,7 @@ public class PlayScreen implements Screen {
     private static final int DEFAULT_SRC_FUNC = GL20.GL_SRC_ALPHA;
     private static final int DEFAULT_DST_FUNC = GL20.GL_ONE_MINUS_SRC_ALPHA;
 
+
     // Heart Attributes:
     private Array<Heart> hearts;
 
@@ -72,6 +74,13 @@ public class PlayScreen implements Screen {
 
     // Key Attributes
     private Array<Key> keys;
+
+    // Door Attributes
+    private Array<Door> doors;
+    public boolean showDoorMessage = false;
+    public float messageTimer = 0;
+    private final float MESSAGE_DURATION = 2f;
+    private BitmapFont customFont;
 
     public PlayScreen(testGame game) {
         this.game = game;
@@ -99,13 +108,16 @@ public class PlayScreen implements Screen {
         hud = new HUD(game.batch, player);
         world.setContactListener(new WorldContactListener(player, this));
 
-
         // This loads the map.
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tileset/customMap2.tmx");
 
         // This renders the map.
         renderer = new OrthogonalTiledMapRenderer(map, (float) 1 / testGame.PPM);
+
+        // This loads the fonts
+        customFont = new BitmapFont(Gdx.files.internal("fonts/ChrustyRock-ORLA.fnt"));
+        customFont.getData().setScale(1f/testGame.PPM);
 
 //        // This centers the camera to the center of the screen instead of (0,0).
 //        gamecam.position.set((float) gamePort.getScreenWidth() / 2, (float) gamePort.getScreenHeight() / 2, 0);
@@ -153,6 +165,7 @@ public class PlayScreen implements Screen {
         hearts = creator.createHearts(world, map);
         shields = creator.createShields(world, map);
         keys = creator.createKeys(world, map);
+        doors = creator.createDoors(world, map); // This creates door on the map.
     }
 
     @Override
@@ -278,6 +291,7 @@ public class PlayScreen implements Screen {
             key.update();
         }
 
+        // This opens the gameOver screen once the game over part set to true.
         if (!gameOver) {
             handleInput(dt);
             world.step(dt, 6, 2);  // Use dt (in game time) or actual time.
@@ -287,6 +301,19 @@ public class PlayScreen implements Screen {
                 gameOver = true;
                 game.setScreen(new GameOverScreen(game));
 //                dispose();
+            }
+        }
+
+        // This implements the doors.
+        for (Door door : doors) {
+            door.update();
+        }
+
+        if (showDoorMessage) {
+            messageTimer += dt;
+            if (messageTimer >= MESSAGE_DURATION) {
+                showDoorMessage = false;
+                messageTimer = 0;
             }
         }
 
@@ -350,6 +377,19 @@ public class PlayScreen implements Screen {
             if (!key.isCollected()){
                 key.draw(game.batch);
             }
+        }
+
+        // This renders the heart
+        for (Door door : doors) {
+            door.draw(game.batch);
+        }
+
+        // This renders the door
+        if (showDoorMessage) {
+            customFont.draw(game.batch,
+                "You don't have the key!",
+                player.b2body.getPosition().x - 1f,
+                player.b2body.getPosition().y + 1f);
         }
 
         game.batch.end(); // End batch

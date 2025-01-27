@@ -15,6 +15,7 @@ public class B2WorldCreator {
     private Array<Shield> shields;
     private Array<Key> keys;
     private Josh player;
+    private Array<Door> doors;
 
     public B2WorldCreator(World world, TiledMap map){
         // This sets basic attributes for all future interactive objects on the map.
@@ -26,6 +27,7 @@ public class B2WorldCreator {
         speedups = new Array<>();
         shields = new Array<>();
         keys = new Array<>();
+
 
         // This applys these attributes to the layers of objects drawn on the map
         for(MapObject object : map.getLayers().get("background").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
@@ -116,5 +118,20 @@ public class B2WorldCreator {
             keys.add(new Key(world, map, rect));
         }
         return keys;
+    }
+
+    public Array<Door> createDoors(World world, TiledMap map) {
+        doors = new Array<>();
+        // Create entrance door
+        for(MapObject object : map.getLayers().get("entranceDoor").getObjects()) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            doors.add(new Door(world, map, rect, DoorType.ENTRANCE));
+        }
+        // Create exit door
+        for(MapObject object : map.getLayers().get("exitDoor").getObjects()) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            doors.add(new Door(world, map, rect, DoorType.EXIT));
+        }
+        return doors;
     }
 }

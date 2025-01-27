@@ -43,6 +43,7 @@ import com.badlogic.gdx.physics.box2d.*;
                 }
             }
 
+            // This interacts the shield
             if (fixA.getUserData() instanceof Shield || fixB.getUserData() instanceof Shield){
                 Fixture shieldFix = fixA.getUserData() instanceof Shield ? fixA : fixB;
                 Shield shield = (Shield) shieldFix.getUserData();
@@ -53,6 +54,7 @@ import com.badlogic.gdx.physics.box2d.*;
                 }
             }
 
+            // This interacts the keys
             if (fixA.getUserData() instanceof Key || fixB.getUserData() instanceof Key) {
                 if (fixA.getUserData() instanceof Key) {
                     ((Key)fixA.getUserData()).onCollect();
@@ -69,6 +71,23 @@ import com.badlogic.gdx.physics.box2d.*;
             }
             else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Monster) {
                 player.damage();
+            }
+
+            if (fixA.getUserData() instanceof Door || fixB.getUserData() instanceof Door) {
+                Fixture doorFix = fixA.getUserData() instanceof Door ? fixA : fixB;
+                Fixture playerFix = doorFix == fixA ? fixB : fixA;
+
+                Door door = (Door)doorFix.getUserData();
+
+                if (door.getDoorType() == DoorType.EXIT) {
+                    if (player.hasKey()) {
+                        door.interact(player);
+                        screen.loadNextMap();
+                    } else {
+                        screen.showDoorMessage = true;
+                        screen.messageTimer = 0;
+                    }
+                }
             }
         }
 
