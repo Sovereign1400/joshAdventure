@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="41">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="41">
  <tileset firstgid="1" source="mainlevbuild.tsx"/>
  <layer id="1" name="floor" width="40" height="40">
   <data encoding="base64" compression="zlib">
    eJzt0LENwCAUxFCK7AsKg4HIgvlbnIVcWO5ff1obVYd+VRv8tI9++hGc9NOP+LSPfvoRnPTTj/i0j376EZz004/4tI9++hGcbvd7qwn2O9Wn37V+qf9OIpom
   </data>
  </layer>
- <objectgroup id="13" name="Traps">
-  <object id="40" x="113.5" y="320.5" width="19.5" height="19"/>
- </objectgroup>
  <layer id="4" name="Wall" width="40" height="40">
   <data encoding="base64" compression="zlib">
    eJzV2GlPE0EYwPENPRZvvwFnAgqJx3eQQzmMtvCSM+FMPL4DtEChRAu+9EwUNPH4DnIoh9GCLz0TFU08PoH/jZ3QDjPb7RQbfZJfdmfZzj7zTGdo2x6wrJGgZY0igijGMI4JxDCJKcQxHSzc/SFyu4annC9gEUtYxjM8xwpWsYZ1vAgW7v4Eub1GwLasIGwUYw/2Yh/24wAO4hAO24W7P0lu7TjFeR3q0YBGnMYZNKEZLWjFWbuw9zvzO8JxFBFEMYZxTCCGSUwhjmm7cPeHUvP7r0YiNb9OnnHpGNMcQ4q26ly+ZhJi/TrHMNpS+aafy3/z2paviyjxWVYpylCOClT69PVz5tc5zmA2lW/6ufw3r235uogOculEF7rRg95UfvK9IWlsqvjOPvQDP/EraDZP6XGdXG7gJm7hNu6k8tuU1kNIylcVx1hHx3ECJ+3883tDLm/xDu/xAR819UsEsq/fC+R00TZ/H4q2eHaJn/cfylCOClT6/zxLVb9s85s+lnzel+LZHeTSiS50owe9fnX9vMyvCPm1uYaX18v18zK/utfmGuL1Is/0o3xNRC7zm2/9RH6qo3xNRCKHZ3qp3wDrcFCz15qML5nDnHnpf47c5jX5qcb3kP30ER7jiWJvzWV+Rf+qvqpYf9X4Qm5bqOG81p95j2p82fb+XOZX9K/qq49c+jGAQQxhWMpPVb9se7+ufiGeH5ZyEP2r+rpLLvcwh3ncxwMP9RN7/yVcVuSnq1+C3Gak/ET/qr4+kctnZ36xha/45qF+2SJpUD9VVHG9GkdwFDWole41Wb+6+VXVzy366KMfAxjEEIalfk3qp5tfVf3yjd3c/9zef6ZhUj+T9WsabuPT7dMm69c03Man26d185tePzE21ecOL0cv49Pt017Wrxib2+cPt6OX+un2aTG/ol7yUTW2XL+DiPrrnuG2V4jfD0S95KNqbKr/Q24h6q97httem9DM725GPt//knmuSS+R7TOAW/wvvw+FOW9Du6U/F+F2z26dO8T3Z2d+z/GZ9zxCCKPNt/OaiHo+NzWgEXX+zHYTmtGCVoP2KLlEEA1sf3926neF519FAjOY9e28JiJCP1GMOf35M9sxTGIKcYP2ArksYimQWb+XPP8VktjApk99bYE+FrGEZf/O9gpWsYZ1g3aQfcZGcXC7fs76KC2yrDKUo6LIW/tvSH+Gs7ds4DdNOsXr
   </data>
  </layer>
- <objectgroup id="6" name="Josh" visible="0">
+ <objectgroup id="6" name="Josh">
   <object id="24" x="32" y="64" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="2" name="bricks">
@@ -39,30 +36,31 @@
   <object id="22" x="16" y="480" width="64" height="32"/>
   <object id="26" x="17.3333" y="47.3333" width="606.667" height="16.6667"/>
  </objectgroup>
- <objectgroup id="5" name="monsterSpawns" visible="0">
+ <objectgroup id="5" name="monsterSpawns">
   <object id="11" x="501.52" y="279.953" width="49.4035" height="48.655"/>
   <object id="27" x="48.9815" y="253.95" width="34.6638" height="31.6496"/>
  </objectgroup>
- <objectgroup id="7" name="hearts" visible="0">
+ <objectgroup id="7" name="hearts">
   <object id="28" x="46.7208" y="176.333" width="36.171" height="36.9245"/>
   <object id="30" x="269.022" y="402.402" width="42.953" height="41.4459"/>
  </objectgroup>
- <objectgroup id="8" name="speedups" visible="0">
+ <objectgroup id="8" name="speedups">
   <object id="31" x="226.177" y="488.204" width="31.6496" height="28.6353"/>
   <object id="32" x="507.901" y="399.388" width="33.9103" height="29.3889"/>
  </objectgroup>
- <objectgroup id="9" name="shields" visible="0">
+ <objectgroup id="9" name="shields">
   <object id="33" x="227.576" y="525.233" width="21.8533" height="23.3604"/>
   <object id="34" x="292.382" y="527.493" width="27.1282" height="22.6069"/>
  </objectgroup>
- <objectgroup id="10" name="keys" visible="0">
+ <objectgroup id="10" name="keys">
   <object id="35" x="223.808" y="232.851" width="35.4174" height="35.4174"/>
  </objectgroup>
- <objectgroup id="3" name="background" visible="0"/>
- <objectgroup id="11" name="enterDoor" visible="0">
+ <objectgroup id="3" name="background"/>
+ <objectgroup id="11" name="enterDoor">
   <object id="36" x="0" y="69" width="31.3333" height="32"/>
  </objectgroup>
- <objectgroup id="12" name="exitDoor" visible="0">
+ <objectgroup id="12" name="exitDoor">
   <object id="37" x="159" y="607.092" width="32.4167" height="32.8155"/>
  </objectgroup>
+ <objectgroup id="14" name="traps"/>
 </map>
