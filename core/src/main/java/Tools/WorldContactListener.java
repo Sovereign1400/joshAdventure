@@ -22,32 +22,33 @@ import com.badlogic.gdx.physics.box2d.*;
 
             if (loadingNextMap) return;
 
-            if(fixA.getUserData() instanceof Heart || fixB.getUserData() instanceof Heart) {
-                Fixture heartFix = fixA.getUserData() instanceof Heart ? fixA : fixB;
-                Heart heart = (Heart)heartFix.getUserData();
+            if (fixA.getUserData() instanceof Heart || fixB.getUserData() instanceof Heart) {
+                // First, identify which fixture is the heart and which is the potential collector
+                Fixture heartFixture = fixA.getUserData() instanceof Heart ? fixA : fixB;
+                Fixture otherFixture = heartFixture == fixA ? fixB : fixA;
 
-                if(!heart.isCollected()) {
-                    // Pass player to onCollect so it can check health
-                    heart.onCollect(player);
-
-                    if (heart.isCollected()) {
+                // Only allow collection if the other fixture is the player's body
+                if (otherFixture.getBody() == player.b2body) {
+                    Heart heart = (Heart) heartFixture.getUserData();
+                    if (!heart.isCollected()) {
+                        heart.onCollect(player);
                         player.increaseHealth();
                     }
                 }
             }
 
-            // Check if one fixture is the player and the other is a speedup
             if (fixA.getUserData() instanceof Speedup || fixB.getUserData() instanceof Speedup) {
-                Speedup speedup;
-                if (fixA.getUserData() instanceof Speedup) {
-                    speedup = (Speedup) fixA.getUserData();
-                } else {
-                    speedup = (Speedup) fixB.getUserData();
-                }
+                // First, identify which fixture is the speedup and which is the potential collector
+                Fixture speedupFixture = fixA.getUserData() instanceof Speedup ? fixA : fixB;
+                Fixture otherFixture = speedupFixture == fixA ? fixB : fixA;
 
-                if (!speedup.isCollected()) {
-                    player.activateSpeedBoost();
-                    speedup.onCollect();
+                // Only allow collection if the other fixture is the player's body
+                if (otherFixture.getBody() == player.b2body) {
+                    Speedup speedup = (Speedup) speedupFixture.getUserData();
+                    if (!speedup.isCollected()) {
+                        speedup.onCollect();
+                        player.activateSpeedBoost();
+                    }
                 }
             }
 
@@ -58,7 +59,7 @@ import com.badlogic.gdx.physics.box2d.*;
 
                 if(!shield.isCollected()) {
                     shield.onCollect();
-                    player.increaseHealth(); // increase speed
+                    // missing shield functionality
                 }
             }
 
