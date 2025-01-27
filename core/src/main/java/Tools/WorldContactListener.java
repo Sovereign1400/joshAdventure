@@ -27,8 +27,12 @@ import com.badlogic.gdx.physics.box2d.*;
                 Heart heart = (Heart)heartFix.getUserData();
 
                 if(!heart.isCollected()) {
-                    heart.onCollect();
-                    player.increaseHealth();
+                    // Pass player to onCollect so it can check health
+                    heart.onCollect(player);
+
+                    if (heart.isCollected()) {
+                        player.increaseHealth();
+                    }
                 }
             }
 
