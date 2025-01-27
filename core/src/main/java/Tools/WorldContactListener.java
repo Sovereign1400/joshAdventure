@@ -2,11 +2,13 @@ package Tools;
 
 import Screens.PlayScreen;
 import Sprites.*;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 
     public class WorldContactListener implements ContactListener {
         private Josh player;
         private PlayScreen screen;
+        private boolean loadingNextMap = false;  // Add this flag
 
         public WorldContactListener(Josh player, PlayScreen screen) {
             this.player = player;
@@ -17,6 +19,8 @@ import com.badlogic.gdx.physics.box2d.*;
         public void beginContact(Contact contact) {
             Fixture fixA = contact.getFixtureA();
             Fixture fixB = contact.getFixtureB();
+
+            if (loadingNextMap) return;
 
             if(fixA.getUserData() instanceof Heart || fixB.getUserData() instanceof Heart) {
                 Fixture heartFix = fixA.getUserData() instanceof Heart ? fixA : fixB;
@@ -73,16 +77,25 @@ import com.badlogic.gdx.physics.box2d.*;
                 player.damage();
             }
 
+
+            // Check the collision of the door, make sure the touch registration only happens 1 time.
+            if (loadingNextMap) return;  // Early return if loading next map
+
+            // Door collision handling
             if (fixA.getUserData() instanceof Door || fixB.getUserData() instanceof Door) {
                 Fixture doorFix = fixA.getUserData() instanceof Door ? fixA : fixB;
-                Fixture playerFix = doorFix == fixA ? fixB : fixA;
-
                 Door door = (Door)doorFix.getUserData();
 
                 if (door.getDoorType() == DoorType.EXIT) {
                     if (player.hasKey()) {
+                        System.out.println("Player touched exit door with key");
                         door.interact(player);
-                        screen.loadNextMap();
+                        loadingNextMap = true;  // Set flag before loading
+
+                        // Use Gdx.app.postRunnable to ensure screen loading happens on render thread
+                        Gdx.app.postRunnable(() -> {
+                            screen.loadNextMap();
+                        });
                     } else {
                         screen.showDoorMessage = true;
                         screen.messageTimer = 0;

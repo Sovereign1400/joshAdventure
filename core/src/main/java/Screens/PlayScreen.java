@@ -82,8 +82,11 @@ public class PlayScreen implements Screen {
     public float messageTimer = 0;
     private final float MESSAGE_DURATION = 2f;
     private BitmapFont customFont;
+    private boolean shouldLoadNextMap = false;
+
+
     public PlayScreen(testGame game) {
-        this(game, "tileset/customMap2.tmx");
+        this(game, "tileset/customMap_2.tmx");
     }
 
     public PlayScreen(testGame game, String mapPath) {
@@ -529,12 +532,48 @@ public class PlayScreen implements Screen {
         game.batch.end();
     }
 
+//    public void loadNextMap() {
+//        System.out.println("Loading next map..."); // Debug print
+//        if (currentMapPath.contains("customMap_2")) {
+//            dispose();  // Clean up current resources
+//            System.out.println("Map 2 disposed");
+//            System.out.println("Creating new screen for customMap3...");
+//            PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_3.tmx");
+//            System.out.println("Setting new screen...");
+//            game.setScreen(nextScreen);
+//            System.out.println("Switched to Map 3");  // Debug print
+//        }
+//    }
+
     public void loadNextMap() {
-        if (currentMapPath.contains("customMap_1")) {
-            dispose();
-            game.setScreen(new PlayScreen(game));
+        try {
+            System.out.println("Loading next map...");
+            if (currentMapPath.contains("customMap_2")) {
+                // Set a flag to prevent physics updates
+                shouldLoadNextMap = true;
+
+                // Clear all bodies from the world
+                Array<Body> bodies = new Array<Body>();
+                world.getBodies(bodies);
+                for(Body body : bodies) {
+                    world.destroyBody(body);
+                }
+
+                // Create and switch to new screen
+                PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_3.tmx");
+
+                // Use Gdx.app.postRunnable to ensure screen switch happens on render thread
+                Gdx.app.postRunnable(() -> {
+                    dispose();  // Clean up current resources
+                    game.setScreen(nextScreen);
+                    System.out.println("Switched to Map 3");
+                });
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading next map:");
+            e.printStackTrace();
+            throw e;
         }
-        // Add more map transitions as needed
     }
 
 
