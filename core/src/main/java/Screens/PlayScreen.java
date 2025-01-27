@@ -41,6 +41,7 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+    private String currentMapPath;
 
     //Box2d attributes
     private World world;
@@ -81,16 +82,17 @@ public class PlayScreen implements Screen {
     public float messageTimer = 0;
     private final float MESSAGE_DURATION = 2f;
     private BitmapFont customFont;
-
     public PlayScreen(testGame game) {
+        this(game, "tileset/customMap2.tmx");
+    }
+
+    public PlayScreen(testGame game, String mapPath) {
         this.game = game;
 
         // This camera follows the main character.
         gamecam = new OrthographicCamera();
-
         // This zooms in / out the camera
         gamecam.zoom = 1f;
-
         // This creates a viewport that stabilize virtual aspect ratio.
         gamePort = new FitViewport(16, 9, gamecam);
 
@@ -109,15 +111,17 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener(player, this));
 
         // This loads the map.
+        this.currentMapPath = mapPath;
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("tileset/customMap2.tmx");
+        map = mapLoader.load(mapPath);
 
         // This renders the map.
         renderer = new OrthogonalTiledMapRenderer(map, (float) 1 / testGame.PPM);
 
         // This loads the fonts
-        customFont = new BitmapFont(Gdx.files.internal("fonts/ChrustyRock-ORLA.fnt"));
+        customFont = new BitmapFont(Gdx.files.internal("fonts/colorBasic.fnt"));
         customFont.getData().setScale(1f/testGame.PPM);
+
 
 //        // This centers the camera to the center of the screen instead of (0,0).
 //        gamecam.position.set((float) gamePort.getScreenWidth() / 2, (float) gamePort.getScreenHeight() / 2, 0);
@@ -525,62 +529,13 @@ public class PlayScreen implements Screen {
         game.batch.end();
     }
 
-//    private void renderFogOfWar() {
-//        // 1) Get the viewport pixel size
-//        int viewW = gamePort.getScreenWidth();
-//        int viewH = gamePort.getScreenHeight();
-//
-//        // 2) Convert Josh's Box2D position (world coords) to screen coords
-//        Vector3 screenPos = new Vector3(player.getPosition().x, player.getPosition().y, 0);
-//        gamecam.project(
-//            screenPos,
-//            gamePort.getScreenX(),
-//            gamePort.getScreenY(),
-//            viewW,
-//            viewH
-//        );
-//        // Adjust for the viewport offset (if letterboxing occurs)
-//        float circleX = screenPos.x - gamePort.getScreenX();
-//        float circleY = screenPos.y - gamePort.getScreenY();
-//
-//        // 3) Begin rendering into the FBO
-//        fbo.begin();
-//
-//        // Clear the FBO to fully transparent
-//        Gdx.gl.glClearColor(0, 0, 0, 0);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//
-//        // 4) Set up ShapeRenderer in *pixel* space for [0..viewW, 0..viewH]
-//        shapeRenderer.setProjectionMatrix(
-//            new Matrix4().setToOrtho2D(0, 0, viewW, viewH)
-//        );
-//        Gdx.gl.glEnable(GL20.GL_BLEND);
-//
-//        // --- 4a) Draw a mostly-opaque black rectangle over the entire screen ---
-//        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.setColor(0, 0, 0, 0.85f); // 85% opaque black
-//        shapeRenderer.rect(0, 0, viewW, viewH);
-//        shapeRenderer.end();
-//
-//
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        float cx = viewW / 2f;
-//        float cy = viewH / 2f;
-//
-//        shapeRenderer.setColor(1, 0, 0, 1);
-//        shapeRenderer.circle(cx, cy, 100f);
-//
-//        shapeRenderer.end();
-//
-//        // 5) Done with the FBO
-//        fbo.end();
-//
-//        // 6) Draw the resulting FBO region across the screen
-//        game.batch.begin();
-//        game.batch.draw(fboRegion, 0, 0, viewW, viewH);
-//        game.batch.end();
-//    }
+    public void loadNextMap() {
+        if (currentMapPath.contains("customMap_1")) {
+            dispose();
+            game.setScreen(new PlayScreen(game));
+        }
+        // Add more map transitions as needed
+    }
 
 
     @Override
@@ -628,6 +583,7 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
         hud.dispose();
         fbo.dispose();
+        customFont.dispose();
 
         // This dispose all monsters
         for (Monster monster : monsters) {

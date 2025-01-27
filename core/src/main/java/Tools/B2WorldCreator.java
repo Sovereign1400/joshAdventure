@@ -122,8 +122,8 @@ public class B2WorldCreator {
 
     public Array<Door> createDoors(World world, TiledMap map) {
         doors = new Array<>();
-        // Create entrance door
-        for(MapObject object : map.getLayers().get("entranceDoor").getObjects()) {
+        // Create entrance
+        for(MapObject object : map.getLayers().get("enterDoor").getObjects()) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             doors.add(new Door(world, map, rect, DoorType.ENTRANCE));
         }

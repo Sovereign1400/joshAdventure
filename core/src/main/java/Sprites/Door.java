@@ -15,7 +15,7 @@ public class Door extends InteractiveTileObject {
     public Door(World world, TiledMap map, Rectangle bounds, DoorType type) {
         super(world, map, bounds);
         this.doorType = type;
-        doorTexture = new Texture("door.png");
+        doorTexture = new Texture("door_2.png");
 
         // Create fixture and body
         BodyDef bdef = new BodyDef();
@@ -40,11 +40,13 @@ public class Door extends InteractiveTileObject {
 
     public void draw(SpriteBatch batch) {
         if (!isOpen) {
+            float width = 48 / testGame.PPM;   // replace 32 with your door width
+            float height = 48 / testGame.PPM;  // replace 48 with your door height
             batch.draw(doorTexture,
                 bounds.getX() / testGame.PPM,
                 bounds.getY() / testGame.PPM,
-                bounds.getWidth() / testGame.PPM,
-                bounds.getHeight() / testGame.PPM);
+                width,
+                height);
         }
     }
 
