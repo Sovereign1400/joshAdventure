@@ -12,7 +12,7 @@
   </data>
  </layer>
  <objectgroup id="14" name="background"/>
- <objectgroup id="3" name="bricks">
+ <objectgroup id="3" name="bricks" visible="0">
   <object id="1" x="0" y="0" width="640" height="32"/>
   <object id="2" x="608" y="32" width="32" height="608"/>
   <object id="3" x="0" y="608" width="576" height="32"/>
@@ -32,38 +32,38 @@
   <object id="17" x="416" y="144" width="128" height="32"/>
   <object id="18" x="416" y="64" width="128" height="32"/>
  </objectgroup>
- <objectgroup id="5" name="shields">
+ <objectgroup id="5" name="shields" visible="0">
   <object id="34" x="48" y="320" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="6" name="speedups">
+ <objectgroup id="6" name="speedups" visible="0">
   <object id="33" x="96" y="256" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="7" name="hearts">
+ <objectgroup id="7" name="hearts" visible="0">
   <object id="29" x="480" y="112" width="32" height="32"/>
   <object id="30" x="176" y="192" width="32" height="32"/>
   <object id="31" x="144" y="64" width="32" height="32"/>
   <object id="32" x="48" y="192" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="4" name="keys">
+ <objectgroup id="4" name="keys" visible="0">
   <object id="28" x="192" y="64" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="8" name="exitDoor">
+ <objectgroup id="8" name="exitDoor" visible="0">
   <object id="20" x="576" y="608" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="11" name="enterDoor">
+ <objectgroup id="11" name="enterDoor" visible="0">
   <object id="19" x="-7.48538" y="32.7485" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="12" name="Josh">
+ <objectgroup id="12" name="Josh" visible="0">
   <object id="35" x="26.7602" y="33.4971" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="trap">
-  <object id="36" x="80" y="32" width="32" height="32"/>
-  <object id="37" x="32" y="112" width="32" height="32"/>
-  <object id="38" x="32" y="256" width="32" height="32"/>
+  <object id="36" x="90.4795" y="22.269" width="32" height="32"/>
+  <object id="37" x="43.9766" y="97.7778" width="32" height="32"/>
+  <object id="38" x="49.9649" y="257.497" width="32" height="32"/>
   <object id="39" x="176" y="240" width="32" height="32"/>
-  <object id="40" x="256" y="160" width="32" height="32"/>
-  <object id="41" x="224" y="32" width="32" height="32"/>
-  <object id="42" x="368" y="32" width="32" height="32"/>
+  <object id="40" x="256.749" y="167.485" width="32" height="32"/>
+  <object id="41" x="231.485" y="27.5088" width="32" height="32"/>
+  <object id="42" x="366.503" y="23.0175" width="32" height="32"/>
   <object id="43" x="560" y="96" width="32" height="32"/>
   <object id="44" x="544" y="272" width="32" height="32"/>
   <object id="45" x="320" y="496" width="32" height="32"/>
@@ -73,7 +73,7 @@
   <object id="50" x="560" y="432" width="32" height="32"/>
   <object id="51" x="512" y="336" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="13" name="monsterSpawns">
+ <objectgroup id="13" name="monsterSpawns" visible="0">
   <object id="21" x="96" y="192" width="32" height="32"/>
   <object id="22" x="256" y="304" width="32" height="32"/>
   <object id="23" x="272" y="64" width="32" height="32"/>
