@@ -9,12 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class testGame extends Game {
     public static final int win_width = 800;
     public static final int win_height = 800;
     public SpriteBatch batch;
     public static final float PPM = 32f;
+    private Skin skin;
 
 //    GameMap gameMap;
     @Override
@@ -22,7 +24,8 @@ public class testGame extends Game {
         batch = new SpriteBatch();
         Stage stage = new Stage(new ScreenViewport());
         setScreen(new MainMenuScreen(this));
-
+        skin = getSkin();
+        setScreen(new MainMenuScreen(this));
 //        gameMap = new TiledGameMap();
     }
 
@@ -43,7 +46,6 @@ public class testGame extends Game {
     }
 
     public Skin getSkin() {
-
         return new Skin(Gdx.files.internal("Skin123/pixthulhu-ui.json"));
     }
 }

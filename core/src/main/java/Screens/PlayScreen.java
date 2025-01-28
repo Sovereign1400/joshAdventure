@@ -80,7 +80,7 @@ public class PlayScreen implements Screen {
     private final float MESSAGE_DURATION = 2f;
     private BitmapFont customFont;
     private boolean shouldLoadNextMap = false;
-
+    public float gameTime = 0;
 
     public PlayScreen(testGame game) {
         this(game, "tileset/customMap_2.tmx");
@@ -88,6 +88,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(testGame game, String mapPath) {
         this.game = game;
+
 
         // This camera follows the main character.
         gamecam = new OrthographicCamera();
@@ -353,6 +354,10 @@ public class PlayScreen implements Screen {
         // Skip updates if loads next map.
         if (shouldLoadNextMap) {
             return;
+        }
+
+        if (!gameOver && !shouldLoadNextMap) {
+            gameTime += dt;
         }
 
         // Optional: Check for collisions between player and monsters
@@ -656,6 +661,16 @@ public class PlayScreen implements Screen {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+    }
+
+    // Add getter for game instance
+    public testGame getGame() {
+        return game;
+    }
+
+    // Add getter for current map path
+    public String getCurrentMapPath() {
+        return currentMapPath;
     }
 
     @Override

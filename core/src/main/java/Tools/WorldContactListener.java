@@ -1,6 +1,7 @@
 package Tools;
 
 import Screens.PlayScreen;
+import Screens.VictoryScreen;
 import Sprites.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
@@ -91,8 +92,7 @@ import com.badlogic.gdx.physics.box2d.*;
             // Check the collision of the door, make sure the touch registration only happens 1 time.
             if (loadingNextMap) return;  // Early return if loading next map
 
-            // Door collision handling
-            // Door collision handling
+            // Door collision handling and Victory check.
             if (fixA.getUserData() instanceof Door || fixB.getUserData() instanceof Door) {
                 Fixture doorFix = fixA.getUserData() instanceof Door ? fixA : fixB;
                 Door door = (Door)doorFix.getUserData();
@@ -103,16 +103,29 @@ import com.badlogic.gdx.physics.box2d.*;
                         door.interact(player);
                         loadingNextMap = true;  // Set flag before loading
 
-                        // Use Gdx.app.postRunnable to ensure screen loading happens on render thread
-                        Gdx.app.postRunnable(() -> {
-                            screen.loadNextMap();
-                        });
+                        if (screen.getCurrentMapPath().contains("customMap_4")) {
+                            // Victory condition - reached exit door in final map
+                            System.out.println("Victory achieved!");
+                            Gdx.app.postRunnable(() -> {
+                                // Convert gameTime to integer seconds for score calculation
+                                int elapsedTime = (int)screen.gameTime;
+                                screen.getGame().setScreen(new VictoryScreen(screen.getGame(), elapsedTime));
+                            });
+                        } else {
+                            // Not final map, proceed to next map
+                            Gdx.app.postRunnable(() -> {
+                                screen.loadNextMap();
+                            });
+                        }
                     } else {
                         screen.showDoorMessage = true;
                         screen.messageTimer = 0;
                     }
                 }
             }
+
+            // Check victory condition when the user touched the final door.
+
         }
 
         @Override
