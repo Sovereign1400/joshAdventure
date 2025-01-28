@@ -113,10 +113,11 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
         // This creates Josh.
+        // Where Josh is created:
         Vector2 spawnPoint = getEnterDoorPosition();
         System.out.println("Spawning player at door: " + spawnPoint.x + ", " + spawnPoint.y);
 
-        // Create player at spawn point
+        // Pass 'this' as the PlayScreen reference
         player = new Josh(world, spawnPoint.x, spawnPoint.y);
 
         // This creates the HUD for scoreboard and other data shown on screen.
@@ -243,6 +244,11 @@ public class PlayScreen implements Screen {
             if (player.isDead()) {
                 player.b2body.setLinearVelocity(0, 0);
                 return;  // Skip all input handling if dead
+            }
+
+            // Add attack input check
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+                player.attack();
             }
 
             // This part can be safely removed, but keep it for now
@@ -671,6 +677,10 @@ public class PlayScreen implements Screen {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public Array<Monster> getMonsters() {
+        return monsters;
     }
 
 

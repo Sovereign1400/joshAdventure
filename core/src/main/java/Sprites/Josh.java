@@ -1,15 +1,18 @@
 package Sprites;
+import Screens.PlayScreen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import io.github.some_example_name.testGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 
 public class Josh extends Sprite {
+    private PlayScreen screen;
     public World world;
     public Body b2body;
     private Texture playerTexture;
@@ -57,6 +60,16 @@ public class Josh extends Sprite {
     private float stateTime;
     public boolean facingLeft = true;
 
+    // Attact Stance
+    private Animation<TextureRegion>[] attackAnimations;
+    private Texture[][] attackTextures;
+    private int currentAttackAnimation = 0;
+    private float attackTimer = 0;
+    private float attackDuration = 0.5f;
+    public boolean isAttacking = false;
+    private float attackCooldown = 0.8f;
+    private float attackCooldownTimer = 0;
+    private float attackRange = 30f / testGame.PPM;
 
     // Heart health system
     private int health = 3;
@@ -76,6 +89,7 @@ public class Josh extends Sprite {
         playerTexture = new Texture(parent_path + "idle" + "/" + "idle_knight_1.png");
         float scale = 0.5f;
 
+        this.screen = screen;
         this.world = world;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
@@ -102,6 +116,7 @@ public class Josh extends Sprite {
         loadRunAnimation();
         loadHurtAnimation();
         loadDeathAnimation();
+        loadAttackAnimations();
 
         // Default stance
         currentStance = Stance.STAND;
@@ -140,6 +155,35 @@ public class Josh extends Sprite {
         b2body.createFixture(fdef);
 
         shape.dispose();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void loadAttackAnimations() {
+        // Initialize arrays for 3 different attacks
+        attackAnimations = new Animation[3];
+        attackTextures = new Texture[3][];
+
+        // Load each attack animation
+        for (int attack = 0; attack < 3; attack++) {
+            String attackFolder = "attack/attack" + (attack + 1);
+            int frameCount = 6; // Adjust based on your frame count for each animation
+
+            attackTextures[attack] = new Texture[frameCount];
+            TextureRegion[] frames = new TextureRegion[frameCount];
+
+            for (int i = 0; i < frameCount; i++) {
+                String fileName = parent_path + attackFolder + "/attack_" + (i + 1) + ".png";
+                try {
+                    attackTextures[attack][i] = new Texture(Gdx.files.internal(fileName));
+                    frames[i] = new TextureRegion(attackTextures[attack][i]);
+                } catch (Exception e) {
+                    System.err.println("Error loading attack animation: " + fileName);
+                }
+            }
+
+            attackAnimations[attack] = new Animation<>(attackDuration / frameCount, frames);
+            attackAnimations[attack].setPlayMode(Animation.PlayMode.NORMAL);
+        }
     }
 
     // Load standing animation
@@ -229,11 +273,38 @@ public class Josh extends Sprite {
     public void update(float dt) {
         stateTime += dt;
 
+        // Update attack cooldown
+        if (attackCooldownTimer > 0) {
+            attackCooldownTimer -= dt;
+        }
+
         // Pick the right Animation based on the current stance
         Animation<TextureRegion> currentAnimation = null;
 
-        if (isHurt) {
+        if (isDead) {
+            currentAnimation = deathAnimation;
+            deathTimer += dt;
+            TextureRegion deathFrame = deathAnimation.getKeyFrame(deathTimer, false);
+            if (!facingLeft && !deathFrame.isFlipX()) {
+                deathFrame.flip(true, false);
+            }
+            setRegion(deathFrame);
+            return;
+        } else if (isAttacking) {
+            // Handle attack animation
+            currentAnimation = attackAnimations[currentAttackAnimation];
+            attackTimer += dt;
+            if (attackTimer >= attackDuration) {
+                isAttacking = false;
+                attackTimer = 0;
+            }
+        } else if (isHurt) {
             currentAnimation = hurtAnimation;
+            hurtTimer += dt;
+            if (hurtTimer >= hurtDuration) {
+                isHurt = false;
+                stateTime = 0;
+            }
         } else {
             switch(currentStance) {
                 case WALK:
@@ -248,72 +319,34 @@ public class Josh extends Sprite {
             }
         }
 
-        if (currentAnimation != null) {
-            // Get the current frame
-            TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-            // Flip if needed
-            if (!facingLeft && !currentFrame.isFlipX()) {
-                currentFrame.flip(true, false);
-            } else if (facingLeft && currentFrame.isFlipX()) {
-                currentFrame.flip(true, false);
-            }
-
-            setRegion(currentFrame);
-        }
-
-        // Handle speed boost timer
-        if (speedBoostActive) {
-            speedBoostTimer += dt;
-            if (speedBoostTimer >= speedBoostDuration) {
-                speedBoostActive = false;
-                setMovespeed(baseMovespeed);
-            }
-        }
-
-        // Update sprite position to match Box2D body
+        // Update sprite position
         setPosition(
             b2body.getPosition().x - getWidth() / 2,
             b2body.getPosition().y - getHeight() / 2 + 3 / testGame.PPM
         );
 
-        // When Josh is hurt
-        if (isHurt) {
-            hurtTimer += dt;
-            TextureRegion hurtFrame = hurtAnimation.getKeyFrame(hurtTimer, false);
-            if (!facingLeft && !hurtFrame.isFlipX()) {
-                hurtFrame.flip(true, false);
-            } else if (facingLeft && hurtFrame.isFlipX()) {
-                hurtFrame.flip(true, false);
+        // Update animation frame
+        if (currentAnimation != null) {
+            TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+            if (!facingLeft && !currentFrame.isFlipX()) {
+                currentFrame.flip(true, false);
+            } else if (facingLeft && currentFrame.isFlipX()) {
+                currentFrame.flip(true, false);
             }
-            setRegion(hurtFrame);
-
-            if (hurtTimer >= hurtDuration) {
-                isHurt = false;
-                stateTime = 0;
-            }
-            return;  // Skip normal animation updates while hurt
+            setRegion(currentFrame);
         }
+    }
 
-        // When Josh is dead
-        if (isDead) {
-            deathTimer += dt;
-            TextureRegion deathFrame = deathAnimation.getKeyFrame(deathTimer, false);
-            if (!facingLeft && !deathFrame.isFlipX()) {
-                deathFrame.flip(true, false);
-            }
-            setRegion(deathFrame);
-            return;
+    // Update the attack method:
+    public void attack() {
+        if (!isAttacking && attackCooldownTimer <= 0 && !isDead && !isHurt) {
+            isAttacking = true;
+            attackTimer = 0;
+            attackCooldownTimer = attackCooldown;
+
+            // Randomly select an attack animation
+            currentAttackAnimation = (int)(Math.random() * 3);
         }
-
-        // Update sprite
-        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-        if (!facingLeft && !currentFrame.isFlipX()) {
-            currentFrame.flip(true, false);
-        } else if (facingLeft && currentFrame.isFlipX()) {
-            currentFrame.flip(true, false);
-        }
-        setRegion(currentFrame);
-
     }
 
     /**
@@ -366,6 +399,21 @@ public class Josh extends Sprite {
         for (Texture t : walkTextures)  { t.dispose(); }
         for (Texture t : runTextures)   { t.dispose(); }
         for (Texture t : hurtTextures) { t.dispose(); }
+        for (Texture t : standTextures) { if (t != null) t.dispose(); }
+        for (Texture t : walkTextures)  { if (t != null) t.dispose(); }
+        for (Texture t : runTextures)   { if (t != null) t.dispose(); }
+        for (Texture t : hurtTextures)  { if (t != null) t.dispose(); }
+
+        // Dispose attack animations
+        if (attackTextures != null) {
+            for (Texture[] attackSet : attackTextures) {
+                if (attackSet != null) {
+                    for (Texture t : attackSet) {
+                        if (t != null) t.dispose();
+                    }
+                }
+            }
+        }
     }
 
     public Vector2 getPosition() {

@@ -130,6 +130,21 @@ import com.badlogic.gdx.physics.box2d.*;
             } else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Trap) {
                 player.damage();
             }
+
+            // Check the player attack
+            // If Josh is attacking and touches a monster, the monster gets hit
+            if (player.isAttacking) {
+                if ((fixA.getBody() == player.b2body && fixB.getUserData() instanceof Monster)) {
+                    Monster monster = (Monster) fixB.getUserData();
+                    monster.getHit();
+                    System.out.println("Monster hit by attack!");  // Debug log
+                }
+                else if ((fixB.getBody() == player.b2body && fixA.getUserData() instanceof Monster)) {
+                    Monster monster = (Monster) fixA.getUserData();
+                    monster.getHit();
+                    System.out.println("Monster hit by attack!");  // Debug log
+                }
+            }
         }
 
         @Override
