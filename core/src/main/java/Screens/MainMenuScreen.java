@@ -82,7 +82,7 @@ public class MainMenuScreen implements Screen {
 
         // Title
         Label titleLabel = new Label("Maze Runner", skin, "title");
-        table.add(titleLabel).colspan(1).padBottom(30);
+        table.add(titleLabel).colspan(2).center().padBottom(30);
         table.row();
 
         // START button
@@ -94,8 +94,7 @@ public class MainMenuScreen implements Screen {
                 game.setScreen(new PlayScreen(game));
             }
         });
-        table.add(startButton).width(200);
-        table.row();
+
 
         // STORY button
         TextButton storyButton = new TextButton("Story", skin);
@@ -107,8 +106,7 @@ public class MainMenuScreen implements Screen {
                 Gdx.input.setInputProcessor(storyStage);
             }
         });
-        table.add(storyButton).width(200);
-        table.row();
+
 
         // CREDITS button
         TextButton creditsButton = new TextButton("Credits", skin);
@@ -120,8 +118,7 @@ public class MainMenuScreen implements Screen {
                 Gdx.input.setInputProcessor(creditsStage);
             }
         });
-        table.add(creditsButton).width(200);
-        table.row();
+
 
         // EXIT button
         TextButton exitButton = new TextButton("Exit", skin);
@@ -131,7 +128,19 @@ public class MainMenuScreen implements Screen {
                 Gdx.app.exit();
             }
         });
-        table.add(exitButton).width(200);
+        startButton.pack();
+        storyButton.pack();
+        creditsButton.pack();
+        exitButton.pack();
+
+        table.add(startButton).pad(10);
+        table.add(storyButton).pad(10);
+        table.row();
+
+        table.add(creditsButton).pad(10);
+        table.add(exitButton).pad(10);
+
+
     }
 
     /**
