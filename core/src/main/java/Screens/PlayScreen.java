@@ -366,7 +366,15 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            // Switch to PauseMenuScreen, passing a reference to THIS screen
+            game.setScreen(new PauseMenuScreen(game, this));
+            return;
+        }
+        // If paused, skip update logic
+        if (!paused) {
+            update(delta);
+        }
 
         // This fills the background of the screen with black.
         Gdx.gl.glClearColor(0, 0,0, 1);
