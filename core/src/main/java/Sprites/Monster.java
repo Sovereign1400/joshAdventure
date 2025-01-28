@@ -198,6 +198,16 @@ public class Monster extends Sprite {
                 attackTimer = 0;
             }
         }
+        // Adjust attack CD based on distance to player
+        if (distanceToPlayer < 1f && canAttack) {
+            currentState = MonsterState.ATTACK;
+            canAttack = false;  // Start cooldown
+            attackTimer = 0;
+        } else if (distanceToPlayer < 5f) {
+            currentState = MonsterState.WALK;
+        } else {
+            currentState = MonsterState.IDLE;
+        }
     }
 
     // Loading animations
