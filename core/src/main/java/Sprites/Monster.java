@@ -25,9 +25,15 @@ public class Monster extends Sprite {
     // When monsters are attacked
     private boolean isHit = false;
     private float hitSlowdownDuration = 2f;
-    private float hitSlowdownTimer = 0;
+    private float hitDuration = 10f;  // 10 seconds stop
+    private float hitTimer = 0;
     private float normalSpeed = 0.2f;
     private float slowedSpeed = 0.1f;
+
+    //Monster attack
+    private float attackCooldown = 3f;  // 3 seconds between attacks
+    private float attackTimer = 0;
+    private boolean canAttack = true;
 
     // Different animations for monster states
     private Animation<TextureRegion> walkAnimation;
@@ -163,13 +169,14 @@ public class Monster extends Sprite {
         }
 
         // Update monster getting attacked
-        // Update hit slowdown
-        // Update hit slowdown
+        // Update hit state
         if (isHit) {
-            hitSlowdownTimer -= dt;
-            if (hitSlowdownTimer <= 0) {
+            hitTimer += dt;
+            if (hitTimer >= hitDuration) {
                 isHit = false;
             }
+            b2body.setLinearVelocity(0, 0);
+            return;
         }
         direction.nor();
         // Use slowed speed if hit
@@ -181,6 +188,15 @@ public class Monster extends Sprite {
                 direction.x * targetVelocity,
                 direction.y * targetVelocity
             );
+        }
+
+        //Update monster attack cooldown
+        if (!canAttack) {
+            attackTimer += dt;
+            if (attackTimer >= attackCooldown) {
+                canAttack = true;
+                attackTimer = 0;
+            }
         }
     }
 
@@ -232,8 +248,6 @@ public class Monster extends Sprite {
 
     public void getHit() {
         isHit = true;
-        hitSlowdownTimer = hitSlowdownDuration;
-        System.out.println("Monster got hit!");  // Debug log
     }
 
 
