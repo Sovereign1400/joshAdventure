@@ -60,13 +60,19 @@ public class HUD implements Disposable {
             heartTable.add(heartImages[i]).size(30, 50).padRight(10);
         }
 
-        stopwatchLabel = new Label(String.format("%03d", elapsedTime), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
         scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         mainCharLabel = new Label("mainChar", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         // keyLabel = new Label("Key: Not Collected", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        stopwatchLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        // Score label
+        scoreLabel = new Label("SCORE: 000000", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
 
         Texture keyTexture = new Texture("pickups/key.png");
         keyImage = new Image(keyTexture);
@@ -130,12 +136,23 @@ public class HUD implements Disposable {
         // check whether key is collected or not, also display it
         // keyLabel.setText(player.hasKey() ? "Key: Collected" : "Key: Not Collected");
 
+        scoreLabel.setText("SCORE: " + String.format("%06d", score));
+
+        // 3) Update time only if not paused
         if (!paused) {
             timeCount += dt;
             if (timeCount >= 1) {
-                elapsedTime++;
-                stopwatchLabel.setText(String.format("%03d", elapsedTime));
+                elapsedTime++;   // increment total seconds
                 timeCount = 0;
+
+                // Convert to HH:MM:SS
+                int hours = elapsedTime / 3600;
+                int remainder = elapsedTime % 3600;
+                int minutes = remainder / 60;
+                int seconds = remainder % 60;
+
+                // Update the stopwatch label.
+                stopwatchLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
             }
         }
     }
