@@ -53,8 +53,14 @@
  <objectgroup id="11" name="enterDoor" visible="0">
   <object id="19" x="-7.48538" y="32.7485" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="12" name="Josh" visible="0">
-  <object id="35" x="26.7602" y="33.4971" width="32" height="32"/>
+ <objectgroup id="13" name="monsterSpawns" visible="0">
+  <object id="21" x="96" y="192" width="32" height="32"/>
+  <object id="22" x="256" y="304" width="32" height="32"/>
+  <object id="23" x="272" y="64" width="32" height="32"/>
+  <object id="24" x="400" y="224" width="32" height="32"/>
+  <object id="25" x="496" y="496" width="32" height="32"/>
+  <object id="26" x="80" y="512" width="32" height="32"/>
+  <object id="27" x="272" y="512" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="trap">
   <object id="36" x="90.4795" y="22.269" width="32" height="32"/>
@@ -73,13 +79,7 @@
   <object id="50" x="560" y="432" width="32" height="32"/>
   <object id="51" x="512" y="336" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="13" name="monsterSpawns" visible="0">
-  <object id="21" x="96" y="192" width="32" height="32"/>
-  <object id="22" x="256" y="304" width="32" height="32"/>
-  <object id="23" x="272" y="64" width="32" height="32"/>
-  <object id="24" x="400" y="224" width="32" height="32"/>
-  <object id="25" x="496" y="496" width="32" height="32"/>
-  <object id="26" x="80" y="512" width="32" height="32"/>
-  <object id="27" x="272" y="512" width="32" height="32"/>
+ <objectgroup id="12" name="Josh" visible="0">
+  <object id="35" x="26.7602" y="33.4971" width="32" height="32"/>
  </objectgroup>
 </map>
