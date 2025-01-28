@@ -36,6 +36,7 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private HUD hud;
     private boolean gameOver = false;
+    private boolean paused = false;  // If true, the game logic is paused
 
     // Tile Map attributes
     private TmxMapLoader mapLoader;
@@ -47,10 +48,6 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private Josh player;
-
-    // Player Spawn Attributes
-    float initialX = 120f;
-    float initialY = 200f;
 
     // Monster Attributes
     private Array<Monster> monsters;
@@ -102,22 +99,25 @@ public class PlayScreen implements Screen {
         // Typically you have a SpriteBatch around for drawing everything else
         batch = new SpriteBatch();
 
+        // This loads the map.
+                this.currentMapPath = mapPath;
+                mapLoader = new TmxMapLoader();
+                map = mapLoader.load(mapPath);
+
         // This is for box2D world
         world = new World(new Vector2(0, (float) 0 / testGame.PPM), true); // This set gravity to 0.
         b2dr = new Box2DDebugRenderer();
 
-        // First create player, then create HUD
-        player = new Josh(world, initialX, initialY);
+        // This creates Josh.
+        Vector2 spawnPoint = getEnterDoorPosition();
+        System.out.println("Spawning player at door: " + spawnPoint.x + ", " + spawnPoint.y);
+
+        // Create player at spawn point
+        player = new Josh(world, spawnPoint.x, spawnPoint.y);
 
         // This creates the HUD for scoreboard and other data shown on screen.
         hud = new HUD(game.batch, player);
         world.setContactListener(new WorldContactListener(player, this));
-
-        // This loads the map.
-        this.currentMapPath = mapPath;
-        mapLoader = new TmxMapLoader();
-        map = mapLoader.load(mapPath);
-
         // This renders the map.
         renderer = new OrthogonalTiledMapRenderer(map, (float) 1 / testGame.PPM);
 
@@ -162,7 +162,6 @@ public class PlayScreen implements Screen {
         createMonsters();
 
         // This sets all interactive objects
-
         speedups = new Array<>();
         hearts = new Array<>();
         shields = new Array<>();
@@ -173,6 +172,34 @@ public class PlayScreen implements Screen {
         shields = creator.createShields(world, map);
         keys = creator.createKeys(world, map);
         doors = creator.createDoors(world, map); // This creates door on the map.
+    }
+
+    private Vector2 getEnterDoorPosition() {
+        // Default spawn point in case nothing is found
+        Vector2 defaultSpawn = new Vector2(120f, 200f);
+
+        try {
+            // Check if the enterDoor layer exists
+            if (map.getLayers().get("enterDoor") != null) {
+                for (MapObject object : map.getLayers().get("enterDoor").getObjects()) {
+                    if (object instanceof RectangleMapObject) {
+                        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                        // Add a small offset to position Josh in front of the door
+                        float offsetX = 48f; // Adjust this value based on your door width
+                        float offsetY = 0f;  // Adjust if needed
+                        return new Vector2(rect.x + offsetX, rect.y + offsetY);
+                    }
+                }
+            }
+
+            System.out.println("No enter door found in map, using default spawn point");
+            return defaultSpawn;
+
+        } catch (Exception e) {
+            System.err.println("Error finding enter door position: " + e.getMessage());
+            e.printStackTrace();
+            return defaultSpawn;
+        }
     }
 
     @Override
@@ -274,7 +301,7 @@ public class PlayScreen implements Screen {
         renderer.setView(gamecam);
 
         // This updates HUD
-        hud.update();
+        hud.update(dt, false);
 
         // This renders the monster
         // Update all monsters
@@ -409,6 +436,11 @@ public class PlayScreen implements Screen {
 
         // This renders fog of war using the same batch but the second time.
          renderFogOfWar();
+
+        // Set our batch to now draw what HUD cam sees.
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
+
     }
 
     private void createMonsters() {
@@ -620,6 +652,10 @@ public class PlayScreen implements Screen {
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewW, viewH, false);
         fboRegion = new TextureRegion(fbo.getColorBufferTexture());
 //        fboRegion.flip(false, true);
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 
     @Override
