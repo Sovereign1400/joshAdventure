@@ -409,6 +409,10 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined); // Set the projection for game world
         game.batch.begin(); // Start batch
 
+        // This renders an array of traps.
+        for (Trap trap : traps) {
+            trap.draw(game.batch);
+        }
         // This renders Josh, the main player
         player.draw(game.batch); // Draw player
 
@@ -424,10 +428,7 @@ public class PlayScreen implements Screen {
             monster.draw(game.batch);
         }
 
-        // This renders an array of traps.
-        for (Trap trap : traps) {
-            trap.draw(game.batch);
-        }
+
 
         // This renders an array of speedups
         for(Speedup speedup : speedups) {
