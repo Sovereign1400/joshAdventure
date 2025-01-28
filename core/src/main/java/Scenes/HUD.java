@@ -151,7 +151,7 @@ public class HUD implements Disposable {
                 int minutes = remainder / 60;
                 int seconds = remainder % 60;
 
-                // Update the stopwatch label
+                // Update the stopwatch label.
                 stopwatchLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
             }
         }
