@@ -81,7 +81,7 @@ public class MainMenuScreen implements Screen {
         menuStage.addActor(table);
 
         // Title
-        Label titleLabel = new Label("Maze Runner", skin, "title");
+        Label titleLabel = new Label("Centurions Adventure", skin, "title");
         table.add(titleLabel).colspan(1).padBottom(30);
         table.row();
 
