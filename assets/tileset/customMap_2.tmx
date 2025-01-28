@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="41">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="49">
  <tileset firstgid="1" source="mainlevbuild.tsx"/>
  <layer id="1" name="floor" width="40" height="40">
   <data encoding="base64" compression="zlib">
@@ -62,5 +62,14 @@
  <objectgroup id="12" name="exitDoor">
   <object id="37" x="159" y="607.092" width="32.4167" height="32.8155"/>
  </objectgroup>
- <objectgroup id="14" name="traps"/>
+ <objectgroup id="14" name="trap" visible="0">
+  <object id="41" x="448" y="80" width="32" height="32"/>
+  <object id="42" x="512" y="80" width="32" height="32"/>
+  <object id="43" x="96" y="224" width="32" height="32"/>
+  <object id="44" x="224" y="320" width="32" height="32"/>
+  <object id="45" x="160" y="480" width="32" height="32"/>
+  <object id="46" x="464" y="352" width="32" height="32"/>
+  <object id="47" x="576" y="352" width="32" height="32"/>
+  <object id="48" x="32" y="368" width="32" height="32"/>
+ </objectgroup>
 </map>

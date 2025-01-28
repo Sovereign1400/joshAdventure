@@ -52,6 +52,9 @@ public class PlayScreen implements Screen {
     // Monster Attributes
     private Array<Monster> monsters;
 
+    // Trap attributes
+    private Array<Trap> traps;
+
     // Fog of War Attributes
     private FrameBuffer fbo;
     private TextureRegion fboRegion;
@@ -156,8 +159,10 @@ public class PlayScreen implements Screen {
         // This sets Monsters
         //----------------------------------------
 
-        // Initialize the monsters array
+        // Initialize the monsters array and traps
         monsters = new Array<Monster>();
+        traps = new Array<>();
+        createTraps();
 
         // Create monsters at specific positions
         createMonsters();
@@ -310,6 +315,10 @@ public class PlayScreen implements Screen {
             monster.update(dt);
         }
 
+        for (Trap trap : traps) {
+            trap.update(dt);
+        }
+
         for(Heart heart : hearts) {
             heart.update();
         }
@@ -399,6 +408,11 @@ public class PlayScreen implements Screen {
         // This renders an array of monsters
         for (Monster monster : monsters) {
             monster.draw(game.batch);
+        }
+
+        // This renders an array of traps.
+        for (Trap trap : traps) {
+            trap.draw(game.batch);
         }
 
         // This renders an array of speedups
@@ -503,6 +517,20 @@ public class PlayScreen implements Screen {
         shapeRenderer.setColor(1, 0, 0, 1);  // full opaque red
         shapeRenderer.circle(w / 2f, h / 2f, 100f);
         shapeRenderer.end();
+    }
+
+    private void createTraps() {
+        for (MapObject object : map.getLayers().get("trap").getObjects()) {
+            if (object instanceof RectangleMapObject) {
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                addTrap(rect.x, rect.y);
+            }
+        }
+    }
+
+    private void addTrap(float x, float y) {
+        Trap trap = new Trap(world, x, y);
+        traps.add(trap);
     }
 
     private void renderFogOfWar() {
@@ -702,6 +730,10 @@ public class PlayScreen implements Screen {
         // This dispose all monsters
         for (Monster monster : monsters) {
             monster.dispose();
+        }
+
+        for (Trap trap : traps) {
+            trap.dispose();
         }
     }
 

@@ -124,8 +124,12 @@ import com.badlogic.gdx.physics.box2d.*;
                 }
             }
 
-            // Check victory condition when the user touched the final door.
-
+            // Check when the player touches the trap.
+            if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Trap) {
+                player.damage();
+            } else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Trap) {
+                player.damage();
+            }
         }
 
         @Override

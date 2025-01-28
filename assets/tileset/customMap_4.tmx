@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="36">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="52">
  <tileset firstgid="1" source="mainlevbuild.tsx"/>
  <layer id="1" name="floor" width="40" height="40">
   <data encoding="base64" compression="zlib">
@@ -55,6 +55,23 @@
  </objectgroup>
  <objectgroup id="12" name="Josh">
   <object id="35" x="26.7602" y="33.4971" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="15" name="trap">
+  <object id="36" x="80" y="32" width="32" height="32"/>
+  <object id="37" x="32" y="112" width="32" height="32"/>
+  <object id="38" x="32" y="256" width="32" height="32"/>
+  <object id="39" x="176" y="240" width="32" height="32"/>
+  <object id="40" x="256" y="160" width="32" height="32"/>
+  <object id="41" x="224" y="32" width="32" height="32"/>
+  <object id="42" x="368" y="32" width="32" height="32"/>
+  <object id="43" x="560" y="96" width="32" height="32"/>
+  <object id="44" x="544" y="272" width="32" height="32"/>
+  <object id="45" x="320" y="496" width="32" height="32"/>
+  <object id="47" x="128" y="464" width="32" height="32"/>
+  <object id="48" x="48" y="560" width="32" height="32"/>
+  <object id="49" x="432" y="560" width="32" height="32"/>
+  <object id="50" x="560" y="432" width="32" height="32"/>
+  <object id="51" x="512" y="336" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="13" name="monsterSpawns">
   <object id="21" x="96" y="192" width="32" height="32"/>
