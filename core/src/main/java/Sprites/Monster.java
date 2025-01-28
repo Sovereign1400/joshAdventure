@@ -203,7 +203,7 @@ public class Monster extends Sprite {
     }
 
     public void dispose() {
-        monsterTexture.dispose();
+//        monsterTexture.dispose();
         // Dispose all animation textures
         if (walkTextures != null) {
             for (Texture texture : walkTextures) {
