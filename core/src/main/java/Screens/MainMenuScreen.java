@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 
 /**
@@ -27,11 +29,14 @@ public class MainMenuScreen implements Screen {
     private Stage storyStage;       // Sub-stage for "Story"
     private Stage creditsStage;     // Sub-stage for "Credits"
     private Stage activeStage;      // Which stage is currently shown (menuStage by default)
-
+    private Viewport viewport;
+    private Stage stage;
     private Skin skin;              // The UI skin
 
     public MainMenuScreen(testGame game) {
         this.game = game;
+        viewport = new FitViewport(800, 480); // or any “virtual” size
+        stage = new Stage(viewport);
     }
 
     @Override
@@ -67,7 +72,7 @@ public class MainMenuScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
 
-        // Slightly fancy background (assuming "white" is a drawable in your skin)
+        // Slightly fancy background hopefully
         table.setBackground(skin.newDrawable("white", Color.FIREBRICK));
 
         // Default padding for each cell
@@ -209,6 +214,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        viewport.update(width, height, true);
         menuStage.getViewport().update(width, height, true);
         storyStage.getViewport().update(width, height, true);
         creditsStage.getViewport().update(width, height, true);
