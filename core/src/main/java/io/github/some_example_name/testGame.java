@@ -13,8 +13,8 @@ import com.badlogic.gdx.audio.Music;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class testGame extends Game {
-    public static final int win_width = 800;
-    public static final int win_height = 800;
+    public static final int win_width = 1280;
+    public static final int win_height = 720;
     public SpriteBatch batch;
     public static final float PPM = 32f;
     private Skin skin;
@@ -27,6 +27,11 @@ public class testGame extends Game {
 //    GameMap gameMap;
     @Override
     public void create() {
+
+        // Set window size
+        Gdx.graphics.setWindowedMode(win_width, win_height);
+
+
         batch = new SpriteBatch();
 
 //        gameMap = new TiledGameMap();

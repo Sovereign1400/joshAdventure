@@ -93,20 +93,22 @@ public class PlayScreen implements Screen {
     // Arrow Attribute
     private DirectionalArrow directionalArrow;
 
-
     // Ghost Attribute
     private Array<Ghost> ghosts;
-
 
     // Score system
     public static final int HEART_SCORE = 200;
     public static final int SPEEDUP_SCORE = 200;
     public static final int KEY_SCORE = 500;
     public static final int SHIELD_SCORE = 150;
+    public static final int SCORE_PER_SECOND = 5;
 
-
-
-
+    // Camara zoom in/out
+    private static final float MIN_ZOOM = 0.75f;
+    private static final float MAX_ZOOM = 1.1f;
+    private static final float ZOOM_SPEED = 0.1f;
+    private static final float DEFAULT_ZOOM = 1f;
+    private float currentZoom = DEFAULT_ZOOM;
 
 
     public PlayScreen(testGame game) {
@@ -117,20 +119,19 @@ public class PlayScreen implements Screen {
         this.game = game;
 
 
-        // This camera follows the main character.
+        // Create camera with larger viewport dimensions for better scaling
         gamecam = new OrthographicCamera();
-        // This zooms in / out the camera
-        gamecam.zoom = 1f;
-        // This creates a viewport that stabilize virtual aspect ratio.
-        gamePort = new FitViewport(16, 9, gamecam);
+        // Use a larger viewport size (adjust these values based on your game's needs)
+        gamePort = new FitViewport(16, 9, gamecam);  // 16:9 aspect ratio but larger
+        gamecam.zoom = currentZoom;
 
         // Typically you have a SpriteBatch around for drawing everything else
         batch = new SpriteBatch();
 
         // This loads the map.
-                this.currentMapPath = mapPath;
-                mapLoader = new TmxMapLoader();
-                map = mapLoader.load(mapPath);
+        this.currentMapPath = mapPath;
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load(mapPath);
 
         // This is for box2D world
         world = new World(new Vector2(0, (float) 0 / testGame.PPM), true); // This set gravity to 0.
@@ -139,7 +140,6 @@ public class PlayScreen implements Screen {
         // This creates Josh.
         // Where Josh is created:
         Vector2 spawnPoint = getEnterDoorPosition();
-        System.out.println("Spawning player at door: " + spawnPoint.x + ", " + spawnPoint.y);
 
         // Pass 'this' as the PlayScreen reference
         player = new Josh(world, spawnPoint.x, spawnPoint.y);
@@ -314,6 +314,10 @@ public class PlayScreen implements Screen {
                 return;  // Skip all input handling if dead
             }
 
+
+            // Zoom handling
+            handleZoomInput(dt);
+
             // Add attack input check
             if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
                 player.attack();
@@ -378,98 +382,122 @@ public class PlayScreen implements Screen {
         }
     }
 
+    // Zoom control methods
+    private void handleZoomInput(float dt) {
+        // Zoom in with NumPad + or regular +
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_ADD) ||
+            Gdx.input.isKeyPressed(Input.Keys.PLUS)) {
+            currentZoom = Math.max(MIN_ZOOM, currentZoom - ZOOM_SPEED * dt);
+        }
+        // Zoom out with NumPad - or regular -
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_SUBTRACT) ||
+            Gdx.input.isKeyPressed(Input.Keys.MINUS)) {
+            currentZoom = Math.min(MAX_ZOOM, currentZoom + ZOOM_SPEED * dt);
+        }
+        // Reset zoom with R key
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            currentZoom = DEFAULT_ZOOM;
+        }
+
+        gamecam.zoom = currentZoom;
+    }
+
     //This method updates data in the game, dt = delta, a small period of time.
     public void update(float dt){
-
-        // This checks if user has given any inputs.
-        handleInput(dt);
-
-        world.step(1 / 60f, 6, 2); // Update physics world
-        player.update(dt); // Update player state
-        gamecam.position.x = player.b2body.getPosition().x; // Follow the player
-
-        // This tracks the game camera to the player
-        gamecam.position.set(player.b2body.getPosition().x, player.b2body.getPosition().y, 0);
-
-        // This updates the camera position.
-        gamecam.update();
-
-        // This tells the game cam what to render.
-        renderer.setView(gamecam);
-
-        // This updates HUD
-        hud.update(dt, false);
-
-        // This renders the monster
-        // Update all monsters
-        for (Monster monster : monsters) {
-            monster.update(dt);
-        }
-
-        for (Trap trap : traps) {
-            trap.update(dt);
-        }
-
-        for(Heart heart : hearts) {
-            heart.update();
-        }
-
-        for(Speedup speedup : speedups) {
-            speedup.update();
-        }
-
-        for (Shield shield : shields){
-            shield.update();
-        }
-
-        for (Key key : keys){
-            key.update();
-        }
-
-        // This opens the gameOver screen once the game over part set to true.
-        if (!gameOver) {
+        if (!paused) {
             handleInput(dt);
-            world.step(dt, 6, 2);  // Use dt (in game time) or actual time.
-            player.update(dt);
+            // This checks if user has given any inputs.
+            handleInput(dt);
 
-            if (player.isDead() && player.deathTimer >= player.deathDuration) {
-                gameOver = true;
-                game.setScreen(new GameOverScreen(game));
+            world.step(1 / 60f, 6, 2); // Update physics world
+            player.update(dt); // Update player state
+            gamecam.position.x = player.b2body.getPosition().x; // Follow the player
+
+            gamecam.zoom = currentZoom;
+            gamecam.update();
+
+            // This tracks the game camera to the player
+            gamecam.position.set(player.b2body.getPosition().x, player.b2body.getPosition().y, 0);
+
+            // This updates the camera position.
+            gamecam.update();
+
+            // This tells the game cam what to render.
+            renderer.setView(gamecam);
+
+            // This updates HUD
+            hud.update(dt, false);
+
+            // This renders the monster
+            // Update all monsters
+            for (Monster monster : monsters) {
+                monster.update(dt);
+            }
+
+            for (Trap trap : traps) {
+                trap.update(dt);
+            }
+
+            for (Heart heart : hearts) {
+                heart.update();
+            }
+
+            for (Speedup speedup : speedups) {
+                speedup.update();
+            }
+
+            for (Shield shield : shields) {
+                shield.update();
+            }
+
+            for (Key key : keys) {
+                key.update();
+            }
+
+            // This opens the gameOver screen once the game over part set to true.
+            if (!gameOver) {
+                handleInput(dt);
+                world.step(dt, 6, 2);  // Use dt (in game time) or actual time.
+                player.update(dt);
+
+                if (player.isDead() && player.deathTimer >= player.deathDuration) {
+                    gameOver = true;
+                    game.setScreen(new GameOverScreen(game));
 //                dispose();
+                }
             }
-        }
 
-        // This implements the doors.
-        for (Door door : doors) {
-            door.update();
-        }
-
-        if (showDoorMessage) {
-            messageTimer += dt;
-            if (messageTimer >= MESSAGE_DURATION) {
-                showDoorMessage = false;
-                messageTimer = 0;
+            // This implements the doors.
+            for (Door door : doors) {
+                door.update();
             }
-        }
-        // Skip updates if loads next map.
-        if (shouldLoadNextMap) {
-            return;
-        }
 
-        if (!gameOver && !shouldLoadNextMap) {
-            gameTime += dt;
-        }
+            if (showDoorMessage) {
+                messageTimer += dt;
+                if (messageTimer >= MESSAGE_DURATION) {
+                    showDoorMessage = false;
+                    messageTimer = 0;
+                }
+            }
+            // Skip updates if loads next map.
+            if (shouldLoadNextMap) {
+                return;
+            }
 
-        for (Ghost ghost : ghosts) {
-            ghost.update(dt);
-        }
+            if (!gameOver && !shouldLoadNextMap) {
+                gameTime += dt;
+            }
 
-        updateDirectionalArrow();
+            for (Ghost ghost : ghosts) {
+                ghost.update(dt);
+            }
 
-        // Optional: Check for collisions between player and monsters
+            updateDirectionalArrow();
+
+            // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
 
-
+        }
     }
 
     @Override
@@ -646,10 +674,16 @@ public class PlayScreen implements Screen {
         }
     }
 
+
+
+
     private void addTrap(float x, float y) {
         Trap trap = new Trap(world, x, y);
         traps.add(trap);
     }
+
+
+
 
     private void renderFogOfWar() {
         int viewW = gamePort.getScreenWidth();
@@ -675,8 +709,11 @@ public class PlayScreen implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(0, 0, 0, 0.1f);
 
-        float worldWidth = gamecam.viewportWidth * 2;
-        float worldHeight = gamecam.viewportHeight * 2;
+        // Calculate a larger rectangle size based on camera zoom
+        float zoomFactor = gamecam.zoom;
+        float worldWidth = gamecam.viewportWidth * 4 * zoomFactor;
+        float worldHeight = gamecam.viewportHeight * 4 * zoomFactor;
+
         shapeRenderer.rect(
             gamecam.position.x - worldWidth/2,
             gamecam.position.y - worldHeight/2,
@@ -686,14 +723,15 @@ public class PlayScreen implements Screen {
 
         Gdx.gl.glBlendFunc(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        float baseRadius = 3f;
+        // Scale the visible circle based on zoom
+        float baseRadius = 3f * zoomFactor;  // Base radius scales with zoom
         int segments = 50;
 
         // Add blurred circles to the fog of war
         for (int i = 0; i < 10; i++) {
             float alpha = 1.0f - (i * 0.1f);
             shapeRenderer.setColor(0, 0, 0, alpha);
-            float radius = baseRadius + (i * 0.1f);
+            float radius = baseRadius + (i * 0.1f * zoomFactor);  // Radius scales with zoom
             shapeRenderer.circle(
                 player.b2body.getPosition().x,
                 player.b2body.getPosition().y,
@@ -709,12 +747,17 @@ public class PlayScreen implements Screen {
 
         game.batch.begin();
         game.batch.setProjectionMatrix(gamecam.combined);
+
+        // Draw the fog texture to cover the entire visible area
+        float fogWidth = gamecam.viewportWidth * zoomFactor;
+        float fogHeight = gamecam.viewportHeight * zoomFactor;
+
         game.batch.draw(
             fboRegion,
-            gamecam.position.x - gamecam.viewportWidth/2,
-            gamecam.position.y - gamecam.viewportHeight/2,
-            gamecam.viewportWidth,
-            gamecam.viewportHeight
+            gamecam.position.x - fogWidth/2,
+            gamecam.position.y - fogHeight/2,
+            fogWidth,
+            fogHeight
         );
         game.batch.end();
     }
@@ -745,7 +788,7 @@ public class PlayScreen implements Screen {
                 shouldLoadNextMap = true;
 
                 // Clear all bodies from the world
-                Array<Body> bodies = new Array<Body>();
+                Array<Body> bodies = new Array<>();
                 world.getBodies(bodies);
                 for(Body body : bodies) {
                     world.destroyBody(body);
@@ -769,7 +812,7 @@ public class PlayScreen implements Screen {
                 shouldLoadNextMap = true;
 
                 // Clear all bodies from the world
-                Array<Body> bodies = new Array<Body>();
+                Array<Body> bodies = new Array<>();
                 world.getBodies(bodies);
                 for(Body body : bodies) {
                     world.destroyBody(body);
@@ -789,6 +832,14 @@ public class PlayScreen implements Screen {
                     game.playMusic.setPosition(currentPos);
                     System.out.println("Switched to Map 4");
                 });
+            } else if (currentMapPath.contains("customMap_4")) {
+                // Only show victory screen on final map
+                shouldLoadNextMap = true;
+
+                Gdx.app.postRunnable(() -> {
+                    dispose();
+                    game.setScreen(new VictoryScreen(game, hud.getScore()));
+                });
             }
         } catch (Exception e) {
             System.err.println("Error loading next map:");
@@ -804,23 +855,34 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        gamePort.update(width, height);
+        // Update viewport with new screen size
+        gamePort.update(width, height, true);
+
+        // Update HUD viewport
+        hud.resize(width, height);
+
+        // Center camera
+        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        // Maintain zoom level
+        gamecam.zoom = currentZoom;
+
+        // Update camera
+        gamecam.update();
+
+        // Update FBO for fog of war
         int viewW = gamePort.getScreenWidth();
         int viewH = gamePort.getScreenHeight();
 
-        // Avoid zero or negative dimensions
         if (viewW < 1) viewW = 1;
         if (viewH < 1) viewH = 1;
 
-        // Dispose old FBO if it exists
         if (fbo != null) {
             fbo.dispose();
         }
 
-        // Create the FBO with the updated size
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewW, viewH, false);
         fboRegion = new TextureRegion(fbo.getColorBufferTexture());
-//        fboRegion.flip(false, true);
     }
 
     public void setPaused(boolean paused) {
@@ -884,5 +946,9 @@ public class PlayScreen implements Screen {
 
     public Josh getPlayer() {
         return player;
+    }
+
+    public HUD getHud() {
+        return hud;
     }
 }

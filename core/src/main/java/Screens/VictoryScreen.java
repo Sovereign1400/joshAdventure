@@ -25,14 +25,10 @@ public class VictoryScreen implements Screen {
     /**
      * If you want to know from which level the user won, you could pass in more data here.
      */
-    public VictoryScreen(testGame game, int elapsedTime) {
+    public VictoryScreen(testGame game, int finalScore) {
         this.game = game;
         // Calculate final score
-        int rawScore = 1000 - elapsedTime;
-        if (rawScore < 0) {
-            rawScore = 0;  // never go negative
-        }
-        this.finalScore = rawScore;
+        this.finalScore = finalScore;
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 

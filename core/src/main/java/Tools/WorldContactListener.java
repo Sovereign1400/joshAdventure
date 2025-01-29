@@ -107,7 +107,7 @@ import com.badlogic.gdx.physics.box2d.*;
                 Fixture doorFix = fixA.getUserData() instanceof Door ? fixA : fixB;
                 Door door = (Door)doorFix.getUserData();
 
-                if (door.getDoorType() == DoorType.EXIT) {
+                /*if (door.getDoorType() == DoorType.EXIT) {
                     if (player.hasKey()) {
                         System.out.println("Player touched exit door with key");
                         door.interact(player);
@@ -118,8 +118,7 @@ import com.badlogic.gdx.physics.box2d.*;
                             System.out.println("Victory achieved!");
                             Gdx.app.postRunnable(() -> {
                                 // Convert gameTime to integer seconds for score calculation
-                                int elapsedTime = (int)screen.gameTime;
-                                screen.getGame().setScreen(new VictoryScreen(screen.getGame(), elapsedTime));
+                                screen.getGame().setScreen(new VictoryScreen(screen.getGame(), screen.getHud().getScore()));
                             });
                         } else {
                             // Not final map, proceed to next map
@@ -127,6 +126,21 @@ import com.badlogic.gdx.physics.box2d.*;
                                 screen.loadNextMap();
                             });
                         }
+                    } else {
+                        screen.showDoorMessage = true;
+                        screen.messageTimer = 0;
+                    }
+                }*/
+
+                if (door.getDoorType() == DoorType.EXIT) {
+                    if (player.hasKey()) {
+                        door.interact(player);
+                        loadingNextMap = true;  // Set flag before loading
+
+                        // Not final map, proceed to next map
+                        Gdx.app.postRunnable(() -> {
+                            screen.loadNextMap();
+                        });
                     } else {
                         screen.showDoorMessage = true;
                         screen.messageTimer = 0;
