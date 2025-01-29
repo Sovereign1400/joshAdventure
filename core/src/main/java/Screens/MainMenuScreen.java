@@ -4,9 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -34,7 +37,7 @@ public class MainMenuScreen implements Screen {
     private Stage stage;
     private Skin skin;              // The UI skin
     private com.badlogic.gdx.audio.Sound buttonSound;
-
+    private Texture bgTexture;
 
 
     public MainMenuScreen(testGame game) {
@@ -42,7 +45,7 @@ public class MainMenuScreen implements Screen {
         viewport = new FitViewport(800, 480); // or any “virtual” size
         stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
-
+        bgTexture = new Texture("backgrounds/castleBG.jpg");
     }
 
     @Override
@@ -89,7 +92,7 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
 
         // Slightly fancy background hopefully
-        table.setBackground(skin.newDrawable("white", Color.FIREBRICK));
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(bgTexture)));
 
         // Default padding for each cell
         table.defaults().pad(15);
