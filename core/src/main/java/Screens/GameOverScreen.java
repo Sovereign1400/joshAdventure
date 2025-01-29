@@ -18,6 +18,8 @@ public class GameOverScreen implements Screen {
     private Skin skin;
     private com.badlogic.gdx.audio.Sound buttonSound;
 
+
+
     /**
      * You can pass data about the level or cause of game over if needed.
      */
@@ -45,6 +47,7 @@ public class GameOverScreen implements Screen {
 
         game.gameOverMusic.setLooping(true);
         game.gameOverMusic.play();
+        game.playMusic.setVolume(0.2f);
 
         Label gameOverLabel = new Label("GAME OVER!", skin, "title");
         gameOverLabel.setColor(Color.RED);

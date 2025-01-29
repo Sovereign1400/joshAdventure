@@ -48,6 +48,7 @@ public class Josh extends Sprite {
     private float hurtTimer = 0;
     private float hurtDuration = 2f;
     private boolean isHurt = false;
+    private com.badlogic.gdx.audio.Sound hurtSound;
 
     // dead stance
     private boolean isDead = false;
@@ -97,6 +98,8 @@ public class Josh extends Sprite {
         // initialize move speed
         this.movespeed = 1.0f;
         this.baseMovespeed = this.movespeed;
+
+        hurtSound = Gdx.audio.newSound(Gdx.files.internal("audio/hurtSFX.mp3"));
 
 
         setBounds(
@@ -301,6 +304,7 @@ public class Josh extends Sprite {
         } else if (isHurt) {
             currentAnimation = hurtAnimation;
             hurtTimer += dt;
+            hurtSound.play();
             if (hurtTimer >= hurtDuration) {
                 isHurt = false;
                 stateTime = 0;

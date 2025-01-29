@@ -4,9 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -34,7 +37,7 @@ public class MainMenuScreen implements Screen {
     private Stage stage;
     private Skin skin;              // The UI skin
     private com.badlogic.gdx.audio.Sound buttonSound;
-
+    private Texture bgTexture;
 
 
     public MainMenuScreen(testGame game) {
@@ -42,7 +45,7 @@ public class MainMenuScreen implements Screen {
         viewport = new FitViewport(800, 480); // or any “virtual” size
         stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
-
+        bgTexture = new Texture("backgrounds/castleBG.jpg");
     }
 
     @Override
@@ -78,6 +81,7 @@ public class MainMenuScreen implements Screen {
         // Play the main menu music
         game.mainMenuMusic.setLooping(true);
         game.mainMenuMusic.play();
+        game.mainMenuMusic.setVolume(0.2f);
     }
 
     /**
@@ -88,7 +92,7 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
 
         // Slightly fancy background hopefully
-        table.setBackground(skin.newDrawable("white", Color.FIREBRICK));
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(bgTexture)));
 
         // Default padding for each cell
         table.defaults().pad(15);
@@ -106,7 +110,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // to start the gameplay
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 game.setScreen(new PlayScreen(game));
             }
         });
@@ -118,7 +122,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Switch to storyStage
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 activeStage = storyStage;
                 Gdx.input.setInputProcessor(storyStage);
             }
@@ -131,7 +135,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Switch to creditsStage
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 activeStage = creditsStage;
                 Gdx.input.setInputProcessor(creditsStage);
             }
@@ -143,7 +147,7 @@ public class MainMenuScreen implements Screen {
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 Gdx.app.exit();
             }
         });
@@ -189,7 +193,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Return to main menu stage
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 activeStage = menuStage;
                 Gdx.input.setInputProcessor(menuStage);
             }
@@ -224,7 +228,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Return to main menu
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 activeStage = menuStage;
                 Gdx.input.setInputProcessor(menuStage);
             }

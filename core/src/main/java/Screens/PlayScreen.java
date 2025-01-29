@@ -40,6 +40,9 @@ public class PlayScreen implements Screen {
     private com.badlogic.gdx.audio.Sound runningSound;
     private long runningSoundId = -1;         //to loop
     private boolean isRunningSoundPlaying = false;
+    private com.badlogic.gdx.audio.Sound slashSound;
+    private com.badlogic.gdx.audio.Sound deathSound;
+
 
     private com.badlogic.gdx.audio.Sound buttonSound;
 
@@ -117,6 +120,8 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(testGame game, String mapPath) {
         this.game = game;
+        slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/joshsword.mp3"));
+        slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/deathSFX.mp3"));
 
 
         // Create camera with larger viewport dimensions for better scaling
@@ -276,6 +281,8 @@ public class PlayScreen implements Screen {
         game.mainMenuMusic.stop();
         game.playMusic.setLooping(true);
         game.playMusic.play();
+        game.playMusic.setVolume(0.1f);
+
 
     }
 
@@ -310,7 +317,7 @@ public class PlayScreen implements Screen {
                 player.b2body.setLinearVelocity(0, 0);
                 runningSound.pause();
                 isRunningSoundPlaying = false;
-
+                deathSound.play(0.2F);
                 return;  // Skip all input handling if dead
             }
 
@@ -321,6 +328,9 @@ public class PlayScreen implements Screen {
             // Add attack input check
             if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
                 player.attack();
+                if (!player.isDead()){
+                    slashSound.play(0.2F);
+                }
             }
 
             // This part can be safely removed, but keep it for now
@@ -369,8 +379,7 @@ public class PlayScreen implements Screen {
         //this is to loop the sfx
         if (isMoving) {
             if (!isRunningSoundPlaying) {
-                runningSoundId = runningSound.loop(0.1f);
-                // 0.5f is volume; adjust as needed
+                runningSoundId = runningSound.loop(0.15f);
                 isRunningSoundPlaying = true;
             }
         } else {
