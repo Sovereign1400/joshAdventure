@@ -40,6 +40,7 @@ public class PlayScreen implements Screen {
     private com.badlogic.gdx.audio.Sound runningSound;
     private long runningSoundId = -1;         //to loop
     private boolean isRunningSoundPlaying = false;
+
     private com.badlogic.gdx.audio.Sound buttonSound;
 
     // Tile Map attributes
@@ -211,6 +212,7 @@ public class PlayScreen implements Screen {
         doors = creator.createDoors(world, map); // This creates door on the map.
         ghosts = creator.createGhosts(world, map);
 
+
         runningSound = Gdx.audio.newSound(Gdx.files.internal("audio/runningloop.mp3")); // loads the sfx!!
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
@@ -360,7 +362,7 @@ public class PlayScreen implements Screen {
         //this is to loop the sfx
         if (isMoving) {
             if (!isRunningSoundPlaying) {
-                runningSoundId = runningSound.loop(0.5f);
+                runningSoundId = runningSound.loop(0.1f);
                 // 0.5f is volume; adjust as needed
                 isRunningSoundPlaying = true;
             }
