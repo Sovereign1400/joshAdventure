@@ -16,6 +16,7 @@ public class B2WorldCreator {
     private Array<Key> keys;
     private Josh player;
     private Array<Door> doors;
+    private Array<Ghost> ghosts;
 
     public B2WorldCreator(World world, TiledMap map){
         // This sets basic attributes for all future interactive objects on the map.
@@ -133,5 +134,14 @@ public class B2WorldCreator {
             doors.add(new Door(world, map, rect, DoorType.EXIT));
         }
         return doors;
+    }
+
+    public Array<Ghost> createGhosts(World world, TiledMap map) {
+        ghosts = new Array<>();
+        for(MapObject object : map.getLayers().get("ghosts").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            ghosts.add(new Ghost(world, map, rect));
+        }
+        return ghosts;
     }
 }

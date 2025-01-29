@@ -145,6 +145,15 @@ import com.badlogic.gdx.physics.box2d.*;
                     System.out.println("Monster hit by attack!");  // Debug log
                 }
             }
+
+
+            // This sets for ghost collision
+            if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Ghost) {
+                player.damage();
+            }
+            else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Ghost) {
+                player.damage();
+            }
         }
 
         @Override

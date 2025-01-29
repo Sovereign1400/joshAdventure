@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="49">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="51">
  <tileset firstgid="1" source="mainlevbuild.tsx"/>
  <layer id="1" name="floor" width="40" height="40">
   <data encoding="base64" compression="zlib">
@@ -50,7 +50,7 @@
   <object id="34" x="292.382" y="527.493" width="27.1282" height="22.6069"/>
  </objectgroup>
  <objectgroup id="10" name="keys">
-  <object id="35" x="223.808" y="232.851" width="35.4174" height="35.4174"/>
+  <object id="35" x="373.767" y="216.273" width="35.4174" height="35.4174"/>
  </objectgroup>
  <objectgroup id="14" name="trap">
   <object id="41" x="448" y="80" width="32" height="32"/>
@@ -68,6 +68,10 @@
  </objectgroup>
  <objectgroup id="12" name="exitDoor">
   <object id="37" x="159" y="607.092" width="32.4167" height="32.8155"/>
+ </objectgroup>
+ <objectgroup id="15" name="ghosts">
+  <object id="49" x="21.8533" y="520.711" width="29.3889" height="25.6211"/>
+  <object id="50" x="196.68" y="217.779" width="30.1425" height="28.6353"/>
  </objectgroup>
  <objectgroup id="6" name="Josh">
   <object id="24" x="32" y="64" width="32" height="32"/>

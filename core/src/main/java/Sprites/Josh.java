@@ -79,7 +79,7 @@ public class Josh extends Sprite {
     private float movespeed;
     private boolean speedBoostActive = false;
     private float speedBoostTimer = 0;
-    private float speedBoostDuration = 10f; // 10 seconds for speedup pickups
+    private float speedBoostDuration = 8f; // 10 seconds for speedup pickups
 
     // Key
     private boolean hasKey = false;
@@ -334,6 +334,21 @@ public class Josh extends Sprite {
                 currentFrame.flip(true, false);
             }
             setRegion(currentFrame);
+        }
+
+        // Update speed boost timer
+        if (speedBoostActive) {
+            speedBoostTimer += dt;
+            if (speedBoostTimer >= speedBoostDuration) {
+                speedBoostActive = false;
+                speedBoostTimer = 0;
+                movespeed = baseMovespeed; // Reset speed to normal
+            }
+        }
+
+        // Update attack cooldown
+        if (attackCooldownTimer > 0) {
+            attackCooldownTimer -= dt;
         }
     }
 

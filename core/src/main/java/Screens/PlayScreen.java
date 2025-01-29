@@ -92,6 +92,10 @@ public class PlayScreen implements Screen {
     // Arrow Attribute
     private DirectionalArrow directionalArrow;
 
+
+    // Ghost Attribute
+    private Array<Ghost> ghosts;
+
     public PlayScreen(testGame game) {
         this(game, "tileset/customMap_2.tmx");
     }
@@ -189,6 +193,7 @@ public class PlayScreen implements Screen {
         shields = creator.createShields(world, map);
         keys = creator.createKeys(world, map);
         doors = creator.createDoors(world, map); // This creates door on the map.
+        ghosts = creator.createGhosts(world, map);
 
         runningSound = Gdx.audio.newSound(Gdx.files.internal("audio/runningloop.mp3")); // loads the sfx!!
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
@@ -431,6 +436,10 @@ public class PlayScreen implements Screen {
             gameTime += dt;
         }
 
+        for (Ghost ghost : ghosts) {
+            ghost.update(dt);
+        }
+
         updateDirectionalArrow();
 
         // Optional: Check for collisions between player and monsters
@@ -524,6 +533,10 @@ public class PlayScreen implements Screen {
                 "You don't have the key!",
                 player.b2body.getPosition().x - 1f,
                 player.b2body.getPosition().y + 1f);
+        }
+
+        for (Ghost ghost : ghosts) {
+            ghost.draw(game.batch);
         }
 
         directionalArrow.draw(game.batch);
@@ -822,6 +835,10 @@ public class PlayScreen implements Screen {
 
         if (directionalArrow != null) {
             directionalArrow.dispose();
+        }
+
+        for (Ghost ghost : ghosts) {
+            ghost.dispose();
         }
     }
 
