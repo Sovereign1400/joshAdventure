@@ -218,7 +218,6 @@ public class PlayScreen implements Screen {
 
         runningSound = Gdx.audio.newSound(Gdx.files.internal("audio/runningloop.mp3")); // loads the sfx!!
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
-        buttonSound.setVolume(1,0.2F);
     }
 
     private void updateDirectionalArrow() {
@@ -280,6 +279,8 @@ public class PlayScreen implements Screen {
         game.mainMenuMusic.stop();
         game.playMusic.setLooping(true);
         game.playMusic.play();
+        game.playMusic.setVolume(0.1f);
+
 
     }
 

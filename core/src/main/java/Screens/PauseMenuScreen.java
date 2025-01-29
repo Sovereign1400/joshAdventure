@@ -36,7 +36,6 @@ public class PauseMenuScreen implements Screen {
         this.game = game;
         this.gameScreen = gameScreen;
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
-        buttonSound.setVolume(1,0.2F);
     }
 
     @Override
@@ -60,6 +59,7 @@ public class PauseMenuScreen implements Screen {
         Gdx.input.setInputProcessor(activeStage);
         game.pauseMusic.setLooping(true);
         game.pauseMusic.play();
+        game.pauseMusic.setVolume(0.3f);
     }
 
     /**
@@ -83,7 +83,7 @@ public class PauseMenuScreen implements Screen {
         continueButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 // Unpause and go back
                 if (gameScreen != null) {
                     gameScreen.setPaused(false);
@@ -113,7 +113,7 @@ public class PauseMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Switch to the stage select sub-stage
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 activeStage = stageSelectLevel;
                 Gdx.input.setInputProcessor(stageSelectLevel);
             }
@@ -125,7 +125,7 @@ public class PauseMenuScreen implements Screen {
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 Gdx.app.exit();
             }
         });
@@ -153,7 +153,7 @@ public class PauseMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 // Load stage1
                 game.setScreen(new PlayScreen(game, "tileset/customMap_2.tmx"));
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 game.pauseMusic.stop();
                 game.playMusic.play();
             }
@@ -167,7 +167,7 @@ public class PauseMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 // Load stage2
                 game.setScreen(new PlayScreen(game, "tileset/customMap_3.tmx"));
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 game.pauseMusic.stop();
                 game.playMusic.play();
             }
@@ -181,7 +181,7 @@ public class PauseMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 // Load stage3
                 game.setScreen(new PlayScreen(game, "tileset/customMap_4.tmx"));
-                buttonSound.play();
+                buttonSound.play(0.15F);
                 game.pauseMusic.stop();
                 game.playMusic.play();
             }
@@ -195,7 +195,7 @@ public class PauseMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 activeStage = pauseStage;
                 Gdx.input.setInputProcessor(pauseStage);
-                buttonSound.play();
+                buttonSound.play(0.15F);
             }
         });
         table.add(backButton).width(200).padTop(20);

@@ -27,7 +27,7 @@ import com.badlogic.gdx.physics.box2d.*;
             ghostSound = Gdx.audio.newSound(Gdx.files.internal("audio/ghostSFX.mp3"));
             healSound = Gdx.audio.newSound(Gdx.files.internal("audio/healSFX.mp3"));
             boostSound = Gdx.audio.newSound(Gdx.files.internal("audio/boostSFX.mp3"));
-            damageSound = Gdx.audio.newSound(Gdx.files.internal("audio/damageSFX.mp3"));
+            damageSound = Gdx.audio.newSound(Gdx.files.internal("audio/hitSFX.mp3"));
             trapSound = Gdx.audio.newSound(Gdx.files.internal("audio/trapSFX.mp3"));
             hitSound = Gdx.audio.newSound(Gdx.files.internal("audio/hitSFX.mp3"));
             keySound = Gdx.audio.newSound(Gdx.files.internal("audio/keySFX.mp3"));
@@ -53,7 +53,7 @@ import com.badlogic.gdx.physics.box2d.*;
                     if (!heart.isCollected()) {
                         heart.onCollect(player);
                         player.increaseHealth();
-                        healSound.play();
+                        healSound.play(0.3F);
                         screen.addScore(PlayScreen.HEART_SCORE);
                     }
                 }
@@ -72,7 +72,7 @@ import com.badlogic.gdx.physics.box2d.*;
                     if (!speedup.isCollected()) {
                         speedup.onCollect();
                         player.activateSpeedBoost();
-                        boostSound.play();
+                        boostSound.play(0.3F);
                         screen.addScore(PlayScreen.SPEEDUP_SCORE);
                     }
                 }
@@ -105,7 +105,7 @@ import com.badlogic.gdx.physics.box2d.*;
                         key.onCollect();
                         player.collectKey();
                         screen.addScore(PlayScreen.KEY_SCORE);
-                        keySound.play();
+                        keySound.play(0.3F);
                     }
                 }
             }
@@ -113,11 +113,11 @@ import com.badlogic.gdx.physics.box2d.*;
             // Check monster collision from 2 ways: Josh touchs monster and monster touched Josh.
             if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Monster) {
                 player.damage();
-                damageSound.play();
+                damageSound.play(0.3F);
             }
             else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Monster) {
                 player.damage();
-                damageSound.play();
+                damageSound.play(0.3F);
             }
 
 

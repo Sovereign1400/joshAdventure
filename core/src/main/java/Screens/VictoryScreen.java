@@ -34,7 +34,6 @@ public class VictoryScreen implements Screen {
         }
         this.finalScore = rawScore;
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
-        buttonSound.setVolume(1,0.2F);
     }
 
     @Override

@@ -26,7 +26,6 @@ public class GameOverScreen implements Screen {
     public GameOverScreen(testGame game) {
         this.game = game;
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
-        buttonSound.setVolume(1,0.2F);
     }
 
     @Override
