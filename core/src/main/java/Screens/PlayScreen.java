@@ -40,6 +40,8 @@ public class PlayScreen implements Screen {
     private com.badlogic.gdx.audio.Sound runningSound;
     private long runningSoundId = -1;         //to loop
     private boolean isRunningSoundPlaying = false;
+    private com.badlogic.gdx.audio.Sound slashSound;
+
 
     private com.badlogic.gdx.audio.Sound buttonSound;
 
@@ -115,6 +117,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(testGame game, String mapPath) {
         this.game = game;
+        slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/hitSFX.mp3"));
 
 
         // This camera follows the main character.
@@ -317,6 +320,7 @@ public class PlayScreen implements Screen {
             // Add attack input check
             if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
                 player.attack();
+                slashSound.play();
             }
 
             // This part can be safely removed, but keep it for now

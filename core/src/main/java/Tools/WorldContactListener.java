@@ -10,10 +10,27 @@ import com.badlogic.gdx.physics.box2d.*;
         private Josh player;
         private PlayScreen screen;
         private boolean loadingNextMap = false;  // Add this flag
+        private com.badlogic.gdx.audio.Sound trapSound;
+        private com.badlogic.gdx.audio.Sound damageSound;
+        private com.badlogic.gdx.audio.Sound deathSound;
+        private com.badlogic.gdx.audio.Sound boostSound;
+        private com.badlogic.gdx.audio.Sound hitSound;
+        private com.badlogic.gdx.audio.Sound ghostSound;
+        private com.badlogic.gdx.audio.Sound healSound;
+        private com.badlogic.gdx.audio.Sound keySound;
+
+
 
         public WorldContactListener(Josh player, PlayScreen screen) {
             this.player = player;
             this.screen = screen;
+            ghostSound = Gdx.audio.newSound(Gdx.files.internal("audio/ghostSFX.mp3"));
+            healSound = Gdx.audio.newSound(Gdx.files.internal("audio/healSFX.mp3"));
+            boostSound = Gdx.audio.newSound(Gdx.files.internal("audio/boostSFX.mp3"));
+            damageSound = Gdx.audio.newSound(Gdx.files.internal("audio/damageSFX.mp3"));
+            trapSound = Gdx.audio.newSound(Gdx.files.internal("audio/trapSFX.mp3"));
+            hitSound = Gdx.audio.newSound(Gdx.files.internal("audio/hitSFX.mp3"));
+            keySound = Gdx.audio.newSound(Gdx.files.internal("audio/keySFX.mp3"));
         }
 
         @Override
@@ -36,6 +53,7 @@ import com.badlogic.gdx.physics.box2d.*;
                     if (!heart.isCollected()) {
                         heart.onCollect(player);
                         player.increaseHealth();
+                        healSound.play();
                         screen.addScore(PlayScreen.HEART_SCORE);
                     }
                 }
@@ -54,6 +72,7 @@ import com.badlogic.gdx.physics.box2d.*;
                     if (!speedup.isCollected()) {
                         speedup.onCollect();
                         player.activateSpeedBoost();
+                        boostSound.play();
                         screen.addScore(PlayScreen.SPEEDUP_SCORE);
                     }
                 }
@@ -86,6 +105,7 @@ import com.badlogic.gdx.physics.box2d.*;
                         key.onCollect();
                         player.collectKey();
                         screen.addScore(PlayScreen.KEY_SCORE);
+                        keySound.play();
                     }
                 }
             }
@@ -93,9 +113,11 @@ import com.badlogic.gdx.physics.box2d.*;
             // Check monster collision from 2 ways: Josh touchs monster and monster touched Josh.
             if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Monster) {
                 player.damage();
+                damageSound.play();
             }
             else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Monster) {
                 player.damage();
+                damageSound.play();
             }
 
 
@@ -137,8 +159,11 @@ import com.badlogic.gdx.physics.box2d.*;
             // Check when the player touches the trap.
             if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Trap) {
                 player.damage();
+                trapSound.play();
+
             } else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Trap) {
                 player.damage();
+                trapSound.play();
             }
 
             // Check the player attack
@@ -147,11 +172,13 @@ import com.badlogic.gdx.physics.box2d.*;
                 if ((fixA.getBody() == player.b2body && fixB.getUserData() instanceof Monster)) {
                     Monster monster = (Monster) fixB.getUserData();
                     monster.getHit();
+                    hitSound.play();
                     System.out.println("Monster hit by attack!");  // Debug log
                 }
                 else if ((fixB.getBody() == player.b2body && fixA.getUserData() instanceof Monster)) {
                     Monster monster = (Monster) fixA.getUserData();
                     monster.getHit();
+                    hitSound.play();
                     System.out.println("Monster hit by attack!");  // Debug log
                 }
             }
@@ -160,9 +187,11 @@ import com.badlogic.gdx.physics.box2d.*;
             // This sets for ghost collision
             if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Ghost) {
                 player.damage();
+                ghostSound.play();
             }
             else if (fixB.getBody() == player.b2body && fixA.getUserData() instanceof Ghost) {
                 player.damage();
+                ghostSound.play();
             }
         }
 
