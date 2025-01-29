@@ -45,7 +45,7 @@
   <object id="31" x="226.177" y="488.204" width="31.6496" height="28.6353"/>
   <object id="32" x="507.901" y="399.388" width="33.9103" height="29.3889"/>
  </objectgroup>
- <objectgroup id="9" name="shields">
+ <objectgroup id="9" name="scoreups">
   <object id="33" x="227.576" y="525.233" width="21.8533" height="23.3604"/>
   <object id="34" x="292.382" y="527.493" width="27.1282" height="22.6069"/>
  </objectgroup>

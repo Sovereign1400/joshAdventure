@@ -79,16 +79,15 @@ import com.badlogic.gdx.physics.box2d.*;
             }
 
             // This interacts the shield
-            if (fixA.getUserData() instanceof Shield || fixB.getUserData() instanceof Shield){
-                Fixture shieldFix = fixA.getUserData() instanceof Shield ? fixA : fixB;
-                Shield shield = (Shield) shieldFix.getUserData();
+            if (fixA.getUserData() instanceof Scoreup || fixB.getUserData() instanceof Scoreup){
+                Fixture shieldFix = fixA.getUserData() instanceof Scoreup ? fixA : fixB;
+                Scoreup scoreup = (Scoreup) shieldFix.getUserData();
 
 
 
-                if(!shield.isCollected()) {
-                    shield.onCollect();
+                if(!scoreup.isCollected()) {
+                    scoreup.onCollect();
                     screen.addScore(PlayScreen.SHIELD_SCORE);
-                    // missing shield functionality
                 }
             }
 

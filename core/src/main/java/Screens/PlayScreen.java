@@ -79,7 +79,7 @@ public class PlayScreen implements Screen {
     private Array<Speedup> speedups;
 
     // Shield Attributes:
-    private Array<Shield> shields;
+    private Array<Scoreup> scoreups;
 
     // Key Attributes
     private Array<Key> keys;
@@ -207,12 +207,12 @@ public class PlayScreen implements Screen {
         // This sets all interactive objects
         speedups = new Array<>();
         hearts = new Array<>();
-        shields = new Array<>();
+        scoreups = new Array<>();
         keys = new Array<>();
 
         speedups = creator.createSpeedups(world, map);
         hearts = creator.createHearts(world, map);
-        shields = creator.createShields(world, map);
+        scoreups = creator.createScoreup(world, map);
         keys = creator.createKeys(world, map);
         doors = creator.createDoors(world, map); // This creates door on the map.
         ghosts = creator.createGhosts(world, map);
@@ -455,8 +455,8 @@ public class PlayScreen implements Screen {
                 speedup.update();
             }
 
-            for (Shield shield : shields) {
-                shield.update();
+            for (Scoreup scoreup : scoreups) {
+                scoreup.update();
             }
 
             for (Key key : keys) {
@@ -572,9 +572,9 @@ public class PlayScreen implements Screen {
         }
 
         // This renders an array of shields
-        for (Shield shield : shields){
-            if (!shield.isCollected()){
-                shield.draw(game.batch);
+        for (Scoreup scoreup : scoreups){
+            if (!scoreup.isCollected()){
+                scoreup.draw(game.batch);
             }
         }
 
