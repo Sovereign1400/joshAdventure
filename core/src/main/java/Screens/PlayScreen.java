@@ -303,6 +303,9 @@ public class PlayScreen implements Screen {
             // This part handles stances and movement registration. (Death and Hurt, mainly)
             if (player.isDead()) {
                 player.b2body.setLinearVelocity(0, 0);
+                runningSound.pause();
+                isRunningSoundPlaying = false;
+
                 return;  // Skip all input handling if dead
             }
 
