@@ -47,6 +47,7 @@ public class GameOverScreen implements Screen {
 
         game.gameOverMusic.setLooping(true);
         game.gameOverMusic.play();
+        game.playMusic.setVolume(0.2f);
 
         Label gameOverLabel = new Label("GAME OVER!", skin, "title");
         gameOverLabel.setColor(Color.RED);

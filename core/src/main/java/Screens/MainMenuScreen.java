@@ -78,6 +78,7 @@ public class MainMenuScreen implements Screen {
         // Play the main menu music
         game.mainMenuMusic.setLooping(true);
         game.mainMenuMusic.play();
+        game.mainMenuMusic.setVolume(0.2f);
     }
 
     /**

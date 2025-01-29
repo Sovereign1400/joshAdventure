@@ -60,6 +60,7 @@ public class VictoryScreen implements Screen {
 
         game.victoryMusic.setLooping(true);
         game.victoryMusic.play();
+        game.playMusic.setVolume(0.2f);
 
         // Title
         Label winLabel = new Label("YOU WIN!", skin, "title");

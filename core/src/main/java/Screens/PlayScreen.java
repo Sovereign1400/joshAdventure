@@ -41,6 +41,7 @@ public class PlayScreen implements Screen {
     private long runningSoundId = -1;         //to loop
     private boolean isRunningSoundPlaying = false;
     private com.badlogic.gdx.audio.Sound slashSound;
+    private com.badlogic.gdx.audio.Sound deathSound;
 
 
     private com.badlogic.gdx.audio.Sound buttonSound;
@@ -117,7 +118,8 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(testGame game, String mapPath) {
         this.game = game;
-        slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/hitSFX.mp3"));
+        slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/joshsword.mp3"));
+        slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/deathSFX.mp3"));
 
 
         // This camera follows the main character.
@@ -315,14 +317,16 @@ public class PlayScreen implements Screen {
                 player.b2body.setLinearVelocity(0, 0);
                 runningSound.pause();
                 isRunningSoundPlaying = false;
-
+                deathSound.play(0.2F);
                 return;  // Skip all input handling if dead
             }
 
             // Add attack input check
             if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
                 player.attack();
-                slashSound.play();
+                if (!player.isDead()){
+                    slashSound.play(0.2F);
+                }
             }
 
             // This part can be safely removed, but keep it for now
