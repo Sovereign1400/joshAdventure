@@ -85,6 +85,9 @@ public class PlayScreen implements Screen {
     private boolean shouldLoadNextMap = false;
     public float gameTime = 0;
 
+    // Arrow Attribute
+    private DirectionalArrow directionalArrow;
+
     public PlayScreen(testGame game) {
         this(game, "tileset/customMap_2.tmx");
     }
@@ -129,6 +132,9 @@ public class PlayScreen implements Screen {
         // This loads the fonts
         customFont = new BitmapFont(Gdx.files.internal("fonts/colorBasic.fnt"));
         customFont.getData().setScale(1f/testGame.PPM);
+
+        // This initializes arrow
+        directionalArrow = new DirectionalArrow(player);
 
 
 //        // This centers the camera to the center of the screen instead of (0,0).
@@ -179,6 +185,32 @@ public class PlayScreen implements Screen {
         shields = creator.createShields(world, map);
         keys = creator.createKeys(world, map);
         doors = creator.createDoors(world, map); // This creates door on the map.
+    }
+
+    private void updateDirectionalArrow() {
+        if (directionalArrow != null) {
+            Door exitDoor = null;
+            float minDistance = Float.MAX_VALUE;
+            Vector2 playerPos = player.getPosition();
+
+            // Find the nearest exit door
+            for (Door door : doors) {
+                if (door.getDoorType() == DoorType.EXIT) {
+                    float doorX = (door.getBoundsX() + door.getBoundsWidth() / 2) / testGame.PPM;
+                    float doorY = (door.getBoundsY() + door.getBoundsHeight() / 2) / testGame.PPM;
+                    float distance = Vector2.dst(playerPos.x, playerPos.y, doorX, doorY);
+
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        exitDoor = door;
+                    }
+                }
+            }
+
+            if (exitDoor != null) {
+                directionalArrow.update(exitDoor);
+            }
+        }
     }
 
     private Vector2 getEnterDoorPosition() {
@@ -375,6 +407,8 @@ public class PlayScreen implements Screen {
             gameTime += dt;
         }
 
+        updateDirectionalArrow();
+
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
     }
@@ -463,6 +497,8 @@ public class PlayScreen implements Screen {
                 player.b2body.getPosition().x - 1f,
                 player.b2body.getPosition().y + 1f);
         }
+
+        directionalArrow.draw(game.batch);
 
         game.batch.end(); // End batch
 
@@ -753,6 +789,10 @@ public class PlayScreen implements Screen {
 
         for (Trap trap : traps) {
             trap.dispose();
+        }
+
+        if (directionalArrow != null) {
+            directionalArrow.dispose();
         }
     }
 
