@@ -36,6 +36,7 @@ public class PauseMenuScreen implements Screen {
         this.game = game;
         this.gameScreen = gameScreen;
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
+        buttonSound.setVolume(1,0.2F);
     }
 
     @Override

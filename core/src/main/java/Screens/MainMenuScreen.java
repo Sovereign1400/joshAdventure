@@ -42,6 +42,7 @@ public class MainMenuScreen implements Screen {
         viewport = new FitViewport(800, 480); // or any “virtual” size
         stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
+        buttonSound.setVolume(1,0.2F);
 
     }
 
