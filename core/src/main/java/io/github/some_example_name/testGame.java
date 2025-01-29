@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.audio.Music;
 
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -17,16 +18,27 @@ public class testGame extends Game {
     public SpriteBatch batch;
     public static final float PPM = 32f;
     private Skin skin;
+    public Music mainMenuMusic;
+    public Music playMusic;
+    public Music pauseMusic;
+    public Music victoryMusic;
+    public Music gameOverMusic;
 
 //    GameMap gameMap;
     @Override
     public void create() {
         batch = new SpriteBatch();
-        Stage stage = new Stage(new ScreenViewport());
-        setScreen(new MainMenuScreen(this));
+
+//        gameMap = new TiledGameMap();
+        mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/mainmenuBG.mp3"));
+        playMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/gameplayBG.mp3"));
+        pauseMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/pauseBG.mp3"));
+        victoryMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/victoryBG.mp3"));
+        gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/gameoverBG.mp3"));
+
         skin = getSkin();
         setScreen(new MainMenuScreen(this));
-//        gameMap = new TiledGameMap();
+
     }
 
     @Override
@@ -43,6 +55,12 @@ public class testGame extends Game {
     @Override
     public void dispose() {
         batch.dispose();
+        mainMenuMusic.dispose();
+        playMusic.dispose();
+        pauseMusic.dispose();
+        victoryMusic.dispose();
+        gameOverMusic.dispose();
+        super.dispose();
     }
 
     public Skin getSkin() {

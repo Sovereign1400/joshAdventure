@@ -57,6 +57,8 @@ public class PauseMenuScreen implements Screen {
 
         activeStage = pauseStage;
         Gdx.input.setInputProcessor(activeStage);
+        game.pauseMusic.setLooping(true);
+        game.pauseMusic.play();
     }
 
     /**
@@ -84,14 +86,15 @@ public class PauseMenuScreen implements Screen {
                 // Unpause and go back
                 if (gameScreen != null) {
                     gameScreen.setPaused(false);
-                    // If you paused music, resume here: game.playMusic();
+                    game.pauseMusic.stop();
+                    game.playMusic.play();
                     game.setScreen(gameScreen);
                 }
             }
         });
         table.add(continueButton).row();
 
-        // Load New Map
+        /* Load New Map
         TextButton loadMapButton = new TextButton("Load New Map", skin);
         loadMapButton.addListener(new ClickListener() {
             @Override
@@ -101,7 +104,7 @@ public class PauseMenuScreen implements Screen {
                 game.setScreen(new PlayScreen(game, "anotherMap.tmx"));
             }
         });
-        table.add(loadMapButton).row();
+        table.add(loadMapButton).row(); */
 
         // Stage Select
         TextButton stageSelectButton = new TextButton("Stage Select", skin);
@@ -139,41 +142,47 @@ public class PauseMenuScreen implements Screen {
         table.setBackground(skin.newDrawable("white", Color.FOREST));
         table.defaults().pad(15);
 
-        Label title = new Label("Choose a Stage", skin, "title");
+        Label title = new Label("Choose a Level", skin, "title");
         table.add(title).padBottom(30).row();
 
         // Stage 1
-        TextButton stage1Button = new TextButton("Stage 1", skin);
+        TextButton stage1Button = new TextButton("Level 1", skin);
         stage1Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Load stage1
-                game.setScreen(new PlayScreen(game, "stage1.tmx"));
+                game.setScreen(new PlayScreen(game, "tileset/customMap_2.tmx"));
                 buttonSound.play();
+                game.pauseMusic.stop();
+                game.playMusic.play();
             }
         });
         table.add(stage1Button).width(200).row();
 
         // Stage 2
-        TextButton stage2Button = new TextButton("Stage 2", skin);
+        TextButton stage2Button = new TextButton("Level 2", skin);
         stage2Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Load stage2
-                game.setScreen(new PlayScreen(game, "stage2.tmx"));
+                game.setScreen(new PlayScreen(game, "tileset/customMap_3.tmx"));
                 buttonSound.play();
+                game.pauseMusic.stop();
+                game.playMusic.play();
             }
         });
         table.add(stage2Button).width(200).row();
 
         // Stage 3
-        TextButton stage3Button = new TextButton("Stage 3", skin);
+        TextButton stage3Button = new TextButton("Level 3", skin);
         stage3Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Load stage3
-                game.setScreen(new PlayScreen(game, "stage3.tmx"));
+                game.setScreen(new PlayScreen(game, "tileset/customMap_4.tmx"));
                 buttonSound.play();
+                game.pauseMusic.stop();
+                game.playMusic.play();
             }
         });
         table.add(stage3Button).width(200).row();
@@ -216,6 +225,7 @@ public class PauseMenuScreen implements Screen {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+        game.pauseMusic.stop();
     }
 
     @Override

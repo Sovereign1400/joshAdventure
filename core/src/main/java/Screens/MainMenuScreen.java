@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
+import com.badlogic.gdx.audio.Music;
 
 /**
  * The MainMenuScreen class represents the initial main menu of the Maze Runner game.
@@ -34,11 +35,14 @@ public class MainMenuScreen implements Screen {
     private Skin skin;              // The UI skin
     private com.badlogic.gdx.audio.Sound buttonSound;
 
+
+
     public MainMenuScreen(testGame game) {
         this.game = game;
         viewport = new FitViewport(800, 480); // or any “virtual” size
         stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
+
     }
 
     @Override
@@ -65,6 +69,15 @@ public class MainMenuScreen implements Screen {
 
         // Accept input on the current stage
         Gdx.input.setInputProcessor(activeStage);
+
+        game.playMusic.stop();
+        game.pauseMusic.stop();
+        game.victoryMusic.stop();
+        game.gameOverMusic.stop();
+
+        // Play the main menu music
+        game.mainMenuMusic.setLooping(true);
+        game.mainMenuMusic.play();
     }
 
     /**
@@ -246,6 +259,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+        game.mainMenuMusic.stop();
     }
 
     @Override

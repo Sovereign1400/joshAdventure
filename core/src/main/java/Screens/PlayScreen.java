@@ -273,6 +273,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
+        game.mainMenuMusic.stop();
+        game.playMusic.setLooping(true);
+        game.playMusic.play();
 
     }
 
@@ -476,6 +479,8 @@ public class PlayScreen implements Screen {
             game.setScreen(new PauseMenuScreen(game, this));
             runningSound.stop(runningSoundId);
             isRunningSoundPlaying = false;
+            game.playMusic.pause();
+            game.setScreen(new PauseMenuScreen(game, this));
             return;
         }
         // If paused, skip update logic
@@ -745,6 +750,7 @@ public class PlayScreen implements Screen {
                 for(Body body : bodies) {
                     world.destroyBody(body);
                 }
+                float currentPos = game.playMusic.getPosition();
 
                 // Create and switch to new screen
                 PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_3.tmx");
@@ -754,6 +760,8 @@ public class PlayScreen implements Screen {
                 Gdx.app.postRunnable(() -> {
                     dispose();  // Clean up current resources
                     game.setScreen(nextScreen);
+                    game.playMusic.play();
+                    game.playMusic.setPosition(currentPos);
                     System.out.println("Switched to Map 3");
                 });
             } else if (currentMapPath.contains("customMap_3")) {
@@ -767,6 +775,8 @@ public class PlayScreen implements Screen {
                     world.destroyBody(body);
                 }
 
+                float currentPos = game.playMusic.getPosition();
+
                 // Create and switch to new screen with Map 4
                 PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_4.tmx");
                 nextScreen.hud.addScore(hud.getScore()); // Transfer current score
@@ -775,6 +785,8 @@ public class PlayScreen implements Screen {
                 Gdx.app.postRunnable(() -> {
                     dispose();  // Clean up current resources
                     game.setScreen(nextScreen);
+                    game.playMusic.play();       // if it was stopped
+                    game.playMusic.setPosition(currentPos);
                     System.out.println("Switched to Map 4");
                 });
             }

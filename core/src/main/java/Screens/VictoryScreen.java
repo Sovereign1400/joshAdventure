@@ -54,6 +54,13 @@ public class VictoryScreen implements Screen {
         // Background color (placeholder)
         table.setBackground(skin.newDrawable("white", Color.FOREST));
 
+        //Music
+        game.playMusic.stop();
+        game.pauseMusic.stop();
+
+        game.victoryMusic.setLooping(true);
+        game.victoryMusic.play();
+
         // Title
         Label winLabel = new Label("YOU WIN!", skin, "title");
         winLabel.setColor(Color.GOLD);
@@ -126,6 +133,7 @@ public class VictoryScreen implements Screen {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+        game.victoryMusic.stop();
     }
 
     @Override

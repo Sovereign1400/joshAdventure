@@ -40,6 +40,12 @@ public class GameOverScreen implements Screen {
 
         table.setBackground(skin.newDrawable("white", Color.FIREBRICK));
 
+        game.playMusic.stop();
+        game.pauseMusic.stop();
+
+        game.gameOverMusic.setLooping(true);
+        game.gameOverMusic.play();
+
         Label gameOverLabel = new Label("GAME OVER!", skin, "title");
         gameOverLabel.setColor(Color.RED);
         table.add(gameOverLabel).padBottom(30);
@@ -103,6 +109,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
+        game.victoryMusic.stop();
     }
 
     @Override
