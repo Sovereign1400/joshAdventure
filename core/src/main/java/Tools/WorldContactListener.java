@@ -28,12 +28,15 @@ import com.badlogic.gdx.physics.box2d.*;
                 Fixture heartFixture = fixA.getUserData() instanceof Heart ? fixA : fixB;
                 Fixture otherFixture = heartFixture == fixA ? fixB : fixA;
 
+
+
                 // Only allow collection if the other fixture is the player's body
                 if (otherFixture.getBody() == player.b2body) {
                     Heart heart = (Heart) heartFixture.getUserData();
                     if (!heart.isCollected()) {
                         heart.onCollect(player);
                         player.increaseHealth();
+                        screen.addScore(PlayScreen.HEART_SCORE);
                     }
                 }
             }
@@ -43,12 +46,15 @@ import com.badlogic.gdx.physics.box2d.*;
                 Fixture speedupFixture = fixA.getUserData() instanceof Speedup ? fixA : fixB;
                 Fixture otherFixture = speedupFixture == fixA ? fixB : fixA;
 
+
+
                 // Only allow collection if the other fixture is the player's body
                 if (otherFixture.getBody() == player.b2body) {
                     Speedup speedup = (Speedup) speedupFixture.getUserData();
                     if (!speedup.isCollected()) {
                         speedup.onCollect();
                         player.activateSpeedBoost();
+                        screen.addScore(PlayScreen.SPEEDUP_SCORE);
                     }
                 }
             }
@@ -58,8 +64,11 @@ import com.badlogic.gdx.physics.box2d.*;
                 Fixture shieldFix = fixA.getUserData() instanceof Shield ? fixA : fixB;
                 Shield shield = (Shield) shieldFix.getUserData();
 
+
+
                 if(!shield.isCollected()) {
                     shield.onCollect();
+                    screen.addScore(PlayScreen.SHIELD_SCORE);
                     // missing shield functionality
                 }
             }
@@ -76,6 +85,7 @@ import com.badlogic.gdx.physics.box2d.*;
                     if (!key.isCollected()) {
                         key.onCollect();
                         player.collectKey();
+                        screen.addScore(PlayScreen.KEY_SCORE);
                     }
                 }
             }

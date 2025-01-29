@@ -96,6 +96,18 @@ public class PlayScreen implements Screen {
     // Ghost Attribute
     private Array<Ghost> ghosts;
 
+
+    // Score system
+    public static final int HEART_SCORE = 200;
+    public static final int SPEEDUP_SCORE = 200;
+    public static final int KEY_SCORE = 500;
+    public static final int SHIELD_SCORE = 150;
+
+
+
+
+
+
     public PlayScreen(testGame game) {
         this(game, "tileset/customMap_2.tmx");
     }
@@ -136,6 +148,10 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener(player, this));
         // This renders the map.
         renderer = new OrthogonalTiledMapRenderer(map, (float) 1 / testGame.PPM);
+
+
+        // Update the HUD with initial world level
+        hud.updateWorldLevel(mapPath);
 
         // This loads the fonts
         customFont = new BitmapFont(Gdx.files.internal("fonts/colorBasic.fnt"));
@@ -706,6 +722,11 @@ public class PlayScreen implements Screen {
 //        }
 //    }
 
+    // Score system
+    public void addScore(int amount) {
+        hud.addScore(amount);
+    }
+
     public void loadNextMap() {
         try {
             System.out.println("Loading next map from: " + currentMapPath);
@@ -722,6 +743,7 @@ public class PlayScreen implements Screen {
 
                 // Create and switch to new screen
                 PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_3.tmx");
+                nextScreen.hud.addScore(hud.getScore()); // Transfer current score
 
                 // Use Gdx.app.postRunnable to ensure screen switch happens on render thread
                 Gdx.app.postRunnable(() -> {
@@ -742,6 +764,7 @@ public class PlayScreen implements Screen {
 
                 // Create and switch to new screen with Map 4
                 PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_4.tmx");
+                nextScreen.hud.addScore(hud.getScore()); // Transfer current score
 
                 // Use Gdx.app.postRunnable to ensure screen switch happens on render thread
                 Gdx.app.postRunnable(() -> {

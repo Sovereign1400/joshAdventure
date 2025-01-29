@@ -23,6 +23,11 @@ public class HUD implements Disposable {
     private float timeCount;
     private Integer score;
 
+
+    // This set for updating world level in real time
+    private int currentWorld = 1;
+    private int currentLevel = 1;
+
     Label stopwatchLabel;
     Label scoreLabel;
     Label timeLabel;
@@ -61,7 +66,7 @@ public class HUD implements Disposable {
         }
 
 
-        scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scoreLabel = new Label("SCORE: 000000", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -122,6 +127,27 @@ public class HUD implements Disposable {
         this.elapsedTime = elapsedTime;
     }
 
+    // Score system
+    public void addScore(int amount) {
+        score += amount;
+        scoreLabel.setText("SCORE: " + String.format("%06d", score));
+    }
+
+    // Update world level
+    public void updateWorldLevel(String mapPath) {
+        if (mapPath.contains("customMap_2")) {
+            currentWorld = 1;
+            currentLevel = 1;
+        } else if (mapPath.contains("customMap_3")) {
+            currentWorld = 1;
+            currentLevel = 2;
+        } else if (mapPath.contains("customMap_4")) {
+            currentWorld = 1;
+            currentLevel = 3;
+        }
+        levelLabel.setText(currentWorld + "-" + currentLevel);
+    }
+
     public void update(float dt, boolean paused) {
         int health = player.getHealth();
         for (int i = 0; i < heartImages.length; i++) {
@@ -155,6 +181,10 @@ public class HUD implements Disposable {
                 stopwatchLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
             }
         }
+    }
+
+    public int getScore() {
+        return score;
     }
 
     @Override
