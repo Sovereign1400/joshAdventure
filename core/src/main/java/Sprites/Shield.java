@@ -48,6 +48,7 @@ public class Shield extends Sprite{
         fixture.setUserData(this);
 
         shape.dispose();
+
     }
 
     public void update() {
