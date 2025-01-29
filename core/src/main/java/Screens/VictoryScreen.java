@@ -20,6 +20,7 @@ public class VictoryScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private int finalScore;
+    private com.badlogic.gdx.audio.Sound buttonSound;
 
     /**
      * If you want to know from which level the user won, you could pass in more data here.
@@ -32,6 +33,7 @@ public class VictoryScreen implements Screen {
             rawScore = 0;  // never go negative
         }
         this.finalScore = rawScore;
+        buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
     @Override

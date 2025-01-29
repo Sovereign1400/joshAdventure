@@ -36,7 +36,11 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private HUD hud;
     private boolean gameOver = false;
-    private boolean paused = false;  // If true, the game logic is paused
+    private boolean paused = false;  //to keep track of the game state (paused or not)
+    private com.badlogic.gdx.audio.Sound runningSound;
+    private long runningSoundId = -1;         //to loop
+    private boolean isRunningSoundPlaying = false;
+    private com.badlogic.gdx.audio.Sound buttonSound;
 
     // Tile Map attributes
     private TmxMapLoader mapLoader;
@@ -185,6 +189,9 @@ public class PlayScreen implements Screen {
         shields = creator.createShields(world, map);
         keys = creator.createKeys(world, map);
         doors = creator.createDoors(world, map); // This creates door on the map.
+
+        runningSound = Gdx.audio.newSound(Gdx.files.internal("audio/runningloop.mp3")); // loads the sfx!!
+        buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
     private void updateDirectionalArrow() {
@@ -323,6 +330,23 @@ public class PlayScreen implements Screen {
             }
 
             player.b2body.setLinearVelocity(vx, vy);
+
+        boolean isMoving = upPressed || downPressed || leftPressed || rightPressed;
+
+        //this is to loop the sfx
+        if (isMoving) {
+            if (!isRunningSoundPlaying) {
+                runningSoundId = runningSound.loop(0.5f);
+                // 0.5f is volume; adjust as needed
+                isRunningSoundPlaying = true;
+            }
+        } else {
+            // if not moving, don't load the sfx
+            if (isRunningSoundPlaying) {
+                runningSound.stop(runningSoundId);
+                isRunningSoundPlaying = false;
+            }
+        }
     }
 
     //This method updates data in the game, dt = delta, a small period of time.
@@ -411,6 +435,8 @@ public class PlayScreen implements Screen {
 
         // Optional: Check for collisions between player and monsters
 //        checkMonsterCollisions();
+
+
     }
 
     @Override
@@ -418,6 +444,8 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             // Switch to PauseMenuScreen, passing a reference to THIS screen
             game.setScreen(new PauseMenuScreen(game, this));
+            runningSound.stop(runningSoundId);
+            isRunningSoundPlaying = false;
             return;
         }
         // If paused, skip update logic
@@ -781,6 +809,7 @@ public class PlayScreen implements Screen {
         hud.dispose();
         fbo.dispose();
         customFont.dispose();
+        runningSound.dispose();
 
         // This dispose all monsters
         for (Monster monster : monsters) {

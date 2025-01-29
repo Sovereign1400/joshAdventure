@@ -32,11 +32,13 @@ public class MainMenuScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private Skin skin;              // The UI skin
+    private com.badlogic.gdx.audio.Sound buttonSound;
 
     public MainMenuScreen(testGame game) {
         this.game = game;
         viewport = new FitViewport(800, 480); // or any “virtual” size
         stage = new Stage(viewport);
+        buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
     @Override
@@ -85,12 +87,13 @@ public class MainMenuScreen implements Screen {
         table.add(titleLabel).colspan(2).center().padBottom(30);
         table.row();
 
-        // START button
+
         TextButton startButton = new TextButton("Start Game", skin);
         startButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Switch to the gameplay screen
+                // to start the gameplay
+                buttonSound.play();
                 game.setScreen(new PlayScreen(game));
             }
         });
@@ -102,6 +105,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Switch to storyStage
+                buttonSound.play();
                 activeStage = storyStage;
                 Gdx.input.setInputProcessor(storyStage);
             }
@@ -114,6 +118,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Switch to creditsStage
+                buttonSound.play();
                 activeStage = creditsStage;
                 Gdx.input.setInputProcessor(creditsStage);
             }
@@ -125,6 +130,7 @@ public class MainMenuScreen implements Screen {
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                buttonSound.play();
                 Gdx.app.exit();
             }
         });
@@ -170,6 +176,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Return to main menu stage
+                buttonSound.play();
                 activeStage = menuStage;
                 Gdx.input.setInputProcessor(menuStage);
             }
@@ -204,6 +211,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Return to main menu
+                buttonSound.play();
                 activeStage = menuStage;
                 Gdx.input.setInputProcessor(menuStage);
             }

@@ -16,12 +16,14 @@ public class GameOverScreen implements Screen {
     private final testGame game;
     private Stage stage;
     private Skin skin;
+    private com.badlogic.gdx.audio.Sound buttonSound;
 
     /**
      * You can pass data about the level or cause of game over if needed.
      */
     public GameOverScreen(testGame game) {
         this.game = game;
+        buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
     @Override
