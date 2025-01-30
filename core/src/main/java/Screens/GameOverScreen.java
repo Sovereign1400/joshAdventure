@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 
 
@@ -17,6 +19,7 @@ public class GameOverScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private com.badlogic.gdx.audio.Sound buttonSound;
+    private Viewport viewport;
 
 
 
@@ -25,12 +28,14 @@ public class GameOverScreen implements Screen {
      */
     public GameOverScreen(testGame game) {
         this.game = game;
+        viewport = new FitViewport(800, 480);
+        stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
     @Override
     public void show() {
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(viewport);
         skin = game.getSkin();
 
         // Accept input on this stage

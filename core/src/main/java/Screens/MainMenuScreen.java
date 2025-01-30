@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -42,10 +43,11 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(testGame game) {
         this.game = game;
-        viewport = new FitViewport(800, 480); // or any “virtual” size
+        viewport = new FitViewport(800, 480);
         stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
         bgTexture = new Texture("backgrounds/castleBG.jpg");
+
     }
 
     @Override
@@ -54,9 +56,9 @@ public class MainMenuScreen implements Screen {
         skin = game.getSkin();
 
         // Create the 3 stages
-        menuStage = new Stage(new ScreenViewport());
-        storyStage = new Stage(new ScreenViewport());
-        creditsStage = new Stage(new ScreenViewport());
+        menuStage = new Stage(viewport);
+        storyStage = new Stage(viewport);
+        creditsStage = new Stage(viewport);
 
         // Build the menu UI
         createMenuStage();
@@ -178,9 +180,11 @@ public class MainMenuScreen implements Screen {
         storyStage.addActor(table);
 
         Label storyLabel = new Label(
-            "Once upon a time...\n" +
-                "A hero entered the labyrinth to find secrets...\n" +
-                "This is the story introduction.",
+            "Long Long ago, the Roman Empire ruled the known world, its legions conquering vast lands. Yet beyond its borders, Britannia barbarians remained wild, its fierce tribes, led by Queen Boudica, resisting Roman rule. Now, under Centurion Marius, the legions march to crush the last flames of defiance.\n" +
+                "At York, battle erupts. The barbarians, unyielding, retreat to their ancient caves, making a final stand. Amid the chaos, Marius is separated from his men, lost in a treacherous underground maze where shadows whisper of forgotten horrors, and barbarian warriors lurk in wait.\n" +
+                "Yet Rome does not falter. Gladius in hand, Marius must fight through the abyss, evade deadly traps, and uncover the key to escape—or be lost to history.\n" +
+                "Thus begins the trial of a soldier—a test of will, of steel, and of Rome’s unrelenting power. Will Marius rise from the depths, or will the dark caves of Britannia become his tomb?",
+
             skin
         );
         // Make the text wrap if necessary
@@ -214,9 +218,9 @@ public class MainMenuScreen implements Screen {
 
         Label creditsLabel = new Label(
             "Created by:\n" +
-                " - Awesome Dev\n" +
-                " - Best Artist\n" +
-                " - Music by Skilled Composer",
+                " - FOP Team 52: William Wang, Zimu Wang, Demir Ege Eroğlu.\n" +
+                " - Arts were found from various sources, listed in the README file.\n" +
+                " - Music by various sources, listen in the README file.",
             skin
         );
         creditsLabel.setWrap(true);
