@@ -30,6 +30,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+/**
+ * The playscreen class is where the main game takes place
+ * it loads a tiled map, places the player, sets up Box2D physics,
+ * manages item pickups, draws monsters, and handles overall game logic
+ * like pausing, updating, and going to other screens (victory, etc.)
+ */
 public class PlayScreen implements Screen {
     private testGame game;
     private OrthographicCamera gamecam;
@@ -113,11 +119,21 @@ public class PlayScreen implements Screen {
     private static final float DEFAULT_ZOOM = 1f;
     private float currentZoom = DEFAULT_ZOOM;
 
-
+    /**
+     * creates a playscreen using a map ("customMap_2.tmx")
+     * @param game , holds resources and helps screen changes
+     */
     public PlayScreen(testGame game) {
         this(game, "tileset/customMap_2.tmx");
     }
 
+    /**
+     * this one creates a playscreen for a map path and sets up the camera,
+     * Box2D world, tiled map, and the player
+     * also loads music, SFX and other objects
+     * @param game     the game initialization
+     * @param mapPath  path to the tiled map
+     */
     public PlayScreen(testGame game, String mapPath) {
         this.game = game;
         slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/joshsword.mp3"));
@@ -166,13 +182,17 @@ public class PlayScreen implements Screen {
         // This initializes arrow
         directionalArrow = new DirectionalArrow(player);
 
+
+//        // This centers the camera to the center of the screen instead of (0,0).
+//        gamecam.position.set((float) gamePort.getScreenWidth() / 2, (float) gamePort.getScreenHeight() / 2, 0);
+
+//        // This set camera angle start with a specific coordinates.
+//        gamecam.position.set((float) 360, (float) 360, 0);
+
         B2WorldCreator creator = new B2WorldCreator(world, map);
 
-        // Please go to update methods - Wong
 
-        // ---------------------------------------
         // This sets fogs of war to main character
-        //----------------------------------------
         // Force the viewport to initialize
         gamePort.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -181,12 +201,11 @@ public class PlayScreen implements Screen {
 
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewW, viewH, false);
         fboRegion = new TextureRegion(fbo.getColorBufferTexture());
+//        fboRegion.flip(false, true);
 
         shapeRenderer = new ShapeRenderer();
 
-        // ---------------------------------------
         // This sets Monsters
-        //----------------------------------------
 
         // Initialize the monsters array and traps
         monsters = new Array<Monster>();
@@ -214,6 +233,9 @@ public class PlayScreen implements Screen {
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
+    /**
+     * finds the nearest exit door and updates the directional arrow to point towards it
+     */
     private void updateDirectionalArrow() {
         if (directionalArrow != null) {
             Door exitDoor = null;
@@ -240,6 +262,11 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * finds a door object in the Tiled map named enterDoor and returns a spawn position near it
+     * If none is found, defaults to (120,200) to avoid conflict
+     * @return determines the position the player should spawn
+     */
     private Vector2 getEnterDoorPosition() {
         // Default spawn point in case nothing is found
         Vector2 defaultSpawn = new Vector2(120f, 200f);
@@ -268,6 +295,10 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * called when this screen is shown
+     * stops the main menu music, starts the gameplay music.
+     */
     @Override
     public void show() {
         game.mainMenuMusic.stop();
@@ -278,6 +309,10 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Processes input for movement, attacking, and camera zoom each frame
+     * @param dt delta time since last frame in seconds
+     */
     public void handleInput(float dt) {
             float moveSpeed = player.getBasemovespeed(); // normal walking speed
             boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.UP);
@@ -367,7 +402,10 @@ public class PlayScreen implements Screen {
         }
     }
 
-    // Zoom control methods
+    /**
+     * Allows the player to zoom in with +, out with - and resets zoom with R key
+     * @param dt delta time here to adjust how quickly we zoom
+     */
     private void handleZoomInput(float dt) {
         // Zoom in with NumPad + or regular +
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_ADD) ||
@@ -387,7 +425,11 @@ public class PlayScreen implements Screen {
         gamecam.zoom = currentZoom;
     }
 
-    //This method updates data in the game, dt = delta, a small period of time.
+    /**
+     * updates everything in playscreen each frame thanks to dt (if not paused)
+     * this includes input, physics, player, monsters, items, etc
+     * @param dt delta time since last frame as usual
+     */
     public void update(float dt){
         if (!paused) {
             handleInput(dt);
@@ -479,9 +521,15 @@ public class PlayScreen implements Screen {
 
             updateDirectionalArrow();
 
+
         }
     }
 
+    /**
+     * renders the entire game world, HUD, player, enemies, traps and fog of war
+     * also checks for the pause key which is escape
+     * @param delta the time since the last frame
+     */
     @Override
     public void render(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -504,6 +552,9 @@ public class PlayScreen implements Screen {
 
         // This renders the map
         renderer.render();
+
+        // This renders Box2DDebugLines, comment it out if not debugging
+        //b2dr.render(world, gamecam.combined);
 
         // Set our batch to now draw what HUD cam sees.
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -531,6 +582,8 @@ public class PlayScreen implements Screen {
         for (Monster monster : monsters) {
             monster.draw(game.batch);
         }
+
+
 
         // This renders an array of speedups
         for(Speedup speedup : speedups) {
@@ -574,6 +627,8 @@ public class PlayScreen implements Screen {
 
         game.batch.end(); // End batch
 
+//        debugDrawShapes();
+
         // This renders fog of war using the same batch but the second time.
          renderFogOfWar();
 
@@ -583,7 +638,18 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * this one creates all monster sprites by reading positions from the Tiled maps monsterspawns layer
+     */
     private void createMonsters() {
+//        // You can create monsters at specific positions
+//        addMonster(200, 200);  // First monster
+//        addMonster(400, 300);  // Second monster
+//        addMonster(600, 400);  // Third monster
+
+        // Alternative: If you want to create monsters from map objects
+        // Assuming you have a "Monsters" layer in your Tiled map
+
         for (MapObject object : map.getLayers().get("monsterSpawns").getObjects()) {
             if (object instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -592,6 +658,11 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * this method creates a monster in a specific location
+     * @param x X position in map space.
+     * @param y Y position in map space.
+     */
     private void addMonster(float x, float y) {
         Monster monster = new Monster(world, x, y, player);
         monsters.add(monster);
@@ -619,14 +690,22 @@ public class PlayScreen implements Screen {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+//        // 6) Draw a half‐transparent black rectangle to fill the whole window
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(255, 255, 0, 0.1f);
+//        shapeRenderer.rect(0, 0, w, h);
+//        shapeRenderer.end();
 
-        // 6) Draw a bright red circle in the exact window center
+        // 7) Draw a bright red circle in the exact window center
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);  // full opaque red
         shapeRenderer.circle(w / 2f, h / 2f, 100f);
         shapeRenderer.end();
     }
 
+    /**
+     * the method creates traps by reading positions from the Tiled map's trap layer this time
+     */
     private void createTraps() {
         for (MapObject object : map.getLayers().get("trap").getObjects()) {
             if (object instanceof RectangleMapObject) {
@@ -636,11 +715,24 @@ public class PlayScreen implements Screen {
         }
     }
 
+
+
+    /**
+     * adds a trap to a specific location
+     * @param x X coordinate of the trap
+     * @param y Y coordinate of the trap
+     */
     private void addTrap(float x, float y) {
         Trap trap = new Trap(world, x, y);
         traps.add(trap);
     }
 
+
+
+    /**
+     * this method fully renders fog of war, so that the player doesnt see too far
+     * scales the fog of war so that zooming out doesn't reveal more than intended
+     */
     private void renderFogOfWar() {
         int viewW = gamePort.getScreenWidth();
         int viewH = gamePort.getScreenHeight();
@@ -718,11 +810,31 @@ public class PlayScreen implements Screen {
         game.batch.end();
     }
 
-    // Score system
+//    public void loadNextMap() {
+//        System.out.println("Loading next map..."); // Debug print
+//        if (currentMapPath.contains("customMap_2")) {
+//            dispose();  // Clean up current resources
+//            System.out.println("Map 2 disposed");
+//            System.out.println("Creating new screen for customMap3...");
+//            PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_3.tmx");
+//            System.out.println("Setting new screen...");
+//            game.setScreen(nextScreen);
+//            System.out.println("Switched to Map 3");  // Debug print
+//        }
+//    }
+
+    /**
+     * adds a certain amount of score to the hud (goes to victory screen too)
+     * @param amount points that wll be added
+     */
     public void addScore(int amount) {
         hud.addScore(amount);
     }
 
+    /**
+     * we call this when the player reaches another exit so another map needs to be loaded
+     * preserves music position so that it continues where its left off
+     */
     public void loadNextMap() {
         try {
             System.out.println("Loading next map from: " + currentMapPath);
@@ -796,6 +908,12 @@ public class PlayScreen implements Screen {
     }
 
 
+    /**
+     * called when the screen is resized
+     * it updates our viewport, the HUD viewport and adjust the camera to match the new screen
+     * @param width new window width
+     * @param height new window height
+     */
     @Override
     public void resize(int width, int height) {
         // Update viewport with new screen size
@@ -828,34 +946,57 @@ public class PlayScreen implements Screen {
         fboRegion = new TextureRegion(fbo.getColorBufferTexture());
     }
 
+    /**
+     * Sets paused, which skips logic updates in the update method
+     * @param paused true to pause
+     */
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
 
+    /**
+     * getter for game
+     * @return the testGame object controlling playscreen
+     */
     public testGame getGame() {
         return game;
     }
 
+    /**
+     * add getter for current map path
+     * @return the path to the currently loaded Tiled map
+     */
     public String getCurrentMapPath() {
         return currentMapPath;
     }
 
+    /**
+     * Called when the game is paused
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Called when the game is resumed
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * called when this screen is hidden and stops input/music
+     */
     @Override
     public void hide() {
 
     }
 
-
+    /**
+     * disposes of the screen when we're done so that resources are freed up
+     */
     @Override
     public void dispose() {
         map.dispose();
@@ -885,10 +1026,16 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * @return Josh instance
+     */
     public Josh getPlayer() {
         return player;
     }
 
+    /**
+     * @return the associated HUD
+     */
     public HUD getHud() {
         return hud;
     }

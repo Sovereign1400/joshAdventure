@@ -8,6 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 
+/**
+ * a few holes that spit out fire, will damage player if they and the trap overlaps
+ * uses sensor fixture to detect said collision
+ */
 public class Trap extends Sprite {
     private World world;
     public Body b2body;
@@ -18,6 +22,12 @@ public class Trap extends Sprite {
     private Animation<TextureRegion> trapAnimation;
     private Texture[] trapTextures;
 
+    /**
+     * creates a trap at a specific location
+     * @param world  the box2d world for physics
+     * @param x      x position
+     * @param y      y position
+     */
     public Trap(World world, float x, float y) {
         this.world = world;
         stateTime = 0;
@@ -36,6 +46,10 @@ public class Trap extends Sprite {
         defineTrap(x, y);
     }
 
+    /**
+     * loads trap animation frames from the traps folder
+     * sets up a loop if successful
+     */
     private void loadTrapAnimation() {
         try {
             int frameCount = 13; // Adjust based on your actual frame count
@@ -69,6 +83,11 @@ public class Trap extends Sprite {
         }
     }
 
+    /**
+     * the trap is a static body with small circle (collision detection)
+     * @param x x position
+     * @param y y position
+     */
     private void defineTrap(float x, float y) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(x / testGame.PPM, y / testGame.PPM);
@@ -85,6 +104,10 @@ public class Trap extends Sprite {
         shape.dispose();
     }
 
+    /**
+     * updates traps animation and keeps it in sync
+     * @param dt delta time since last frame
+     */
     public void update(float dt) {
         stateTime += dt;
 
@@ -103,6 +126,9 @@ public class Trap extends Sprite {
         );
     }
 
+    /**
+     * cleans up traps frames to free up resources
+     */
     public void dispose() {
         if (trapTextures != null) {
             for (Texture texture : trapTextures) {

@@ -7,11 +7,21 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 
+/**
+ * this class represents the exit or entrance doors, locked or unlocked
+ */
 public class Door extends InteractiveTileObject {
     private boolean isOpen = false;
     private Texture doorTexture;
     private DoorType doorType;
 
+    /**
+     * creates a new door from tiledmap and puts it to Box2D
+     * @param world   the Box2D world
+     * @param map     the tiledmap that its from
+     * @param bounds  the doors bounds
+     * @param type    the door enum type
+     */
     public Door(World world, TiledMap map, Rectangle bounds, DoorType type) {
         super(world, map, bounds);
         this.doorType = type;
@@ -34,10 +44,18 @@ public class Door extends InteractiveTileObject {
         shape.dispose();
     }
 
+    /**
+     * lets the door do frame-by-frame logic if needed
+     * unused
+     */
     public void update() {
         // For animation updates
     }
 
+    /**
+     * door texture if not open yet
+     * @param batch the spritebatch that is used
+     */
     public void draw(SpriteBatch batch) {
         if (!isOpen) {
             float width = 48 / testGame.PPM;
@@ -50,16 +68,26 @@ public class Door extends InteractiveTileObject {
         }
     }
 
+    /**
+     * lets the player interact with the door and unlock it with a key
+     * @param player the josh character
+     */
     public void interact(Josh player) {
         if (doorType == DoorType.EXIT && player.hasKey()) {
             isOpen = true;
         }
     }
 
+    /**
+     * @return the door enum type for logic
+     */
     public DoorType getDoorType() {
         return doorType;
     }
 
+    /**
+     * Disposes the door texture to free up resources
+     */
     public void dispose() {
         doorTexture.dispose();
     }

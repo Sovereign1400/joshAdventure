@@ -7,7 +7,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import io.github.some_example_name.testGame;
 
-public class DirectionalArrow extends Sprite {
+    /**
+    * an arrow sprite that hovers near the player
+    * always points toward the exit door
+    */
+    public class DirectionalArrow extends Sprite {
     private Texture arrowTexture;
     private Josh player;
     private Door targetDoor;
@@ -15,6 +19,11 @@ public class DirectionalArrow extends Sprite {
     private static final float ARROW_SCALE = 0.5f;
     private static final float INITIAL_ARROW_ANGLE = 45f; // Since arrow points 45 degrees to top-left
 
+    /**
+     * creates the arrow using the texture
+     * sized and centered on the arrow sprite
+     * @param player the player the sprite spins around
+     */
     public DirectionalArrow(Josh player) {
         this.player = player;
         arrowTexture = new Texture("arrow/arrow.png");
@@ -24,6 +33,10 @@ public class DirectionalArrow extends Sprite {
         setOriginCenter();
     }
 
+        /**
+         * updates the arrows position based on the door and player
+         * @param nearestDoor the door it is pointing at
+         */
     public void update(Door nearestDoor) {
         this.targetDoor = nearestDoor;
         if (player != null && targetDoor != null) {
@@ -53,12 +66,19 @@ public class DirectionalArrow extends Sprite {
         }
     }
 
+        /**
+         * Renders the arrow if player and door isn't null and player isn't dead
+         * @param batch the spritebatch used to draw
+         */
     public void draw(SpriteBatch batch) {
         if (player != null && targetDoor != null && !player.isDead()) {
             super.draw(batch);
         }
     }
 
+        /**
+         * frees up the arrow texture by disposing it
+         */
     public void dispose() {
         if (arrowTexture != null) {
             arrowTexture.dispose();

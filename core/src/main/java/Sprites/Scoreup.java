@@ -7,6 +7,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 
+/**
+ * an item with the sole purpose of giving points when collected
+ * has a body that wont interfere with movement
+ * removed upon pickup
+ */
 public class Scoreup extends Sprite{
     protected World world;
     protected TiledMap map;
@@ -17,6 +22,13 @@ public class Scoreup extends Sprite{
     private boolean collected = false;
     private boolean toBeDestroyed = false;
 
+    /**
+     *creates the scoreup at a specific location
+     *
+     * @param world  the box2d world for physics
+     * @param map    tiledmap for reference
+     * @param bounds the bounds of the scoreup
+     */
     public Scoreup(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
         this.map = map;
@@ -32,6 +44,9 @@ public class Scoreup extends Sprite{
         defineScoreup();
     }
 
+    /**
+     * defines a small circle body that won't interfere with movements (static)
+     */
     private void defineScoreup() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX() + getWidth()/2, getY() + getHeight()/2);
@@ -51,6 +66,9 @@ public class Scoreup extends Sprite{
 
     }
 
+    /**
+     * if collected and world isn't locked, removes the box2d body of the scoreup
+     */
     public void update() {
         if (toBeDestroyed && !world.isLocked()) {
             world.destroyBody(body);
@@ -59,12 +77,19 @@ public class Scoreup extends Sprite{
         }
     }
 
+    /**
+     * called on pickup
+     * gets the scoreup ready to be destroyed if collected
+     */
     public void onCollect() {
         if (!collected) {
             toBeDestroyed = true;
         }
     }
 
+    /**
+     * @return true if its picked up
+     */
     public boolean isCollected() {
         return collected;
     }

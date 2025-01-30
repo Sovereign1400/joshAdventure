@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 
+/**
+ * a heart potion that gives player 1 health if not at max
+ * disappears when collected but only collectible if not max health
+ */
 public class Heart extends Sprite {
     protected World world;
     protected TiledMap map;
@@ -17,6 +21,12 @@ public class Heart extends Sprite {
     private boolean collected = false;
     private boolean toBeDestroyed = false;
 
+    /**
+     * constructs heart potion at a specific location
+     * @param world  the box2d world for physics
+     * @param map    the tiled map it references
+     * @param bounds the bounds of the heart
+     */
     public Heart(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
         this.map = map;
@@ -32,7 +42,9 @@ public class Heart extends Sprite {
         defineHeart();
     }
 
-    // This defines the visual property of heart and ensures heart wont perform like monsters which can block the player
+    /**
+     * makes it so that the heart doesn't block movement
+     */
     private void defineHeart() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX() + getWidth()/2, getY() + getHeight()/2);
@@ -51,6 +63,9 @@ public class Heart extends Sprite {
         shape.dispose();
     }
 
+    /**
+     * checks if the heart should be destroyed
+     */
     public void update() {
         if (toBeDestroyed && !world.isLocked()) {
             world.destroyBody(body);
@@ -59,7 +74,11 @@ public class Heart extends Sprite {
         }
     }
 
-
+    /**
+     * called when player collides with a heart
+     * only gets destroyed and consumed if health is below 3
+     * @param josh the player in question
+     */
     public void onCollect(Josh josh) {
         if (!collected) {
             if (josh.getHealth() < 3) {
@@ -70,6 +89,9 @@ public class Heart extends Sprite {
 
     }
 
+    /**
+     * @return true if heart is collected
+     */
     public boolean isCollected() {
         return collected;
     }

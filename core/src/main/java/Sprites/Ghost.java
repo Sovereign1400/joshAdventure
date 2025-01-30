@@ -10,6 +10,11 @@ import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * a special type of enemy that doesn't affect sensor/physics
+ * it has a simple animation and a body so that collisions can trigger
+ */
+
 public class Ghost extends Sprite {
     protected World world;
     protected TiledMap map;
@@ -23,6 +28,13 @@ public class Ghost extends Sprite {
     private float stateTime;
     private static final float FRAME_DURATION = 0.1f;
 
+    /**
+     * creates a ghost in a specific location
+     * sets up body and animations
+     * @param world  the world the ghost is in
+     * @param map    the tiledmap it references
+     * @param bounds the ghosts bounds
+     */
     public Ghost(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
         this.map = map;
@@ -41,6 +53,9 @@ public class Ghost extends Sprite {
         defineGhost();
     }
 
+    /**
+     * loads ghosts animations and then loops it
+     */
     private void loadFloatingAnimation() {
         // Load all 10 ghost frames
         ghostTextures = new Texture[10];
@@ -59,6 +74,10 @@ public class Ghost extends Sprite {
         setRegion(frames[0]);
     }
 
+    /**
+     * creates the ghosts body
+     * doesn't block movements but collisions will happen
+     */
     private void defineGhost() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX() + getWidth()/2, getY() + getHeight()/2);
@@ -77,6 +96,10 @@ public class Ghost extends Sprite {
         shape.dispose();
     }
 
+    /**
+     * updates ghost animations and repositions if needed
+     * @param dt delta time since last frame
+     */
     public void update(float dt) {
         stateTime += dt;
 
@@ -89,6 +112,9 @@ public class Ghost extends Sprite {
             body.getPosition().y - getHeight()/2);
     }
 
+    /**
+     * disposes of textures not in use
+     */
     public void dispose() {
         // Dispose all textures
         for (Texture texture : ghostTextures) {

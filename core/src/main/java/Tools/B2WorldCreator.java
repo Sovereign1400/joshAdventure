@@ -9,6 +9,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import io.github.some_example_name.testGame;
 
+/**
+ * this class was made as a utility class for us to scan tiled maps and
+ * create box2d bodies and fixtures, and a lot of other interactive objects
+ */
 public class B2WorldCreator {
     private Array<Heart> hearts;
     private Array<Speedup> speedups;
@@ -18,6 +22,12 @@ public class B2WorldCreator {
     private Array<Door> doors;
     private Array<Ghost> ghosts;
 
+    /**
+     * this method makes a b2worldcreator and processes the
+     * Tiled map's layers and creates static bodies for objects
+     * @param world the box2d world for placement and physics
+     * @param map   the tiledmap for layers and reference
+     */
     public B2WorldCreator(World world, TiledMap map){
         // This sets basic attributes for all future interactive objects on the map.
         BodyDef bdef = new BodyDef();
@@ -51,7 +61,15 @@ public class B2WorldCreator {
 
             new Brick(world, map, rect);
         };
+
     }
+
+    /**
+     * scans the heart layer
+     * @param world the box2d world theyre placed in
+     * @param map   tiledmap to read positions from
+     * @return      an array of them
+     */
 
     public Array<Heart> createHearts(World world, TiledMap map) {
         hearts = new Array<>();
@@ -62,6 +80,12 @@ public class B2WorldCreator {
         return hearts;
     }
 
+    /**
+     * scans the speedup layer
+     * @param world the box2d world theyre placed in
+     * @param map   tiledmap to read positions from
+     * @return      an array of them
+     */
     public Array<Speedup> createSpeedups(World world, TiledMap map){
         speedups = new Array<>();
         for(MapObject object : map.getLayers().get("speedups").getObjects().getByType(RectangleMapObject.class)) {
@@ -71,6 +95,12 @@ public class B2WorldCreator {
         return speedups;
     }
 
+    /**
+     * scans the scoreup layer
+     * @param world the box2d world theyre placed in
+     * @param map   tiledmap to read positions from
+     * @return      an array of them
+     */
     public Array<Scoreup> createScoreup(World world, TiledMap map){
         scoreups = new Array<>();
         for(MapObject object : map.getLayers().get("scoreups").getObjects().getByType(RectangleMapObject.class)) {
@@ -80,6 +110,12 @@ public class B2WorldCreator {
         return scoreups;
     }
 
+    /**
+     * scans the key layer
+     * @param world the box2d world theyre placed in
+     * @param map   tiledmap to read positions from
+     * @return      an array of them
+     */
     public Array<Key> createKeys(World world, TiledMap map){
         keys = new Array<>();
         for(MapObject object : map.getLayers().get("keys").getObjects().getByType(RectangleMapObject.class)) {
@@ -89,6 +125,12 @@ public class B2WorldCreator {
         return keys;
     }
 
+    /**
+     * scans the door layer
+     * @param world the box2d world theyre placed in
+     * @param map   tiledmap to read positions from
+     * @return      an array of them
+     */
     public Array<Door> createDoors(World world, TiledMap map) {
         doors = new Array<>();
         // Create entrance
@@ -104,6 +146,12 @@ public class B2WorldCreator {
         return doors;
     }
 
+    /**
+     * scans the ghost layer
+     * @param world the box2d world theyre placed in
+     * @param map   tiledmap to read positions from
+     * @return      an array of them
+     */
     public Array<Ghost> createGhosts(World world, TiledMap map) {
         ghosts = new Array<>();
         for(MapObject object : map.getLayers().get("ghosts").getObjects().getByType(RectangleMapObject.class)) {

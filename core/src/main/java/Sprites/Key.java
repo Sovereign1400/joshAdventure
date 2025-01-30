@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 
+/**
+ * a key! when collected we get a key and it disappears
+ * it can be used to use exit doors
+ */
 public class Key extends Sprite {
     protected World world;
     protected TiledMap map;
@@ -17,6 +21,13 @@ public class Key extends Sprite {
     private boolean collected = false;
     private boolean toBeDestroyed = false;
 
+    /**
+     * creates a key that wont interfere with movement (static)
+     * placed at the given rectangle area
+     * @param world  the box2d world for physics
+     * @param map    tiledmap reference
+     * @param bounds the keys bounds
+     */
     public Key(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
         this.map = map;
@@ -32,6 +43,9 @@ public class Key extends Sprite {
         defineKey();
     }
 
+    /**
+     * this builds the sensor fixture so that it doesn't interfere with movement
+     */
     private void defineKey() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX() + getWidth()/2, getY() + getHeight()/2);
@@ -50,6 +64,9 @@ public class Key extends Sprite {
         shape.dispose();
     }
 
+    /**
+     * if collected removes the box2d body of the key
+     */
     public void update() {
         if (toBeDestroyed && !world.isLocked()) {
             world.destroyBody(body);
@@ -58,12 +75,19 @@ public class Key extends Sprite {
         }
     }
 
+    /**
+     * called upon the collection of the key
+     * gets the key ready for removel
+     */
     public void onCollect() {
         if (!collected) {
             toBeDestroyed = true;
         }
     }
 
+    /**
+     * @return true if key is collected
+     */
     public boolean isCollected() {
         return collected;
     }

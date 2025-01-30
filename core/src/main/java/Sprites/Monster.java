@@ -9,6 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.some_example_name.testGame;
 
+/**
+ * this class represents the monster that is controlled by the computer
+ * and attack the player if they get too close
+ * the monster also has a "hit" state where it slows down or is stopped after being attacked
+ */
 public class Monster extends Sprite {
     public Body b2body;
     private World world;
@@ -45,7 +50,9 @@ public class Monster extends Sprite {
     private Texture[] attackTextures;
     private Texture[] idleTextures;
 
-    // Monster states
+    /**
+     * Possible states the monster can be in: idle, walking, or attacking.
+     */
     public enum MonsterState {
         IDLE,
         WALK,
@@ -54,7 +61,14 @@ public class Monster extends Sprite {
     private MonsterState currentState;
     private MonsterState previousState;
 
-    // Constructor
+    /**
+     * constructs the monster, sets up Box2D body and animations
+     * the player is referenced for the mosnter to chase them
+     * @param world the box2d world for physics
+     * @param x     x position
+     * @param y     y position
+     * @param player the player as reference
+     */
     public Monster(World world, float x, float y, Josh player) {
         this.world = world;
         this.player = player;
@@ -82,6 +96,12 @@ public class Monster extends Sprite {
         defineMonster(x, y);
     }
 
+    /**
+     * creates a body for the monster
+     * its shaped like a small circle
+     * @param x x position
+     * @param y y position
+     */
     private void defineMonster(float x, float y) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(x / testGame.PPM, y / testGame.PPM);
@@ -101,6 +121,12 @@ public class Monster extends Sprite {
         shape.dispose();
     }
 
+    /**
+     * updates monsters animation and chasing sequence each frame
+     * determines distance to the player and picks a state
+     * moves and attacks according to that
+     * @param dt the time in seconds since the last frame
+     */
     public void update(float dt) {
         stateTime += dt;
 
@@ -204,7 +230,9 @@ public class Monster extends Sprite {
         }
     }
 
-    // Loading animations
+    /**
+     * loads the frames for monsters idle animations
+     */
     private void loadIdleAnimation() {
         // Example: idle has 8 frames
         idleTextures = new Texture[10];
@@ -220,6 +248,9 @@ public class Monster extends Sprite {
         idleAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
+    /**
+     * loads the frames for monsters walking animations
+     */
     private void loadWalkAnimation() {
         // Example: walk has 8 frames
         walkTextures = new Texture[9];
@@ -235,6 +266,9 @@ public class Monster extends Sprite {
         walkAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
+    /**
+     * loads the frames for monsters attack animations
+     */
     private void loadAttackAnimation() {
         // Example: attack has 7 frames
         attackTextures = new Texture[7];
@@ -250,11 +284,18 @@ public class Monster extends Sprite {
         attackAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
+    /**
+     * called when monster is hit by the player
+     * puts the monster in a different state
+     * this practically stuns the monster, or slows it down
+     */
     public void getHit() {
         isHit = true;
     }
 
-
+    /**
+     * disposes the textures to save resources
+     */
     public void dispose() {
         // Dispose all animation textures
         if (walkTextures != null) {

@@ -12,7 +12,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 
-
+/**
+ * This is the class for the game over screen, which if Josh (player character) dies,
+ * returns to this menu. In this menu, you have the:
+ * Try again button (starts from the first map file.)
+ * Main Menu (allows user to go back to the main menu)
+ * Exit (stops the game)
+ */
 public class GameOverScreen implements Screen {
 
     private final testGame game;
@@ -24,7 +30,7 @@ public class GameOverScreen implements Screen {
 
 
     /**
-     * You can pass data about the level or cause of game over if needed.
+     * Constructor, initializes everything. Builds the game over screen, sets up a viewport.
      */
     public GameOverScreen(testGame game) {
         this.game = game;
@@ -33,6 +39,11 @@ public class GameOverScreen implements Screen {
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
+    /**
+     * Called just after the screen has been set to active
+     * Sets up the UI and music
+     * creates the buttons
+     */
     @Override
     public void show() {
         stage = new Stage(viewport);
@@ -94,6 +105,10 @@ public class GameOverScreen implements Screen {
         table.add(exitButton).width(200);
     }
 
+    /**
+     * Draws the active stage
+     * delta time since last frame in seconds
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -103,23 +118,38 @@ public class GameOverScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Ensures UI scales properly if the window size changes
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Called when the game is paused
+     */
     @Override
     public void pause() { }
 
+    /**
+     * Called when the game is resumed
+     */
     @Override
     public void resume() { }
 
+    /**
+     * Called when this screen is hidden and stops input/music
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
         game.victoryMusic.stop();
     }
 
+    /**
+     * disposes of the screen when we're done so that resources are freed up
+     */
     @Override
     public void dispose() {
         stage.dispose();

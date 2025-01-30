@@ -11,6 +11,12 @@ import io.github.some_example_name.testGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 
+/**
+ * This class (Josh) is where the playable character is made.
+ * The class handles his animations, health, speed boost, and
+ * Box2D physics
+ */
+
 public class Josh extends Sprite {
     private PlayScreen screen;
     public World world;
@@ -19,9 +25,7 @@ public class Josh extends Sprite {
     private String parent_path = "roman/soldier/";
     private float spawnX, spawnY; // spawn coordinates for Josh
 
-    // ---------------------------
     // 1) Different animations
-    // ---------------------------
     private Animation<TextureRegion> standAnimation;
     private Animation<TextureRegion> walkAnimation;
     private Animation<TextureRegion> runAnimation;
@@ -32,7 +36,9 @@ public class Josh extends Sprite {
     private Texture[] walkTextures;
     private Texture[] runTextures;
 
-    // The current stance
+    /**
+     * Enums for each stance
+     */
     public enum Stance {
         STAND,
         WALK,
@@ -82,6 +88,9 @@ public class Josh extends Sprite {
     // Key
     private boolean hasKey = false;
 
+    /**
+     * The constructor which initializes everything in the class.
+     */
     public Josh(World world, float spawnX, float spawnY){
         // Initialize the player's texture
         playerTexture = new Texture(parent_path + "idle" + "/" + "idle_knight_1.png");
@@ -98,7 +107,9 @@ public class Josh extends Sprite {
 
         hurtSound = Gdx.audio.newSound(Gdx.files.internal("audio/hurtSFX.mp3"));
 
-
+        /**
+         * Sprite bounds for rendering
+         */
         setBounds(
             0 / testGame.PPM,
             0 / testGame.PPM,
@@ -157,7 +168,9 @@ public class Josh extends Sprite {
         shape.dispose();
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Loads attack animations.
+     */
     private void loadAttackAnimations() {
         // Initialize arrays for 3 different attacks
         attackAnimations = new Animation[3];
@@ -186,7 +199,9 @@ public class Josh extends Sprite {
         }
     }
 
-    // Load standing animation
+    /**
+     * Loads standing animations.
+     */
     private void loadStandAnimation() {
         // Example: stand stance has 3 frames
         standTextures = new Texture[7];
@@ -238,6 +253,9 @@ public class Josh extends Sprite {
         runAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
+    /**
+     * Load the frames for the RUN stance and build the Animation.
+     */
     private void loadHurtAnimation() {
         hurtTextures = new Texture[8];  // Adjust number based on your frames
         TextureRegion[] frames = new TextureRegion[8];
@@ -253,6 +271,9 @@ public class Josh extends Sprite {
         hurtAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
+    /**
+     * Loads the death animation.
+     */
     private void loadDeathAnimation() {
         deathTextures = new Texture[12];  // Adjust number based on your frames
         TextureRegion[] frames = new TextureRegion[12];
@@ -353,7 +374,9 @@ public class Josh extends Sprite {
         }
     }
 
-    // Update the attack method:
+    /**
+     * Updates the attack method, and selects a random animation from the 3 available ones.
+     */
     public void attack() {
         if (!isAttacking && attackCooldownTimer <= 0 && !isDead && !isHurt) {
             isAttacking = true;
@@ -377,14 +400,24 @@ public class Josh extends Sprite {
         }
     }
 
+    /**
+     * Unused
+     */
     public void moveLeft() {
         facingLeft = true;
     }
 
+    /**
+     * Unused
+     */
     public void moveRight() {
         facingLeft = false;
     }
 
+    /**
+     * Damages Josh by 1 health if he is not already dead or hurt
+     * or triggers the hurt or dead state depending on which is true
+     */
     public void damage() {
         if (!isHurt && !isDead) {
             health = Math.max(0, health - 1);
@@ -398,7 +431,9 @@ public class Josh extends Sprite {
             }
         }
     }
-
+    /**
+     * it returns true if josh is dead, false if not.
+     */
     public boolean isDead() {
         return isDead;
     }
@@ -428,11 +463,16 @@ public class Josh extends Sprite {
             }
         }
     }
-
+    /**
+     * it gets the current Box2D position of Johns body
+     */
     public Vector2 getPosition() {
         return b2body.getPosition();
     }
 
+    /**
+     * A rectangle on Johns position for easier overlap detection
+     */
     public Rectangle getBounds() {
         return new Rectangle(
             getX(),       // Sprite X position
@@ -442,6 +482,9 @@ public class Josh extends Sprite {
         );
     }
 
+    /**
+     * Activates a speed boost which increases Johns speed for a bit
+     */
     public void activateSpeedBoost() {
         if (!speedBoostActive) {
             speedBoostActive = true;
@@ -450,12 +493,16 @@ public class Josh extends Sprite {
         }
     }
 
-
+    /**
+     * Increases Joshs health by 1
+     */
     public void increaseHealth() {
-            health++;
-
+                health++;
     }
 
+    /**
+     *  1.5x speed multiplier for josh
+     */
     public void increaseSpeed(){
         setBasemovespeed(baseMovespeed * 1.5f);
     }

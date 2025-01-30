@@ -21,11 +21,11 @@ import com.badlogic.gdx.audio.Music;
  * The MainMenuScreen class represents the initial main menu of the Maze Runner game.
  * It provides options to start the game, view the story, view the credits, or exit.
  *
- * MENU BUTTONS:
- *  - START (goes to PlayScreen)
- *  - STORY (opens a sub-stage with story text)
- *  - CREDITS (opens a sub-stage with credits text)
- *  - EXIT (closes the game)
+ * The menu buttons are these:
+ *  Start, goes to PlayScreen
+ *  Story, opens up a stage for story.
+ *  Credits, opens up a stage for credits.
+ *  Exit, it closes the game.
  */
 public class MainMenuScreen implements Screen {
 
@@ -40,7 +40,10 @@ public class MainMenuScreen implements Screen {
     private com.badlogic.gdx.audio.Sound buttonSound;
     private Texture bgTexture;
 
-
+    /**
+     * Initializes everything, and sets up a viewport
+     * in order to fit everything in any sized window.
+     */
     public MainMenuScreen(testGame game) {
         this.game = game;
         viewport = new FitViewport(800, 480);
@@ -50,29 +53,27 @@ public class MainMenuScreen implements Screen {
 
     }
 
+    /**
+     * Loads the skin, creates the stages, builds the sub-stages, accept inputs on the main stage,
+     * and plays the menu music.
+     */
     @Override
     public void show() {
         // Load the skin from the game (assuming game.getSkin() returns a valid Skin)
         skin = game.getSkin();
 
-        // Create the 3 stages
         menuStage = new Stage(viewport);
         storyStage = new Stage(viewport);
         creditsStage = new Stage(viewport);
 
-        // Build the menu UI
         createMenuStage();
 
-        // Build the story sub-stage
         createStoryStage();
 
-        // Build the credits sub-stage
         createCreditsStage();
 
-        // Initially show the main menu stage
         activeStage = menuStage;
 
-        // Accept input on the current stage
         Gdx.input.setInputProcessor(activeStage);
 
         game.playMusic.stop();
@@ -80,14 +81,13 @@ public class MainMenuScreen implements Screen {
         game.victoryMusic.stop();
         game.gameOverMusic.stop();
 
-        // Play the main menu music
         game.mainMenuMusic.setLooping(true);
         game.mainMenuMusic.play();
         game.mainMenuMusic.setVolume(0.2f);
     }
 
     /**
-     * Creates the main menu with 4 buttons: START, STORY, CREDITS, EXIT.
+     * Creates the main menu with 4 buttons: START, STORY, CREDITS, EXIT
      */
     private void createMenuStage() {
         Table table = new Table();
@@ -117,7 +117,7 @@ public class MainMenuScreen implements Screen {
         });
 
 
-        // STORY button
+        // Story button
         TextButton storyButton = new TextButton("Story", skin);
         storyButton.addListener(new ClickListener(){
             @Override
@@ -130,7 +130,7 @@ public class MainMenuScreen implements Screen {
         });
 
 
-        // CREDITS button
+        // Credits button
         TextButton creditsButton = new TextButton("Credits", skin);
         creditsButton.addListener(new ClickListener(){
             @Override
@@ -143,7 +143,7 @@ public class MainMenuScreen implements Screen {
         });
 
 
-        // EXIT button
+        // Exit button
         TextButton exitButton = new TextButton("Exit", skin);
         exitButton.addListener(new ClickListener(){
             @Override
@@ -168,7 +168,8 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
-     * Creates a sub-stage that shows the STORY text and has a BACK button.
+     * Creates a sub-stage that shows the story text and has a back button
+     * that leads back to the main menu
      */
     private void createStoryStage() {
         Table table = new Table();
@@ -205,7 +206,8 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
-     * Creates a sub-stage that shows the CREDITS text and has a BACK button.
+     * Creates a sub-stage that shows the credits text and has a back button
+     * that leads to the main menu
      */
     private void createCreditsStage() {
         Table table = new Table();
@@ -239,6 +241,10 @@ public class MainMenuScreen implements Screen {
         table.add(backButton).center();
     }
 
+    /**
+     * renders the active stage
+     * delta time since last frame in seconds
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -249,6 +255,9 @@ public class MainMenuScreen implements Screen {
         activeStage.draw();
     }
 
+    /**
+     * updates the viewport and adjusts everything so that they fit in the window
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
@@ -257,18 +266,30 @@ public class MainMenuScreen implements Screen {
         creditsStage.getViewport().update(width, height, true);
     }
 
+    /**
+     * called when game is paused
+     */
     @Override
     public void pause() { }
 
+    /**
+     * called when game is resumed
+     */
     @Override
     public void resume() { }
 
+    /**
+     * stops inputs and music when the stage is hidden
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
         game.mainMenuMusic.stop();
     }
 
+    /**
+     * disposes of the stages
+     */
     @Override
     public void dispose() {
         menuStage.dispose();

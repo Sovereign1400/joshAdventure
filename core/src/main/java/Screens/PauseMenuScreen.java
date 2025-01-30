@@ -13,12 +13,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 
 /**
- * The PauseMenuScreen class appears when the player presses Esc during gameplay.
- * It pauses the game, stops or switches background music if desired, and offers:
- *  - CONTINUE (resume the game)
- *  - LOAD NEW MAP (start a new game)
- *  - STAGE SELECT (sub-menu for stage1,2,3)
- *  - EXIT (quit the application)
+ * This class is for the pausescreen which appears when the player presses ESC during the gameplay
+ * It pauses the game and the following buttons are offered:
+ *  continue (resumes the game)
+ *  level select (allows us to load one of the maps in the game and lets us start from whichever we choose)
+ *  exit (closes the game)
  */
 public class PauseMenuScreen implements Screen {
 
@@ -33,8 +32,10 @@ public class PauseMenuScreen implements Screen {
     private Stage stage;
 
     /**
-     * @param game       The core game instance
-     * @param gameScreen The PlayScreen that was paused
+     * Builds the pause menu screen,
+     * Initializes everything, and sets up a viewport
+     * in order to fit everything in any sized window.
+     *
      */
     public PauseMenuScreen(testGame game, PlayScreen gameScreen) {
         this.game = game;
@@ -44,6 +45,10 @@ public class PauseMenuScreen implements Screen {
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
+    /**
+     * Called just after the screen has been set to active
+     * Sets up the UI and music
+     */
     @Override
     public void show() {
         // Mark the game screen as paused
@@ -69,8 +74,7 @@ public class PauseMenuScreen implements Screen {
     }
 
     /**
-     * Creates the pause menu with 4 buttons:
-     *  - CONTINUE, LOAD NEW MAP, STAGE SELECT, EXIT
+     * Creates the pause menu with 4 buttons, each with different functions
      */
     private void createPauseStage() {
         Table table = new Table();
@@ -102,11 +106,10 @@ public class PauseMenuScreen implements Screen {
         table.add(continueButton).row();
 
         // Stage Select
-        TextButton stageSelectButton = new TextButton("Stage Select", skin);
+        TextButton stageSelectButton = new TextButton("Level Select", skin);
         stageSelectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Switch to the stage select sub-stage
                 buttonSound.play(0.15F);
                 activeStage = stageSelectLevel;
                 Gdx.input.setInputProcessor(stageSelectLevel);
@@ -127,7 +130,9 @@ public class PauseMenuScreen implements Screen {
     }
 
     /**
-     * Creates a sub-stage for selecting Stage 1/2/3, plus a Back button to return.
+     * Creates a separate substage and lets us select a level and load a map file
+     * each button loads a new map in a fresh game
+     * back button to return to pause menu
      */
     private void createStageSelectLevel() {
         Table table = new Table();
@@ -195,6 +200,10 @@ public class PauseMenuScreen implements Screen {
         table.add(backButton).width(200).padTop(20);
     }
 
+    /**
+     * Draws whichever stage is active (pause menu or level select).
+     * delta time since last frame in seconds
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -204,6 +213,9 @@ public class PauseMenuScreen implements Screen {
         activeStage.draw();
     }
 
+    /**
+     * Ensures UI scales properly if the window size changes
+     */
     @Override
     public void resize(int width, int height) {
         pauseStage.getViewport().update(width, height, true);
@@ -211,18 +223,30 @@ public class PauseMenuScreen implements Screen {
 
     }
 
+    /**
+     * Called when the game is paused
+     */
     @Override
     public void pause() { }
 
+    /**
+     * Called when the game is resumed
+     */
     @Override
     public void resume() { }
 
+    /**
+     * Called when this screen is hidden and stops input/music
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
         game.pauseMusic.stop();
     }
 
+    /**
+     * disposes of the screen when we're done so that resources are freed up
+     */
     @Override
     public void dispose() {
         pauseStage.dispose();

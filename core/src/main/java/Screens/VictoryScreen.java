@@ -13,8 +13,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 
 /**
- * VictoryScreen displays a congratulatory message, plus buttons to Continue, go to Main Menu,
- * or Exit the application. Use this screen when the player successfully escapes the maze.
+ * This class makes the victory screen, which appears when the player escapes all three mazes
+ * (or however many, depending on what stage is selected. If the player starts from stag 3, its only 1 maze.)
+ * shows the final score
+ * main menu button, which allows the player to go back to the main menu
+ * exit button, which allows the player to exit the game
  */
 public class VictoryScreen implements Screen {
 
@@ -26,7 +29,7 @@ public class VictoryScreen implements Screen {
     private Viewport viewport;
 
     /**
-     * If you want to know from which level the user won, you could pass in more data here.
+     * Constructor, initializes everything. Builds the game over screen, sets up a viewport.
      */
     public VictoryScreen(testGame game, int finalScore) {
         this.game = game;
@@ -37,6 +40,11 @@ public class VictoryScreen implements Screen {
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
+    /**
+     * Called just after the screen has been set to active
+     * Sets up the UI and music
+     * creates the buttons
+     */
     @Override
     public void show() {
         // Create the stage
@@ -110,6 +118,10 @@ public class VictoryScreen implements Screen {
         table.add(exitButton).width(200);
     }
 
+    /**
+     * Draws the active stage
+     * delta time since last frame in seconds
+     */
     @Override
     public void render(float delta) {
         // Clear the screen
@@ -121,23 +133,38 @@ public class VictoryScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Ensures UI scales properly if the window size changes
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Called when the game is paused
+     */
     @Override
     public void pause() { }
 
+    /**
+     * Called when the game is resumed
+     */
     @Override
     public void resume() { }
 
+    /**
+     * Called when this screen is hidden and stops input/music
+     */
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
         game.victoryMusic.stop();
     }
 
+    /**
+     * disposes of the screen when we're done so that resources are freed up
+     */
     @Override
     public void dispose() {
         stage.dispose();
