@@ -51,10 +51,13 @@ import com.badlogic.gdx.physics.box2d.*;
                 if (otherFixture.getBody() == player.b2body) {
                     Heart heart = (Heart) heartFixture.getUserData();
                     if (!heart.isCollected()) {
-                        heart.onCollect(player);
-                        player.increaseHealth();
-                        healSound.play(0.3F);
-                        screen.addScore(PlayScreen.HEART_SCORE);
+                        if (player.getHealth() < 3){
+                            heart.onCollect(player);
+                            player.increaseHealth();
+                            healSound.play(0.3F);
+                            screen.addScore(PlayScreen.HEART_SCORE);
+                        }
+
                     }
                 }
             }

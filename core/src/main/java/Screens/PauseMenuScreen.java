@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 
 /**
@@ -27,6 +29,8 @@ public class PauseMenuScreen implements Screen {
     private Stage activeStage;           // Whichever is currently displayed
     private com.badlogic.gdx.audio.Sound buttonSound;
     private Skin skin;
+    private Viewport viewport;
+    private Stage stage;
 
     /**
      * @param game       The core game instance
@@ -35,6 +39,8 @@ public class PauseMenuScreen implements Screen {
     public PauseMenuScreen(testGame game, PlayScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
+        viewport = new FitViewport(800, 480);
+        stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
@@ -49,8 +55,8 @@ public class PauseMenuScreen implements Screen {
         skin = game.getSkin();
 
         // Create the 2 stages
-        pauseStage = new Stage(new ScreenViewport());
-        stageSelectLevel = new Stage(new ScreenViewport());
+        pauseStage = new Stage(viewport);
+        stageSelectLevel = new Stage(viewport);
 
         createPauseStage();
         createStageSelectLevel();

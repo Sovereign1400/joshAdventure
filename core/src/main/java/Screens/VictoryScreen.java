@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 
 /**
@@ -21,12 +23,15 @@ public class VictoryScreen implements Screen {
     private Skin skin;
     private int finalScore;
     private com.badlogic.gdx.audio.Sound buttonSound;
+    private Viewport viewport;
 
     /**
      * If you want to know from which level the user won, you could pass in more data here.
      */
     public VictoryScreen(testGame game, int elapsedTime) {
         this.game = game;
+        viewport = new FitViewport(800, 480);
+        stage = new Stage(viewport);
         // Calculate final score
         int rawScore = 1000 - elapsedTime;
         if (rawScore < 0) {
@@ -39,7 +44,7 @@ public class VictoryScreen implements Screen {
     @Override
     public void show() {
         // Create the stage
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(viewport);
         // Load skin from the game or from your assets directly
         skin = game.getSkin();
 

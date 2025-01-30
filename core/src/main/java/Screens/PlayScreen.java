@@ -119,7 +119,7 @@ public class PlayScreen implements Screen {
     public PlayScreen(testGame game, String mapPath) {
         this.game = game;
         slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/joshsword.mp3"));
-        slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/deathSFX.mp3"));
+        deathSound = Gdx.audio.newSound(Gdx.files.internal("audio/deathSFX.mp3"));
 
 
         // This camera follows the main character.
