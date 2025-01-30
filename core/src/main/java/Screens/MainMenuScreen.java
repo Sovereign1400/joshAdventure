@@ -93,7 +93,6 @@ public class MainMenuScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
 
-        // Slightly fancy background hopefully
         table.setBackground(new TextureRegionDrawable(new TextureRegion(bgTexture)));
 
         // Default padding for each cell

@@ -33,8 +33,6 @@ public class testGame extends Game {
 
 
         batch = new SpriteBatch();
-
-//        gameMap = new TiledGameMap();
         mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/mainmenuBG.mp3"));
         playMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/gameplayBG.mp3"));
         pauseMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/pauseBG.mp3"));

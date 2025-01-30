@@ -166,13 +166,6 @@ public class PlayScreen implements Screen {
         // This initializes arrow
         directionalArrow = new DirectionalArrow(player);
 
-
-//        // This centers the camera to the center of the screen instead of (0,0).
-//        gamecam.position.set((float) gamePort.getScreenWidth() / 2, (float) gamePort.getScreenHeight() / 2, 0);
-
-//        // This set camera angle start with a specific coordinates.
-//        gamecam.position.set((float) 360, (float) 360, 0);
-
         B2WorldCreator creator = new B2WorldCreator(world, map);
 
         // Please go to update methods - Wong
@@ -188,7 +181,6 @@ public class PlayScreen implements Screen {
 
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, viewW, viewH, false);
         fboRegion = new TextureRegion(fbo.getColorBufferTexture());
-//        fboRegion.flip(false, true);
 
         shapeRenderer = new ShapeRenderer();
 
@@ -512,9 +504,6 @@ public class PlayScreen implements Screen {
 
         // This renders the map
         renderer.render();
-
-        // This renders Box2DDebugLines, comment it out if not debugging
-        //b2dr.render(world, gamecam.combined);
 
         // Set our batch to now draw what HUD cam sees.
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -843,12 +832,10 @@ public class PlayScreen implements Screen {
         this.paused = paused;
     }
 
-    // Add getter for game instance
     public testGame getGame() {
         return game;
     }
 
-    // Add getter for current map path
     public String getCurrentMapPath() {
         return currentMapPath;
     }

@@ -36,7 +36,6 @@ public class HUD implements Disposable {
     Label levelLabel;
     Label worldLabel;
     Label mainCharLabel;
-    // Label keyLabel;
 
     // These account for heart in HUD
     private Josh player;
@@ -73,7 +72,6 @@ public class HUD implements Disposable {
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         mainCharLabel = new Label("mainChar", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        // keyLabel = new Label("Key: Not Collected", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         stopwatchLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 

@@ -206,7 +206,7 @@ public class Josh extends Sprite {
      * Load the frames for the WALK stance and build the Animation.
      */
     private void loadWalkAnimation() {
-        // Example: walk stance has 6 frames
+        // Example: walk stance has 8 frames
         walkTextures = new Texture[8];
         TextureRegion[] frames = new TextureRegion[8];
 
@@ -224,7 +224,7 @@ public class Josh extends Sprite {
      * Load the frames for the RUN stance and build the Animation.
      */
     private void loadRunAnimation() {
-        // Example: run stance has 6 frames
+        // Example: run stance has 8 frames
         runTextures = new Texture[8];
         TextureRegion[] frames = new TextureRegion[8];
 

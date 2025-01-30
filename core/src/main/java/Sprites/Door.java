@@ -40,8 +40,8 @@ public class Door extends InteractiveTileObject {
 
     public void draw(SpriteBatch batch) {
         if (!isOpen) {
-            float width = 48 / testGame.PPM;   // replace 32 with your door width
-            float height = 48 / testGame.PPM;  // replace 48 with your door height
+            float width = 48 / testGame.PPM;
+            float height = 48 / testGame.PPM;
             batch.draw(doorTexture,
                 bounds.getX() / testGame.PPM,
                 bounds.getY() / testGame.PPM,
