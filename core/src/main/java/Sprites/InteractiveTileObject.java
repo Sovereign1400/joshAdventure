@@ -23,7 +23,6 @@ public abstract class InteractiveTileObject {
         PolygonShape shape = new PolygonShape();
 
         // This creates ground object bodies and fixtures.
-//        bdef.type = BodyDef.BodyType.StaticBody;
         bdef.position.set((bounds.getX() + bounds.getWidth()/2) / testGame.PPM, (bounds.getY() + bounds.getHeight() / 2) / testGame.PPM);
 
         body = world.createBody(bdef);

@@ -50,39 +50,7 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Brick(world, map, rect);
-
-//            // This creates ground object bodies and fixtures.
-//            bdef.type = BodyDef.BodyType.StaticBody;
-//            bdef.position.set((rect.getX() + rect.getWidth()/2) / testGame.PPM, (rect.getY() + rect.getHeight() / 2) / testGame.PPM);
-//
-//            body = world.createBody(bdef);
-//
-//            shape.setAsBox(rect.getWidth() / 2 / testGame.PPM, rect.getHeight() / 2 / testGame.PPM);
-//            fdef.shape = shape;
-//            body.createFixture(fdef);
         };
-
-        // This creates mushrooms/hearts
-        // Accounts for the green bounds, can be safely removed
-        /*for(MapObject object : map.getLayers().get("hearts").getObjects().getByType(RectangleMapObject.class)){// Loop through the "graphics" layer of map layers.(counting from bottom)
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            hearts.add(new Heart(world, map, rect));
-
-
-//            // This creates ground object bodies and fixtures.
-//            bdef.type = BodyDef.BodyType.StaticBody;
-//            bdef.position.set((rect.getX() + rect.getWidth()/2) / testGame.PPM, (rect.getY() + rect.getHeight() / 2) / testGame.PPM);
-//
-//            body = world.createBody(bdef);
-//
-//            shape.setAsBox(rect.getWidth() / 2 / testGame.PPM, rect.getHeight() / 2 / testGame.PPM);
-//            fdef.shape = shape;
-//            body.createFixture(fdef);
-        }*/
-
-
-
     }
 
     public Array<Heart> createHearts(World world, TiledMap map) {

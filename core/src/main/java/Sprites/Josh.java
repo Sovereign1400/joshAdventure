@@ -37,9 +37,6 @@ public class Josh extends Sprite {
         STAND,
         WALK,
         RUN,
-        HURT,
-        ATTACK,
-        DEATH
     }
 
     // hurt animation
@@ -382,13 +379,10 @@ public class Josh extends Sprite {
 
     public void moveLeft() {
         facingLeft = true;
-        // set the velocity or impulse if you want
-        // b2body.setLinearVelocity(-someSpeed, b2body.getLinearVelocity().y);
     }
 
     public void moveRight() {
         facingLeft = false;
-        // b2body.setLinearVelocity(someSpeed, b2body.getLinearVelocity().y);
     }
 
     public void damage() {
@@ -494,21 +488,3 @@ public class Josh extends Sprite {
         hasKey = true;
     }
 }
-
-
-
-//    public void defineJosh(){
-//        BodyDef bdef = new BodyDef();
-//        bdef.position.set((float) 32 / testGame.PPM, (float) 32 / testGame.PPM);
-//        bdef.type = BodyDef.BodyType.DynamicBody;
-//        b2body = world.createBody(bdef);
-//
-//        FixtureDef fdef = new FixtureDef();
-//        CircleShape shape = new CircleShape();
-//        shape.setRadius((float) 16 / testGame.PPM);
-//
-//        fdef.shape = shape;
-//        assert b2body != null;
-//        b2body.createFixture(fdef);
-//    }
-

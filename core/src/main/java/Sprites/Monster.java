@@ -60,12 +60,6 @@ public class Monster extends Sprite {
         this.player = player;
         this.initialX = x / testGame.PPM;
 
-//        monsterTexture = new Texture("monster.png");
-//        setBounds(0, 0, 16 / testGame.PPM, 16 / testGame.PPM);
-//        setRegion(monsterTexture);
-//
-//        defineMonster();
-//        b2body.setTransform(x / testGame.PPM, y / testGame.PPM, 0);
         this.world = world;
         this.player = player;
         stateTime = 0;
@@ -242,7 +236,7 @@ public class Monster extends Sprite {
     }
 
     private void loadAttackAnimation() {
-        // Example: attack has 8 frames
+        // Example: attack has 7 frames
         attackTextures = new Texture[7];
         TextureRegion[] frames = new TextureRegion[7];
 
@@ -262,7 +256,6 @@ public class Monster extends Sprite {
 
 
     public void dispose() {
-//        monsterTexture.dispose();
         // Dispose all animation textures
         if (walkTextures != null) {
             for (Texture texture : walkTextures) {

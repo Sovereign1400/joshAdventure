@@ -333,22 +333,6 @@ public class PlayScreen implements Screen {
                 }
             }
 
-            // This part can be safely removed, but keep it for now
-            // Decide stance (walk or run) if any movement key is pressed
-            /*if (upPressed || downPressed || leftPressed || rightPressed) {
-                if (shiftPressed) {
-                    // RUN stance
-                    player.setStance(Josh.Stance.RUN);
-                    moveSpeed = player.getBasemovespeed() * 1.2f; // faster speed for running
-                } else {
-                    // WALK stance
-                    player.setStance(Josh.Stance.WALK);
-                }
-            } else {
-                // No movement keys pressed => STAND
-                player.setStance(Josh.Stance.STAND);
-            }*/
-
             // Determine facing direction
             if (leftPressed) {
                 player.facingLeft = false;
@@ -503,9 +487,6 @@ public class PlayScreen implements Screen {
 
             updateDirectionalArrow();
 
-            // Optional: Check for collisions between player and monsters
-//        checkMonsterCollisions();
-
         }
     }
 
@@ -562,8 +543,6 @@ public class PlayScreen implements Screen {
             monster.draw(game.batch);
         }
 
-
-
         // This renders an array of speedups
         for(Speedup speedup : speedups) {
             if(!speedup.isCollected()) {
@@ -606,8 +585,6 @@ public class PlayScreen implements Screen {
 
         game.batch.end(); // End batch
 
-//        debugDrawShapes();
-
         // This renders fog of war using the same batch but the second time.
          renderFogOfWar();
 
@@ -618,14 +595,6 @@ public class PlayScreen implements Screen {
     }
 
     private void createMonsters() {
-//        // You can create monsters at specific positions
-//        addMonster(200, 200);  // First monster
-//        addMonster(400, 300);  // Second monster
-//        addMonster(600, 400);  // Third monster
-
-        // Alternative: If you want to create monsters from map objects
-        // Assuming you have a "Monsters" layer in your Tiled map
-
         for (MapObject object : map.getLayers().get("monsterSpawns").getObjects()) {
             if (object instanceof RectangleMapObject) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -661,13 +630,8 @@ public class PlayScreen implements Screen {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-//        // 6) Draw a half‐transparent black rectangle to fill the whole window
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.setColor(255, 255, 0, 0.1f);
-//        shapeRenderer.rect(0, 0, w, h);
-//        shapeRenderer.end();
 
-        // 7) Draw a bright red circle in the exact window center
+        // 6) Draw a bright red circle in the exact window center
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 0, 0, 1);  // full opaque red
         shapeRenderer.circle(w / 2f, h / 2f, 100f);
@@ -683,16 +647,10 @@ public class PlayScreen implements Screen {
         }
     }
 
-
-
-
     private void addTrap(float x, float y) {
         Trap trap = new Trap(world, x, y);
         traps.add(trap);
     }
-
-
-
 
     private void renderFogOfWar() {
         int viewW = gamePort.getScreenWidth();
@@ -770,19 +728,6 @@ public class PlayScreen implements Screen {
         );
         game.batch.end();
     }
-
-//    public void loadNextMap() {
-//        System.out.println("Loading next map..."); // Debug print
-//        if (currentMapPath.contains("customMap_2")) {
-//            dispose();  // Clean up current resources
-//            System.out.println("Map 2 disposed");
-//            System.out.println("Creating new screen for customMap3...");
-//            PlayScreen nextScreen = new PlayScreen(game, "tileset/customMap_3.tmx");
-//            System.out.println("Setting new screen...");
-//            game.setScreen(nextScreen);
-//            System.out.println("Switched to Map 3");  // Debug print
-//        }
-//    }
 
     // Score system
     public void addScore(int amount) {

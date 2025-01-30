@@ -45,8 +45,6 @@ import com.badlogic.gdx.physics.box2d.*;
                 Fixture heartFixture = fixA.getUserData() instanceof Heart ? fixA : fixB;
                 Fixture otherFixture = heartFixture == fixA ? fixB : fixA;
 
-
-
                 // Only allow collection if the other fixture is the player's body
                 if (otherFixture.getBody() == player.b2body) {
                     Heart heart = (Heart) heartFixture.getUserData();
@@ -63,8 +61,6 @@ import com.badlogic.gdx.physics.box2d.*;
                 // First, identify which fixture is the speedup and which is the potential collector
                 Fixture speedupFixture = fixA.getUserData() instanceof Speedup ? fixA : fixB;
                 Fixture otherFixture = speedupFixture == fixA ? fixB : fixA;
-
-
 
                 // Only allow collection if the other fixture is the player's body
                 if (otherFixture.getBody() == player.b2body) {
@@ -119,7 +115,6 @@ import com.badlogic.gdx.physics.box2d.*;
                 damageSound.play(0.3F);
             }
 
-
             // Check the collision of the door, make sure the touch registration only happens 1 time.
             if (loadingNextMap) return;  // Early return if loading next map
 
@@ -127,31 +122,6 @@ import com.badlogic.gdx.physics.box2d.*;
             if (fixA.getUserData() instanceof Door || fixB.getUserData() instanceof Door) {
                 Fixture doorFix = fixA.getUserData() instanceof Door ? fixA : fixB;
                 Door door = (Door)doorFix.getUserData();
-
-                /*if (door.getDoorType() == DoorType.EXIT) {
-                    if (player.hasKey()) {
-                        System.out.println("Player touched exit door with key");
-                        door.interact(player);
-                        loadingNextMap = true;  // Set flag before loading
-
-                        if (screen.getCurrentMapPath().contains("customMap_4")) {
-                            // Victory condition - reached exit door in final map
-                            System.out.println("Victory achieved!");
-                            Gdx.app.postRunnable(() -> {
-                                // Convert gameTime to integer seconds for score calculation
-                                screen.getGame().setScreen(new VictoryScreen(screen.getGame(), screen.getHud().getScore()));
-                            });
-                        } else {
-                            // Not final map, proceed to next map
-                            Gdx.app.postRunnable(() -> {
-                                screen.loadNextMap();
-                            });
-                        }
-                    } else {
-                        screen.showDoorMessage = true;
-                        screen.messageTimer = 0;
-                    }
-                }*/
 
                 if (door.getDoorType() == DoorType.EXIT) {
                     if (player.hasKey()) {
@@ -196,7 +166,6 @@ import com.badlogic.gdx.physics.box2d.*;
                 }
             }
 
-
             // This sets for ghost collision
             if (fixA.getBody() == player.b2body && fixB.getUserData() instanceof Ghost) {
                 player.damage();
@@ -216,7 +185,5 @@ import com.badlogic.gdx.physics.box2d.*;
 
         @Override
         public void postSolve(Contact contact, ContactImpulse impulse) {}
-
-
     }
 

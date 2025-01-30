@@ -102,19 +102,6 @@ public class HUD implements Disposable {
         table.add().expandX(); // Empty cell for alignment
         table.row();
 
-        // Key label in new row, aligned left
-        // table.add(keyLabel).left().padLeft(10).padTop(5).colspan(4);
-
-        /*table.add(heartTable).expandX().padTop(5);
-        table.add(mainCharLabel).expandX().padTop(5);
-        table.add(worldLabel).expandX().padTop(5);
-        table.add(timeLabel).expandX().padTop(5);
-        table.row();
-        table.add(scoreLabel).expandX();
-        table.add(levelLabel).expandX();
-        table.add(countdownLabel).expandX();
-        table.add(keyLabel).padTop(5).padLeft(10).row();*/
-
         table.add(keyImage).size(68, 90).left().padLeft(60).padTop(10).colspan(4);
 
         stage.addActor(table);
@@ -161,8 +148,6 @@ public class HUD implements Disposable {
         } else {
             keyImage.setColor(1, 1, 1, 0.2f);
         }
-        // check whether key is collected or not, also display it
-        // keyLabel.setText(player.hasKey() ? "Key: Collected" : "Key: Not Collected");
 
         scoreLabel.setText("SCORE: " + String.format("%06d", score));
 

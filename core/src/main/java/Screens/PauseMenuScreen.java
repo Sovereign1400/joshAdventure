@@ -95,18 +95,6 @@ public class PauseMenuScreen implements Screen {
         });
         table.add(continueButton).row();
 
-        /* Load New Map
-        TextButton loadMapButton = new TextButton("Load New Map", skin);
-        loadMapButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Replace the game screen with a fresh one
-                buttonSound.play();
-                game.setScreen(new PlayScreen(game, "anotherMap.tmx"));
-            }
-        });
-        table.add(loadMapButton).row(); */
-
         // Stage Select
         TextButton stageSelectButton = new TextButton("Stage Select", skin);
         stageSelectButton.addListener(new ClickListener(){
