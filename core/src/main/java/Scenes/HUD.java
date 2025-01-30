@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.some_example_name.testGame;
 import com.badlogic.gdx.graphics.Color;
 
+import static Screens.PlayScreen.SCORE_PER_SECOND;
+
 public class HUD implements Disposable {
     public Stage stage;
     private Viewport viewport;
@@ -62,7 +64,7 @@ public class HUD implements Disposable {
         Table heartTable = new Table();
         for(int i = 0; i < 3; i++) {
             heartImages[i] = new Image(heartTexture);
-            heartTable.add(heartImages[i]).size(30, 50).padRight(10);
+            heartTable.add(heartImages[i]).size(50, 50).padRight(30);
         }
 
 
@@ -86,7 +88,7 @@ public class HUD implements Disposable {
 
 
         // Top row with original spacing
-        table.add(heartTable).expandX().padTop(5);
+        table.add(heartTable).expandX().padTop(20);
         table.add(mainCharLabel).expandX().padTop(5);
         table.add(worldLabel).expandX().padTop(5);
         table.add(timeLabel).expandX().padTop(5);
@@ -113,7 +115,7 @@ public class HUD implements Disposable {
         table.add(countdownLabel).expandX();
         table.add(keyLabel).padTop(5).padLeft(10).row();*/
 
-        table.add(keyImage).size(40, 48).left().padLeft(10).padTop(5).colspan(4);
+        table.add(keyImage).size(68, 90).left().padLeft(60).padTop(10).colspan(4);
 
         stage.addActor(table);
     }
@@ -172,6 +174,7 @@ public class HUD implements Disposable {
                 timeCount = 0;
 
                 // Convert to HH:MM:SS
+                addScore(SCORE_PER_SECOND);
                 int hours = elapsedTime / 3600;
                 int remainder = elapsedTime % 3600;
                 int minutes = remainder / 60;
@@ -185,6 +188,10 @@ public class HUD implements Disposable {
 
     public int getScore() {
         return score;
+    }
+
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
 
     @Override

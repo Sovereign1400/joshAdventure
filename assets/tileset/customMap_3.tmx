@@ -45,7 +45,7 @@
  <objectgroup id="10" name="keys" visible="0">
   <object id="35" x="144" y="48" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="11" name="shields" visible="0">
+ <objectgroup id="11" name="scoreups" visible="0">
   <object id="36" x="384" y="192" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="12" name="speedups" visible="0">

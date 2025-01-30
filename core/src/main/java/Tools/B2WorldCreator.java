@@ -12,7 +12,7 @@ import io.github.some_example_name.testGame;
 public class B2WorldCreator {
     private Array<Heart> hearts;
     private Array<Speedup> speedups;
-    private Array<Shield> shields;
+    private Array<Scoreup> scoreups;
     private Array<Key> keys;
     private Josh player;
     private Array<Door> doors;
@@ -26,7 +26,7 @@ public class B2WorldCreator {
         Body body;
         hearts = new Array<>();
         speedups = new Array<>();
-        shields = new Array<>();
+        scoreups = new Array<>();
         keys = new Array<>();
 
 
@@ -103,13 +103,13 @@ public class B2WorldCreator {
         return speedups;
     }
 
-    public Array<Shield> createShields(World world, TiledMap map){
-        shields = new Array<>();
-        for(MapObject object : map.getLayers().get("shields").getObjects().getByType(RectangleMapObject.class)) {
+    public Array<Scoreup> createScoreup(World world, TiledMap map){
+        scoreups = new Array<>();
+        for(MapObject object : map.getLayers().get("scoreups").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            shields.add(new Shield(world, map, rect));
+            scoreups.add(new Scoreup(world, map, rect));
         }
-        return shields;
+        return scoreups;
     }
 
     public Array<Key> createKeys(World world, TiledMap map){
