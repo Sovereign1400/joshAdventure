@@ -105,7 +105,7 @@ public class Josh extends Sprite {
         this.movespeed = 1.0f;
         this.baseMovespeed = this.movespeed;
 
-        hurtSound = Gdx.audio.newSound(Gdx.files.internal("audio/hurtSFX.mp3"));
+       // hurtSound = Gdx.audio.newSound(Gdx.files.internal("audio/hurtSFX.mp3"));
 
         /**
          * Sprite bounds for rendering
@@ -322,7 +322,7 @@ public class Josh extends Sprite {
         } else if (isHurt) {
             currentAnimation = hurtAnimation;
             hurtTimer += dt;
-            hurtSound.play();
+           // hurtSound.play();
             if (hurtTimer >= hurtDuration) {
                 isHurt = false;
                 stateTime = 0;

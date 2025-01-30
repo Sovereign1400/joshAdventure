@@ -32,22 +32,31 @@ public class PauseMenuScreen implements Screen {
     private Stage stage;
 
     /**
-     * Builds the pause menu screen,
-     * Initializes everything, and sets up a viewport
-     * in order to fit everything in any sized window.
+     * builds the pause menu screen,
+     * initializes everything, and sets up a viewport
+     * in order to fit everything in any sized window
      *
      */
     public PauseMenuScreen(testGame game, PlayScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
-        viewport = new FitViewport(800, 480);
+
+        // Create a FitViewport for all UI so it scales correctly on resize
+        viewport = new FitViewport(1280, 720);
+
+        // Create the two stages (pause menu & stage select) right here, so they're only created once
+        pauseStage = new Stage(viewport);
+        stageSelectLevel = new Stage(viewport);
+
+        // The "stage" field is unused, but we'll keep it to avoid removing your comments
         stage = new Stage(viewport);
+
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
 
     /**
-     * Called just after the screen has been set to active
-     * Sets up the UI and music
+     * called just after the screen has been set to active
+     * sets up the UI and music
      */
     @Override
     public void show() {
@@ -60,8 +69,8 @@ public class PauseMenuScreen implements Screen {
         skin = game.getSkin();
 
         // Create the 2 stages
-        pauseStage = new Stage(viewport);
-        stageSelectLevel = new Stage(viewport);
+        // pauseStage = new Stage(viewport);       // <--- Commented out to avoid re-initializing
+        // stageSelectLevel = new Stage(viewport); // <--- Same reason
 
         createPauseStage();
         createStageSelectLevel();
@@ -74,7 +83,7 @@ public class PauseMenuScreen implements Screen {
     }
 
     /**
-     * Creates the pause menu with 4 buttons, each with different functions
+     * creates the pause menu with 4 buttons, each with different functions
      */
     private void createPauseStage() {
         Table table = new Table();
@@ -130,7 +139,7 @@ public class PauseMenuScreen implements Screen {
     }
 
     /**
-     * Creates a separate substage and lets us select a level and load a map file
+     * creates a separate substage and lets us select a level and load a map file
      * each button loads a new map in a fresh game
      * back button to return to pause menu
      */
@@ -201,7 +210,7 @@ public class PauseMenuScreen implements Screen {
     }
 
     /**
-     * Draws whichever stage is active (pause menu or level select).
+     * draws whichever stage is active (pause menu or level select).
      * delta time since last frame in seconds
      */
     @Override
@@ -214,13 +223,12 @@ public class PauseMenuScreen implements Screen {
     }
 
     /**
-     * Ensures UI scales properly if the window size changes
+     * ensures UI scales properly if the window size changes
      */
     @Override
     public void resize(int width, int height) {
         pauseStage.getViewport().update(width, height, true);
         stageSelectLevel.getViewport().update(width, height, true);
-
     }
 
     /**

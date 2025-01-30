@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
      */
     public MainMenuScreen(testGame game) {
         this.game = game;
-        viewport = new FitViewport(800, 480);
+        viewport = new FitViewport(1280, 720);
         stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
         bgTexture = new Texture("backgrounds/castleBG.jpg");
@@ -174,7 +174,7 @@ public class MainMenuScreen implements Screen {
     private void createStoryStage() {
         Table table = new Table();
         table.setFillParent(true);
-        table.setBackground(skin.newDrawable("white", Color.ROYAL));
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(bgTexture)));
         table.defaults().pad(15);
 
         storyStage.addActor(table);
@@ -189,7 +189,7 @@ public class MainMenuScreen implements Screen {
         );
         // Make the text wrap if necessary
         storyLabel.setWrap(true);
-        table.add(storyLabel).width(400);
+        table.add(storyLabel).width(800);
         table.row();
 
         TextButton backButton = new TextButton("Back", skin);
@@ -212,7 +212,7 @@ public class MainMenuScreen implements Screen {
     private void createCreditsStage() {
         Table table = new Table();
         table.setFillParent(true);
-        table.setBackground(skin.newDrawable("white", Color.FOREST));
+        table.setBackground(new TextureRegionDrawable(new TextureRegion(bgTexture)));
         table.defaults().pad(15);
 
         creditsStage.addActor(table);

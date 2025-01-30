@@ -33,7 +33,7 @@ public class VictoryScreen implements Screen {
      */
     public VictoryScreen(testGame game, int finalScore) {
         this.game = game;
-        viewport = new FitViewport(800, 480);
+        viewport = new FitViewport(1280, 720);
         stage = new Stage(viewport);
         // Calculate final score
         this.finalScore = finalScore;

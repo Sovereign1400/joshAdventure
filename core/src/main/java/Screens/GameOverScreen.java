@@ -34,7 +34,7 @@ public class GameOverScreen implements Screen {
      */
     public GameOverScreen(testGame game) {
         this.game = game;
-        viewport = new FitViewport(800, 480);
+        viewport = new FitViewport(1280, 720);
         stage = new Stage(viewport);
         buttonSound = Gdx.audio.newSound(Gdx.files.internal("audio/buttonSFX.mp3"));
     }
@@ -144,7 +144,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void hide() {
         Gdx.input.setInputProcessor(null);
-        game.victoryMusic.stop();
+        game.gameOverMusic.stop();
     }
 
     /**
